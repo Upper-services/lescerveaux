@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^1.16.1",
     "@heroicons/react": "^1.0.3",
     "next": "latest",
     "next-auth": "^3.27.3",

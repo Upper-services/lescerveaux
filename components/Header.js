@@ -53,7 +53,8 @@ function Header() {
       {!session ? (
         <button
           className="ml-auto uppercase border px-4 py-1.5 rounded font-medium tracking-wide hover:bg-white hover:text-black transition duration-200"
-          onClick={() => router.push("/signin")}
+          // onClick={() => router.push("/sign-in")}
+          onClick={signIn}
         >
           Login
         </button>
