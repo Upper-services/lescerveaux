@@ -8,10 +8,14 @@
   "dependencies": {
     "@clerk/clerk-react": "^1.16.1",
     "@heroicons/react": "^1.0.3",
+    "framer-motion": "^4.1.17",
     "next": "latest",
     "next-auth": "^3.27.3",
     "react": "^17.0.2",
+    "react-awesome-loaders": "^0.1.37",
     "react-dom": "^17.0.2",
+    "react-responsive-carousel": "^3.2.20",
+    "react-reveal": "^1.2.2",
     "tailwind-scrollbar-hide": "^1.0.3"
   },
   "devDependencies": {
