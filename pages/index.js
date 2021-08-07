@@ -1,28 +1,25 @@
 import { getSession, useSession } from "next-auth/client";
 import Head from "next/head";
 import Header from "../components/Header";
-import Landing from "../components/Landing";
+import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [session] = useSession();
+  const [userLoggedOut, setUserLoggedOut] = useState(false);
   console.log(session);
+  const router = useRouter();
 
   return (
-    <div className="">
+    <div>
       <Head>
         <title>lescerveaux</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-
-      {!session ? (
-        <Landing />
-      ) : (
-        <div className="flex flex-col items-center justify-center h-screen">
-          <h2>User's Email: {session.user.email}</h2>
-          <h2>User's Name: {session.user.name}</h2>
-        </div>
-      )}
+      <SignedOut>{!session ? "Loading..." : <div>APP</div>}</SignedOut>
+      <SignedIn>APP</SignedIn>
     </div>
   );
 }
