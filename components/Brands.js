@@ -5,9 +5,9 @@ function Brands() {
   return (
     <section className="flex flex-col md:flex-row justify-center items-center mt-10 gap-6 px-8 max-w-[1400px] mx-auto">
       <Fade bottom>
-        <div className="brand group">
+        <div className="brand group relative">
           <Image
-            src="/images/motivaction.jpg"
+            src="/images/100-Clients.png"
             layout="fill"
             objectFit="cover"
           />
@@ -24,11 +24,7 @@ function Brands() {
 
       <Fade bottom>
         <div className="brand group">
-          <Image
-            src="/images/motivaction.jpg"
-            layout="fill"
-            objectFit="cover"
-          />
+          <Image src="/images/100-Design.png" layout="fill" objectFit="cover" />
           <video
             autoPlay
             loop
@@ -42,11 +38,7 @@ function Brands() {
 
       <Fade bottom>
         <div className="brand group">
-          <Image
-            src="/images/motivaction.jpg"
-            layout="fill"
-            objectFit="cover"
-          />
+          <Image src="/images/100-Livres.png" layout="fill" objectFit="cover" />
           <video
             autoPlay
             loop
@@ -61,7 +53,7 @@ function Brands() {
       <Fade bottom>
         <div className="brand group">
           <Image
-            src="/images/motivaction.jpg"
+            src="/images/100-Remèdes.png"
             layout="fill"
             objectFit="cover"
           />
@@ -78,11 +70,7 @@ function Brands() {
 
       <Fade bottom>
         <div className="brand group">
-          <Image
-            src="/images/motivaction.jpg"
-            layout="fill"
-            objectFit="cover"
-          />
+          <Image src="/images/100-vidéos.png" layout="fill" objectFit="cover" />
           <video
             autoPlay
             loop
