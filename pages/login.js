@@ -1,8 +1,7 @@
-import { SignIn } from "@clerk/clerk-react";
 import { getProviders, signIn } from "next-auth/client";
 import Fade from "react-reveal/Fade";
 
-export default function SignInPage({ providers }) {
+function Login({ providers }) {
   return (
     <>
       <section className="relative xl:flex p-10 space-y-12 text-center xl:space-x-28 min-h-screen items-center justify-center">
@@ -35,16 +34,12 @@ export default function SignInPage({ providers }) {
             </div>
           </Fade>
         ))}
-
-        <Fade right>
-          <div className="rounded-lg overflow-hidden">
-            <SignIn path="/sign-in" routing="path" />
-          </div>
-        </Fade>
       </section>
     </>
   );
 }
+
+export default Login;
 
 export async function getServerSideProps(context) {
   const providers = await getProviders();
