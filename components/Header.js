@@ -30,11 +30,14 @@ function Header() {
         ) : (
           <>
             <HeaderLinks />
-            <img
-              src={session.user.image}
-              className="h-12 w-12 rounded-full object-cover cursor-pointer ml-auto"
-              onClick={signOut}
-            />
+            <div className="relative h-12 w-12 flex cursor-pointer items-center justify-center">
+              <img
+                src={session.user.image}
+                className="h-12 w-12 rounded-full object-cover cursor-pointer ml-auto"
+                onClick={signOut}
+              />
+              <div className="absolute top-12 right-0 bg-[#131313] border-[#979797] border-opacity-[.34] rounded p-2.5 text-sm tracking-wide w-[100px] opacity-0"></div>
+            </div>
           </>
         )}
       </header>

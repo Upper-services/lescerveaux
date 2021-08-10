@@ -8,6 +8,8 @@
   "dependencies": {
     "@clerk/clerk-react": "^1.16.1",
     "@heroicons/react": "^1.0.3",
+    "@next-auth/firebase-adapter": "^0.1.2",
+    "firebase": "^8.9.0",
     "framer-motion": "^4.1.17",
     "next": "latest",
     "next-auth": "^3.27.3",
