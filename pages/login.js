@@ -51,10 +51,28 @@
 import { getProviders, signIn } from "next-auth/client";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useRef } from "react";
 import Fade from "react-reveal/Fade";
+import { auth } from "../firebase";
 
 function Login({ providers }) {
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
   const router = useRouter();
+
+  const login = (e) => {
+    e.preventDefault();
+
+    auth
+      .signInWithEmailAndPassword(
+        emailRef.current.value,
+        passwordRef.current.value
+      )
+      .then((authUser) => {
+        console.log(authUser);
+      })
+      .catch((error) => alert(error.message));
+  };
 
   return (
     <>
@@ -77,13 +95,19 @@ function Login({ providers }) {
               type="email"
               className="px-2.5 py-4 mb-4 font-medium rounded border border-gray-500 outline-none bg-gray-700"
               placeholder="Email"
+              ref={emailRef}
             />
             <input
               type="password"
               className="px-2.5 py-4 mb-6 font-medium rounded border border-gray-500 outline-none bg-gray-700"
               placeholder="Password"
+              ref={passwordRef}
             />
-            <button className="bg-blue-600 uppercase text-xl font-bold py-3.5 px-6 w-full rounded hover:bg-[#0485ee] tracking-wider">
+            <button
+              className="bg-blue-600 uppercase text-xl font-bold py-3.5 px-6 w-full rounded hover:bg-[#0485ee] tracking-wider"
+              onClick={login}
+              type="submit"
+            >
               Login
             </button>
           </form>
