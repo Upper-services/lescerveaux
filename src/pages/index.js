@@ -56,11 +56,11 @@ export default function Home({ categoriesData, collectionData }) {
               <Slider />
               <section className="grid grid-cols-1 items-center justify-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 mt-10 gap-6 px-8 max-w-[1400px] mx-auto">
                 {categoriesData.map((item) => (
-                  <SmallCard img={item.img} />
+                  <SmallCard img={item.img} key={item.img} />
                 ))}
               </section>
               {collectionData.map((item) => (
-                <Collection title={item.title} />
+                <Collection title={item.title} key={item.title} />
               ))}
               {/* SHOW MORE BTN */}
 

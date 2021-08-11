@@ -53,7 +53,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import Fade from "react-reveal/Fade";
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 
 function Login({ providers }) {
   const emailRef = useRef(null);
@@ -122,11 +122,11 @@ function Login({ providers }) {
           </h4>
         </div>
 
-        {Object.values(providers).map((provider) => (
+        {/* {Object.values(providers).map((provider) => (
           <Fade left>
             <div key={provider.name}></div>
           </Fade>
-        ))}
+        ))} */}
       </section>
     </>
   );

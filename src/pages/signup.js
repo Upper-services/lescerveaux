@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import Fade from "react-reveal/Fade";
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 
 function Signup({ providers }) {
   const fNameRef = useRef(null);
@@ -12,18 +12,20 @@ function Signup({ providers }) {
   const passwordRef = useRef(null);
   const router = useRouter();
 
-  const login = (e) => {
+  const register = () => {
     e.preventDefault();
 
     auth
-      .signInWithEmailAndPassword(
+      .createUserWithEmailAndPassword(
         emailRef.current.value,
         passwordRef.current.value
       )
       .then((authUser) => {
         console.log(authUser);
       })
-      .catch((error) => alert(error.message));
+      .catch((error) => {
+        alert(error.message);
+      });
   };
 
   return (
@@ -65,7 +67,7 @@ function Signup({ providers }) {
             />
             <button
               className="bg-blue-600 uppercase text-xl font-bold py-3.5 px-6 w-full rounded hover:bg-[#0485ee] tracking-wider"
-              onClick={login}
+              onClick={register}
               type="submit"
             >
               Signup

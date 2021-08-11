@@ -9,6 +9,7 @@
     "@clerk/clerk-react": "^1.16.1",
     "@heroicons/react": "^1.0.3",
     "@next-auth/firebase-adapter": "^0.1.2",
+    "@reduxjs/toolkit": "^1.6.1",
     "firebase": "^8.9.0",
     "framer-motion": "^4.1.17",
     "next": "latest",
@@ -22,8 +23,8 @@
     "tailwind-scrollbar-hide": "^1.0.3"
   },
   "devDependencies": {
-    "autoprefixer": "^10.2.6",
-    "postcss": "^8.3.5",
-    "tailwindcss": "^2.2.4"
+    "autoprefixer": "^10.3.1",
+    "postcss": "^8.3.6",
+    "tailwindcss": "^2.2.7"
   }
 }
