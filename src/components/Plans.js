@@ -2,15 +2,11 @@ import { auth, db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
-import Stripe from "stripe";
 
 function Plans() {
   const [subscription, setSubscription] = useState(null);
   const [products, setProducts] = useState([]);
   const [user] = useAuthState(auth);
-  const stripe = new Stripe(
-    "sk_test_51JN28RCBQH7aHMWDwwinxqj3CdcbM4LJuR61nBrR5ytdD8qa2Ip1v9oNtegkp62aXWCeBvfHKDvq5YVhMoYdH6E400ZfqpcEj6"
-  );
 
   useEffect(() => {
     db.collection("products")
@@ -86,9 +82,9 @@ function Plans() {
   //   );
   // }
 
-  const cancelSubscription = async () => {
-    await stripe.subscriptions.del("sub_K1SF5BT6aFBK2n");
-  };
+  // const cancelSubscription = async () => {
+  //   await stripe.subscriptions.del("sub_K1SF5BT6aFBK2n");
+  // };
 
   return (
     <div>
@@ -121,9 +117,7 @@ function Plans() {
             >
               {isCurrentPackage ? "Current Package" : "Subscribe"}
             </button>
-            <button onClick={() => cancelSubscription()}>
-              Cancel Subscription
-            </button>
+            <button>Cancel Subscription</button>
           </div>
         );
       })}
