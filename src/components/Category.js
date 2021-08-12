@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-function SmallCard({ img }) {
+function Category({ img }) {
   return (
     <div className="brand group">
       <Image src={img} layout="fill" objectFit="cover" />
@@ -16,4 +16,4 @@ function SmallCard({ img }) {
   );
 }
 
-export default SmallCard;
+export default Category;

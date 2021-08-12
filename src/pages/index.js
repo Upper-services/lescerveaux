@@ -6,18 +6,23 @@ import Slider from "../components/Slider";
 import Loader from "../components/Loader";
 import { motion } from "framer-motion";
 import Collection from "../components/Collection";
-import SmallCard from "../components/SmallCard";
+import Category from "../components/Category";
+import { useRouter } from "next/router";
+import { auth } from "../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Home({ categoriesData, collectionData }) {
   const [session] = useSession();
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [user] = useAuthState(auth);
 
-  useEffect(() => {
-    setLoading(false);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 2000);
+  // }, []);
 
   const container = {
     hidden: { opacity: 1, scale: 0 },
@@ -40,23 +45,23 @@ export default function Home({ categoriesData, collectionData }) {
   };
 
   return (
-    <motion.div variants={container} initial="hidden" animate="visible">
-      <div className="item">
-        <Head>
-          <title>lescerveaux</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        {loading ? (
-          <Loader />
-        ) : (
-          <>
-            <Header />
+    <>
+      <motion.div variants={container} initial="hidden" animate="visible">
+        <div className="item">
+          <Head>
+            <title>lescerveaux</title>
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
 
+          <Header />
+          {!user ? (
+            <h1>Landing Page</h1>
+          ) : (
             <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1]">
               <Slider />
               <section className="grid grid-cols-1 items-center justify-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 mt-10 gap-6 px-8 max-w-[1400px] mx-auto">
                 {categoriesData.map((item) => (
-                  <SmallCard img={item.img} key={item.img} />
+                  <Category img={item.img} key={item.img} />
                 ))}
               </section>
               {collectionData.map((item) => (
@@ -79,10 +84,10 @@ export default function Home({ categoriesData, collectionData }) {
               </div> */}
               {/* SHOW LESS BTN */}
             </main>
-          </>
-        )}
-      </div>
-    </motion.div>
+          )}
+        </div>
+      </motion.div>
+    </>
   );
 }
 
@@ -93,7 +98,7 @@ export async function getServerSideProps(context) {
     (res) => res.json()
   );
 
-  const collectionData = await fetch("https://jsonkeeper.com/b/UTDR").then(
+  const collectionData = await fetch("https://jsonkeeper.com/b/HDL8").then(
     (res) => res.json()
   );
 

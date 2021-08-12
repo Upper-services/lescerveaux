@@ -1,135 +1,125 @@
-// import { getProviders, signIn } from "next-auth/client";
-// import Fade from "react-reveal/Fade";
-
-// function Login({ providers }) {
-//   return (
-//     <>
-//       <section className="relative xl:flex p-10 space-y-12 text-center min-h-screen items-center justify-center">
-//         <video
-//           autoPlay
-//           loop
-//           playsInline
-//           className="hidden xl:inline absolute z-[-1] inset-0"
-//         >
-//           <source src="/videos/Snow-night.mp4" type="video/mp4" />
-//         </video>
-
-//         {Object.values(providers).map((provider) => (
-//           <Fade left>
-//             <div
-//               key={provider.name}
-//               className="flex xl:inline items-center flex-col max-w-lg mx-auto after:w-full after:h-0.5 after:bg-linear-gradient after:mt-12"
-//             >
-//               <button
-//                 onClick={() =>
-//                   signIn(provider.id, { callbackUrl: "http://localhost:3000" })
-//                 }
-//                 className="relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-white rounded hover:bg-white group"
-//               >
-//                 <span className="w-48 h-48 rounded rotate-[-40deg] bg-purple-600 absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-1"></span>
-//                 <span className="relative w-full text-left text-black transition-colors duration-300 ease-in-out group-hover:text-white font-semibold">
-//                   Sign in with {provider.name}
-//                 </span>
-//               </button>
-//             </div>
-//           </Fade>
-//         ))}
-//       </section>
-//     </>
-//   );
-// }
-
-// export default Login;
-
-// export async function getServerSideProps(context) {
-//   const providers = await getProviders();
-//   return {
-//     props: { providers },
-//   };
-// }
-
-import { getProviders, signIn } from "next-auth/client";
+import { getProviders } from "next-auth/client";
+import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useState } from "react";
 import Fade from "react-reveal/Fade";
 import { auth } from "../../firebase";
 
 function Login({ providers }) {
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
+  const [step, setStep] = useState(1);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
+
+  const Continue = (e) => {
+    e.preventDefault();
+    setStep(step + 1);
+  };
+
+  const Previous = (e) => {
+    e.preventDefault();
+    setStep(step - 1);
+  };
 
   const login = (e) => {
     e.preventDefault();
 
     auth
-      .signInWithEmailAndPassword(
-        emailRef.current.value,
-        passwordRef.current.value
-      )
-      .then((authUser) => {
-        console.log(authUser);
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        router.push("/");
       })
       .catch((error) => alert(error.message));
   };
 
-  return (
-    <>
-      <section className="text-center pt-32 min-h-screen bg-[#1C1B29] px-8">
-        <div className="max-w-xl mx-auto">
+  switch (step) {
+    case 1:
+      return (
+        <section className="relative text-center pt-20 min-h-screen bg-[#1A1C29]">
+          <Head>
+            <title>Login | Lescerveaux</title>
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
           <Image
             src="/images/logo.png"
-            alt=""
-            width={100}
-            height={100}
-            objectFit="contain"
+            width="100"
+            height="100"
             className="cursor-pointer"
             onClick={() => router.push("/")}
           />
-          <h2 className="mt-8 mb-4 text-left font-bold text-2xl">
-            Log in with your email
-          </h2>
-          <form className="flex flex-col">
+
+          <form className="flex text-left flex-col justify-center max-w-md mx-auto mt-8">
+            <label htmlFor="email" className="text-xl font-semibold mb-6">
+              Log in with your email
+            </label>
+
             <input
               type="email"
-              className="px-2.5 py-4 mb-4 font-medium rounded border border-gray-500 outline-none bg-gray-700"
               placeholder="Email"
-              ref={emailRef}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="bg-[#30343E] rounded px-4 pl-2.5 py-3 border border-transparent focus:border-white/30 outline-none mb-7 placeholder-[#A2A3A6]"
             />
+
+            <button
+              className="bg-blue-600 uppercase text-sm font-semibold tracking-wider py-2.5 px-6 w-full rounded hover:bg-[#0485ee] mb-6"
+              type="submit"
+              onClick={Continue}
+            >
+              Continue
+            </button>
+            <h4 className="text-sm">
+              New to Lescerveaux?{" "}
+              <button onClick={() => router.push("/signup")}>Sign up</button>
+            </h4>
+          </form>
+        </section>
+      );
+    case 2:
+      return (
+        <section className="text-center pt-20 min-h-screen bg-[#1A1C29]">
+          <Head>
+            <title>Login | Lescerveaux</title>
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+          <Image src="/images/logo.png" width="100" height="100" />
+
+          <form className="flex text-left flex-col justify-center max-w-md mx-auto mt-8">
+            <label htmlFor="email" className="text-xl font-semibold mb-6">
+              Enter your password
+            </label>
             <input
               type="password"
-              className="px-2.5 py-4 mb-6 font-medium rounded border border-gray-500 outline-none bg-gray-700"
               placeholder="Password"
-              ref={passwordRef}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="bg-[#30343E] rounded px-4 pl-2.5 py-3 border border-transparent focus:border-white/30 outline-none mb-4 placeholder-[#A2A3A6]"
             />
-            <button
-              className="bg-blue-600 uppercase text-xl font-bold py-3.5 px-6 w-full rounded hover:bg-[#0485ee] tracking-wider"
-              onClick={login}
-              type="submit"
-            >
-              Login
-            </button>
-          </form>
-          <h4 className="text-left mt-6 font-semibold text-gray-400">
-            New to Lescerveaux?{" "}
-            <span
-              className="cursor-pointer text-gray-300 font-bold"
-              onClick={() => router.push("/signup")}
-            >
-              Sign up
-            </span>
-          </h4>
-        </div>
+            <p className="text-xs max-w-sm mb-8">(case sensitive)</p>
 
-        {/* {Object.values(providers).map((provider) => (
-          <Fade left>
-            <div key={provider.name}></div>
-          </Fade>
-        ))} */}
-      </section>
-    </>
-  );
+            <div className="flex space-x-3">
+              <a
+                className="bg-blue-600 uppercase text-sm font-semibold tracking-wider py-2.5 px-6 w-full rounded hover:bg-[#0485ee] cursor-pointer text-center"
+                onClick={Previous}
+              >
+                Previous
+              </a>
+              <button
+                className="bg-blue-600 uppercase text-sm font-semibold tracking-wider py-2.5 px-6 w-full rounded hover:bg-[#0485ee]"
+                type="submit"
+                onClick={login}
+              >
+                Log In
+              </button>
+            </div>
+          </form>
+        </section>
+      );
+    // never forget the default case, otherwise VS code would be mad!
+    default:
+    // do nothing
+  }
 }
 
 export default Login;

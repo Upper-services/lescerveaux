@@ -3,8 +3,7 @@ import { Carousel } from "react-responsive-carousel";
 
 function Slider() {
   return (
-    <section className="relative mt-7 shadow-2xl max-w-screen-2xl mx-auto">
-      <div />
+    <section className="relative shadow-2xl max-w-screen-2xl mx-auto">
       <Carousel
         autoPlay
         infiniteLoop
@@ -14,16 +13,36 @@ function Slider() {
         interval={5000}
       >
         <div>
-          <img loading="lazy" src="/images/slider-1.jpg" alt="" />
+          <img
+            loading="lazy"
+            src="/images/slider-1.jpg"
+            alt=""
+            className="max-h-[330px] object-cover"
+          />
         </div>
         <div>
-          <img loading="lazy" src="/images/slider-2.jpg" alt="" />
+          <img
+            loading="lazy"
+            src="/images/slider-2.jpg"
+            alt=""
+            className="max-h-[330px] object-cover"
+          />
         </div>
         <div>
-          <img loading="lazy" src="/images/slider-3.jpg" alt="" />
+          <img
+            loading="lazy"
+            src="/images/slider-3.jpg"
+            alt=""
+            className="max-h-[330px] object-cover"
+          />
         </div>
         <div>
-          <img loading="lazy" src="/images/slider-4.jpeg" alt="" />
+          <img
+            loading="lazy"
+            src="/images/slider-4.jpeg"
+            alt=""
+            className="max-h-[330px] object-cover"
+          />
         </div>
       </Carousel>
     </section>

@@ -1,4 +1,6 @@
-function Collection({ results, title }) {
+import Thumbnail from "./Thumbnail";
+
+function Collection({ title }) {
   return (
     <div className="relative flex flex-col space-y-2 my-10 px-8 max-w-[1400px] mx-auto">
       <h2 className="font-semibold">{title}</h2>
