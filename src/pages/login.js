@@ -36,7 +36,7 @@ function Login({ providers }) {
   switch (step) {
     case 1:
       return (
-        <section className="relative text-center pt-20 min-h-screen bg-[#1A1C29] ">
+        <section className="relative text-center pt-20 min-h-screen bg-[#1A1C29] px-6">
           <Head>
             <title>Login | Lescerveaux</title>
             <link rel="icon" href="/favicon.ico" />
@@ -79,12 +79,18 @@ function Login({ providers }) {
       );
     case 2:
       return (
-        <section className="text-center pt-20 min-h-screen bg-[#1A1C29]">
+        <section className="text-center pt-20 min-h-screen bg-[#1A1C29] px-6">
           <Head>
             <title>Login | Lescerveaux</title>
             <link rel="icon" href="/favicon.ico" />
           </Head>
-          <Image src="/images/logo.png" width="100" height="100" />
+          <Image
+            src="/images/logo.png"
+            width="100"
+            height="100"
+            className="cursor-pointer"
+            onClick={() => router.push("/")}
+          />
 
           <form className="flex text-left flex-col justify-center max-w-md mx-auto mt-8">
             <label htmlFor="email" className="text-xl font-semibold mb-6">
@@ -101,7 +107,7 @@ function Login({ providers }) {
 
             <div className="flex space-x-3">
               <a
-                className="bg-blue-600 uppercase text-sm font-semibold tracking-wider py-2.5 px-6 w-full rounded hover:bg-[#0485ee] cursor-pointer text-center"
+                className="bg-blue-600 uppercase text-sm font-semibold tracking-wider py-2.5 px-6 w-full rounded hover:bg-[#0485ee] cursor-pointer flex justify-center items-center"
                 onClick={Previous}
               >
                 Previous
