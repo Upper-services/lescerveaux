@@ -36,11 +36,12 @@ function Login({ providers }) {
   switch (step) {
     case 1:
       return (
-        <section className="relative text-center pt-20 min-h-screen bg-[#1A1C29]">
+        <section className="relative text-center pt-20 min-h-screen bg-[#1A1C29] ">
           <Head>
             <title>Login | Lescerveaux</title>
             <link rel="icon" href="/favicon.ico" />
           </Head>
+
           <Image
             src="/images/logo.png"
             width="100"
@@ -69,11 +70,11 @@ function Login({ providers }) {
             >
               Continue
             </button>
-            <h4 className="text-sm">
-              New to Lescerveaux?{" "}
-              <button onClick={() => router.push("/signup")}>Sign up</button>
-            </h4>
           </form>
+          <h4 className="text-sm text-left max-w-md mx-auto">
+            New to Lescerveaux?{" "}
+            <button onClick={() => router.push("/signup")}>Sign up</button>
+          </h4>
         </section>
       );
     case 2:
