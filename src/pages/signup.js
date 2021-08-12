@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Fade from "react-reveal/Fade";
 import { auth } from "../../firebase";
+import Plans from "../components/Plans";
 
 function Signup({ providers }) {
   const [step, setStep] = useState(1);
@@ -28,7 +29,8 @@ function Signup({ providers }) {
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((authUser) => {
-        router.push("/");
+        setStep(step + 1);
+        console.log(authUser);
       })
       .catch((error) => {
         alert(error.message);
@@ -132,7 +134,6 @@ function Signup({ providers }) {
             <div className="flex space-x-3">
               <a
                 className="bg-blue-600 uppercase text-sm font-semibold tracking-wider py-2.5 px-6 w-full rounded hover:bg-[#0485ee] cursor-pointer flex justify-center items-center"
-                type="submit"
                 onClick={Previous}
               >
                 Previous
@@ -148,7 +149,35 @@ function Signup({ providers }) {
           </form>
         </section>
       );
-    // never forget the default case, otherwise VS code would be mad!
+    case 3:
+      return (
+        <section className="relative text-center pt-20 min-h-screen bg-[#1A1C29] px-6">
+          <Head>
+            <title>Lescerveaux | Membership</title>
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+
+          <Image
+            src="/images/logo.png"
+            width="100"
+            height="100"
+            className="cursor-pointer"
+            onClick={() => router.push("/")}
+          />
+
+          <div className="flex text-left flex-col justify-center max-w-md mx-auto mt-8">
+            <small className="text-gray-300 tracking-widest text-[10px] uppercase font-medium">
+              Step {step} of 3
+            </small>
+
+            <Plans />
+          </div>
+          <h4 className="text-sm text-left max-w-md mx-auto md:hidden">
+            Already a member?{" "}
+            <button onClick={() => router.push("/login")}>Log In</button>
+          </h4>
+        </section>
+      );
     default:
     // do nothing
   }

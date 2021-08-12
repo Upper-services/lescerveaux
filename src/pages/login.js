@@ -123,7 +123,6 @@ function Login({ providers }) {
           </form>
         </section>
       );
-    // never forget the default case, otherwise VS code would be mad!
     default:
     // do nothing
   }
