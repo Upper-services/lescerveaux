@@ -153,7 +153,7 @@ function Signup({ providers }) {
       return (
         <section className="relative text-center pt-20 min-h-screen bg-[#1A1C29] px-6">
           <Head>
-            <title>Lescerveaux | Membership</title>
+            <title>Membership | Lescerveaux</title>
             <link rel="icon" href="/favicon.ico" />
           </Head>
 
@@ -172,10 +172,6 @@ function Signup({ providers }) {
 
             <Plans />
           </div>
-          <h4 className="text-sm text-left max-w-md mx-auto md:hidden">
-            Already a member?{" "}
-            <button onClick={() => router.push("/login")}>Log In</button>
-          </h4>
         </section>
       );
     default:

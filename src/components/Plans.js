@@ -98,7 +98,12 @@ function Plans() {
         </p>
       </div>
 
-      <div className="flex items-center justify-between bg-gray-600 border border-transparent rounded p-2.5 cursor-pointer">
+      <div
+        className={`flex items-center justify-between bg-[#30343E] border-2 border-transparent rounded p-2.5 cursor-pointer mb-6 transition duration-200 ${
+          active && "border-[#0283ED] bg-[#153150]"
+        }`}
+        onClick={() => setActive(!active)}
+      >
         <div>
           <h4 className="font-semibold text-sm mb-1.5">Monthly</h4>
           <p className="text-xs text-gray-300">€19.00</p>
@@ -106,9 +111,16 @@ function Plans() {
         {!active ? (
           <div className="h-4 w-4 border-2 rounded-full" />
         ) : (
-          <CheckCircleIcon />
+          <CheckCircleIcon className="h-6 text-[#0283ED]" />
         )}
       </div>
+
+      <p className="text-[11px] mb-6 font-medium">
+        By clicking "Agree & Subscribe", you will be redirected to stripe's
+        secure checkout page where you will need to enter your respective
+        payment information. Note that, you will be able to cancel at any time,
+        effective at the end of the billing period.
+      </p>
 
       {Object.entries(products).map(([productId, productData]) => {
         // add some logic to check if the user's subscription is active...
@@ -116,13 +128,16 @@ function Plans() {
         return (
           <div className={`flex flex-col justify-between`} key={productId}>
             <button
-              className="bg-blue-600 uppercase text-sm font-semibold tracking-wider py-2.5 px-6 w-full rounded hover:bg-[#0485ee] mb-6"
+              className={`bg-blue-600 uppercase text-sm font-semibold tracking-wider py-2.5 px-6 w-full rounded hover:bg-[#0485ee] mb-6 ${
+                !active && "bg-gray-500 cursor-not-allowed hover:bg-gray-500"
+              }`}
               type="submit"
-              OnClick={() =>
+              onClick={() =>
                 !isCurrentPackage && loadCheckout(productData.prices.priceId)
               }
+              disabled={!active}
             >
-              {isCurrentPackage ? "Current Package" : "Agree & Subscribe"}
+              Agree & Subscribe
             </button>
           </div>
         );
