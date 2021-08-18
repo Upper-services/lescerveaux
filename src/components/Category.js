@@ -11,7 +11,6 @@ function Category({ img, title, id }) {
       onClick={() =>
         router.push({
           pathname: `/category/${title}`,
-          query: { title },
         })
       }
     >

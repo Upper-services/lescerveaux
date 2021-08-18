@@ -20,6 +20,8 @@ function Category({ categoryPageData, title, categoryPageVideo }) {
   console.log(categoryPageData);
   console.log(categoryPageVideo);
 
+  console.log(router.query);
+
   return (
     <div>
       <Head>
