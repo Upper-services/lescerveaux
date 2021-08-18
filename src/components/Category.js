@@ -1,9 +1,22 @@
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-function Category({ img }) {
+function Category({ img, title, id }) {
+  const router = useRouter();
+
   return (
-    <div className="brand group">
-      <Image src={img} layout="fill" objectFit="cover" />
+    <div
+      className="brand group"
+      onClick={() =>
+        router.push({
+          pathname: `/category/${title}`,
+          query: { title },
+        })
+      }
+    >
+      {/* <Image src={img} layout="fill" objectFit="cover" /> */}
+      <h1 className="text-xs m-auto font-semibold">{title}</h1>
       <video
         autoPlay
         loop

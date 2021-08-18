@@ -1,7 +1,7 @@
 import { getSession, useSession } from "next-auth/client";
 import Head from "next/head";
 import Header from "../components/Header";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Slider from "../components/Slider";
 import Loader from "../components/Loader";
 import { motion } from "framer-motion";
@@ -12,10 +12,8 @@ import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Home({ categoriesData, collectionData }) {
-  const [session] = useSession();
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
   // useEffect(() => {
   //   setLoading(true);
@@ -44,6 +42,12 @@ export default function Home({ categoriesData, collectionData }) {
     },
   };
 
+  if (loading) {
+    return <div>{/* <p>Initialising User...</p> */}</div>;
+  }
+
+  console.log(categoriesData);
+
   return (
     <>
       <motion.div variants={container} initial="hidden" animate="visible">
@@ -54,18 +58,20 @@ export default function Home({ categoriesData, collectionData }) {
           </Head>
 
           <Header />
-          {!user ? (
-            <h1>Landing Page</h1>
-          ) : (
+          {user && (
             <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1]">
               <Slider />
-              <section className="grid grid-cols-1 items-center justify-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 mt-10 gap-6 px-8 max-w-[1400px] mx-auto">
-                {categoriesData.map((item) => (
-                  <Category img={item.img} key={item.img} />
+              <section className="grid grid-cols-3 items-center justify-center md:grid-cols-6 mt-10 gap-6 px-8 max-w-[1400px] mx-auto">
+                {categoriesData.map(({ title, img, id }) => (
+                  <Category title={title} img={img} key={id} id={id} />
                 ))}
               </section>
               {collectionData.map((item) => (
-                <Collection title={item.title} key={item.title} />
+                <Collection
+                  title={item.title}
+                  key={item.id}
+                  images={item.images}
+                />
               ))}
               {/* SHOW MORE BTN */}
 
@@ -92,19 +98,16 @@ export default function Home({ categoriesData, collectionData }) {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  const categoriesData = await fetch("https://jsonkeeper.com/b/HMV1").then(
+  const categoriesData = await fetch("https://jsonkeeper.com/b/CDO5").then(
     (res) => res.json()
   );
 
-  const collectionData = await fetch("https://jsonkeeper.com/b/HDL8").then(
+  const collectionData = await fetch("https://jsonkeeper.com/b/UPWR").then(
     (res) => res.json()
   );
 
   return {
     props: {
-      session,
       categoriesData,
       collectionData,
     },
