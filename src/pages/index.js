@@ -98,7 +98,7 @@ export default function Home({ categoriesData, collectionData }) {
 }
 
 export async function getServerSideProps(context) {
-  const categoriesData = await fetch("https://jsonkeeper.com/b/CDO5").then(
+  const categoriesData = await fetch("https://jsonkeeper.com/b/3AAM").then(
     (res) => res.json()
   );
 

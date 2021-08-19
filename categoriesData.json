@@ -273,5 +273,25 @@
         ]
       }
     ]
+  },
+  {
+    "id": "12",
+    "img": "",
+    "title": "COIFFURE",
+    "video": "",
+    "categoryPageVideo": "",
+    "categoryPageData": [
+      {
+        "categoryId": "1",
+        "categoryTitle": "",
+        "results": [
+          {
+            "resultId": "1",
+            "resultTitle": "",
+            "thumbnailImg": ""
+          }
+        ]
+      }
+    ]
   }
 ]

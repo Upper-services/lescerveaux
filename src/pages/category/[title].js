@@ -51,7 +51,7 @@ export default Category;
 export async function getServerSideProps(context) {
   const { title } = context.query;
 
-  const categoryData = await fetch("https://jsonkeeper.com/b/CDO5").then(
+  const categoryData = await fetch("https://jsonkeeper.com/b/3AAM").then(
     (res) => res.json()
   );
 

@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import { PlusIcon, XIcon } from "@heroicons/react/solid";
 import ReactPlayer from "react-player/lazy";
 
-function Course() {
+function Course({ courseData }) {
   const router = useRouter();
   const [showPlayer, setShowPlayer] = useState(false);
 
@@ -110,8 +110,8 @@ export default Course;
 
 // export async function getServerSideProps(context) {
 //   const { title } = context.query;
-// const { resultTitle } = context.query;
-// const {categoryTitle} = context.query;
+//   const { resultTitle } = context.query;
+//   const { categoryTitle } = context.query;
 
 //   const categoryData = await fetch("https://jsonkeeper.com/b/OITD").then(
 //     (res) => res.json()
@@ -121,7 +121,9 @@ export default Course;
 //     props: {
 //       courseData: categoryData
 //         .filter((item) => item.title === title)[0]
-//         .categoryPageData.filter((item) => item.categoryTitle === categoryTitle)[0]
+//         .categoryPageData.filter(
+//           (item) => item.categoryTitle === categoryTitle
+//         )[0]
 //         .results.filter((item) => item.resultTitle === resultTitle)[0]
 //         .resultPageData,
 //     },
