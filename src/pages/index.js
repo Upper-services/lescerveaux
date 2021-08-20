@@ -79,7 +79,7 @@ export default function Home({ categoriesData, collectionData }) {
           </Head>
 
           <Header />
-          {subscription?.status === "active" && (
+          {user && subscription?.status === "active" && (
             <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1]">
               <Slider />
               <Fade bottom>

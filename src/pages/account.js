@@ -9,6 +9,7 @@ import firebase from "firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { selectSubscription, setSubscription } from "../slices/appSlice";
 import { useEffect } from "react";
+import moment from "moment";
 
 function Account() {
   const [user, loading] = useAuthState(auth);
@@ -29,11 +30,17 @@ function Account() {
             dispatch(
               setSubscription({
                 role: subscription.data().role,
-                current_period_end: subscription.data().current_period_end,
-                current_period_start: subscription.data().current_period_start,
+                current_period_end: subscription
+                  .data()
+                  .current_period_end?.toDate()
+                  .getTime(),
+                current_period_start: subscription
+                  .data()
+                  .current_period_start?.toDate()
+                  .getTime(),
                 status: subscription.data().status,
-                cancel_at: subscription.data().cancel_at,
-                ended_at: subscription.data().ended_at,
+                cancel_at: subscription.data().cancel_at?.toDate().getTime(),
+                ended_at: subscription.data().ended_at?.toDate().getTime(),
               })
             );
           });
@@ -133,17 +140,16 @@ function Account() {
                 {subscription?.status === "active" ? (
                   <p>
                     {subscription?.cancel_at
-                      ? `Expires at ${subscription?.cancel_at
-                          ?.toDate()
-                          .toLocaleString()}`
-                      : `Renews at ${subscription?.current_period_end
-                          ?.toDate()
-                          .toLocaleString()}`}
+                      ? `Expires at ${moment(subscription?.cancel_at).format(
+                          "lll"
+                        )}`
+                      : `Renews at ${moment(
+                          subscription?.current_period_end
+                        ).format("lll")}`}
                   </p>
                 ) : (
                   <p>
-                    Cancelled at{" "}
-                    {subscription?.ended_at?.toDate().toLocaleString()}
+                    Cancelled at {moment(subscription?.ended_at).format("lll")}
                   </p>
                 )}
               </div>
