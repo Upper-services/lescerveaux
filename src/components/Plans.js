@@ -3,12 +3,16 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 import { CheckCircleIcon } from "@heroicons/react/solid";
+import { useDispatch, useSelector } from "react-redux";
+import { selectSubscription, setSubscription } from "../slices/appSlice";
 
 function Plans() {
-  const [subscription, setSubscription] = useState(null);
+  // const [subscription, setSubscription] = useState(null);
+  const subscription = useSelector(selectSubscription);
   const [products, setProducts] = useState([]);
   const [user] = useAuthState(auth);
   const [active, setActive] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     db.collection("products")
@@ -37,12 +41,22 @@ function Plans() {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach(async (subscription) => {
-          setSubscription({
-            role: subscription.data().role,
-            current_period_end: subscription.data().current_period_end.seconds,
-            current_period_start:
-              subscription.data().current_period_start.seconds,
-          });
+          // setSubscription({
+          //   role: subscription.data().role,
+          //   current_period_end: subscription.data().current_period_end.seconds,
+          //   current_period_start:
+          //     subscription.data().current_period_start.seconds,
+          // });
+          dispatch(
+            setSubscription({
+              role: subscription.data().role,
+              current_period_end:
+                subscription.data().current_period_end.seconds,
+              current_period_start:
+                subscription.data().current_period_start.seconds,
+              status: subscription.data().status,
+            })
+          );
         });
       });
   }, [user?.uid]);
@@ -78,15 +92,7 @@ function Plans() {
     });
   };
 
-  // const cancelSubscription = () => {
-  //   const deleted = await stripe.subscriptions.del(
-  //     db.collection("customers").doc(user?.uid).collection("subscriptions").
-  //   );
-  // }
-
-  // const cancelSubscription = async () => {
-  //   await stripe.subscriptions.del("sub_K1SF5BT6aFBK2n");
-  // };
+  console.log(subscription);
 
   return (
     <div>
@@ -125,6 +131,7 @@ function Plans() {
       {Object.entries(products).map(([productId, productData]) => {
         // add some logic to check if the user's subscription is active...
         const isCurrentPackage = productData?.name.includes(subscription?.role);
+
         return (
           <div className={`flex flex-col justify-between`} key={productId}>
             <button

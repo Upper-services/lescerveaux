@@ -1,26 +1,47 @@
-import { getSession, useSession } from "next-auth/client";
 import Head from "next/head";
 import Header from "../components/Header";
-import { useState } from "react";
+import { useEffect } from "react";
 import Slider from "../components/Slider";
-import Loader from "../components/Loader";
 import { motion } from "framer-motion";
 import Collection from "../components/Collection";
 import Category from "../components/Category";
-import { useRouter } from "next/router";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import Fade from "react-reveal/Fade";
+import { selectSubscription, setSubscription } from "../slices/appSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Home({ categoriesData, collectionData }) {
-  const router = useRouter();
   const [user, loading] = useAuthState(auth);
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 2000);
-  // }, []);
+  // Testing subscription Active or No
+  const subscription = useSelector(selectSubscription);
+
+  useEffect(() => {
+    if (user) {
+      db.collection("customers")
+        .doc(user?.uid)
+        .collection("subscriptions")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach(async (subscription) => {
+            dispatch(
+              setSubscription({
+                role: subscription.data().role,
+                current_period_end:
+                  subscription.data().current_period_end.seconds,
+                current_period_start:
+                  subscription.data().current_period_start.seconds,
+                status: subscription.data().status,
+              })
+            );
+          });
+        });
+    }
+  }, [user?.uid]);
+
+  // ---------------------------------------------- Test Code Above ---------------------------------------------------------------
 
   const container = {
     hidden: { opacity: 1, scale: 0 },
@@ -46,7 +67,7 @@ export default function Home({ categoriesData, collectionData }) {
     return <div>{/* <p>Initialising User...</p> */}</div>;
   }
 
-  console.log(categoriesData);
+  console.log(subscription);
 
   return (
     <>
@@ -58,14 +79,17 @@ export default function Home({ categoriesData, collectionData }) {
           </Head>
 
           <Header />
-          {user && (
+          {subscription?.status === "active" && (
             <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1]">
               <Slider />
-              <section className="grid grid-cols-3 items-center justify-center md:grid-cols-6 mt-10 gap-6 px-8 max-w-[1400px] mx-auto">
-                {categoriesData.map(({ title, img, id }) => (
-                  <Category title={title} img={img} key={id} id={id} />
-                ))}
-              </section>
+              <Fade bottom>
+                <section className="grid grid-cols-3 items-center justify-center md:grid-cols-6 mt-10 gap-6 px-8 max-w-[1400px] mx-auto">
+                  {categoriesData.map(({ title, img, id }) => (
+                    <Category title={title} img={img} key={id} id={id} />
+                  ))}
+                </section>
+              </Fade>
+
               {collectionData.map((item) => (
                 <Collection
                   title={item.title}

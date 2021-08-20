@@ -12,7 +12,7 @@ function Slider() {
         showThumbs={false}
         interval={5000}
       >
-        <div>
+        <div className="">
           <img
             loading="lazy"
             src="/images/slider-1.jpg"
@@ -20,7 +20,7 @@ function Slider() {
             className="max-h-[330px] object-cover"
           />
         </div>
-        <div>
+        <div className="">
           <img
             loading="lazy"
             src="/images/slider-2.jpg"
@@ -28,7 +28,7 @@ function Slider() {
             className="max-h-[330px] object-cover"
           />
         </div>
-        <div>
+        <div className="">
           <img
             loading="lazy"
             src="/images/slider-3.jpg"
@@ -36,7 +36,7 @@ function Slider() {
             className="max-h-[330px] object-cover"
           />
         </div>
-        <div>
+        <div className="">
           <img
             loading="lazy"
             src="/images/slider-4.jpeg"

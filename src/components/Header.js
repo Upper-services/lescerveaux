@@ -50,8 +50,11 @@ function Header() {
             {isComponentVisible && (
               <motion.div
                 ref={ref}
-                className="absolute top-0 right-0 w-56 !h-44 p-3 px-5 border-2 border-[#404040] text-[#CACACA] rounded-md z-[-1] bg-[#131313]"
-                initial={{ height: 0, visibility: "hidden" }}
+                className={`${
+                  isComponentVisible &&
+                  "pb-3 absolute top-0 right-0 w-56 p-3 px-5 border-2 border-[#404040] text-[#CACACA] rounded-md z-[-1] bg-[#131313]"
+                }`}
+                initial={{ height: 0 }}
                 animate={
                   isComponentVisible
                     ? { height: "auto", visibility: "visible" }
@@ -59,7 +62,7 @@ function Header() {
                 }
               >
                 <h4 className="capitalize absolute right-20 top-5 text-white">
-                  {user.displayName.split(" ")[0]}
+                  {user?.displayName?.split(" ")[0]}
                 </h4>
                 <hr className="border-[#2A2A2A] mt-14 mb-4" />
                 <div className="space-y-4">
