@@ -7,12 +7,15 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import useComponentVisible from "../hooks/useComponentVisible";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { setSubscription } from "../slices/appSlice";
+import { useDispatch } from "react-redux";
 
 function Header() {
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible(false);
   const router = useRouter();
   const [user] = useAuthState(auth);
+  const dispatch = useDispatch();
 
   return (
     <Fade top>
@@ -73,6 +76,7 @@ function Header() {
                     className="block cursor-pointer hover:text-white"
                     onClick={() => {
                       auth.signOut();
+                      dispatch(setSubscription(null));
                       router.push("/");
                     }}
                   >

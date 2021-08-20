@@ -121,6 +121,7 @@ function Account() {
               className="px-4 py-4 w-full font-medium text-[#67bdff] hover:text-[#94d0ff]"
               onClick={() => {
                 auth.signOut();
+                dispatch(setSubscription(null));
                 router.push("/");
               }}
             >
