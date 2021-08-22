@@ -7,8 +7,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import useComponentVisible from "../hooks/useComponentVisible";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { setSubscription } from "../slices/appSlice";
-import { useDispatch } from "react-redux";
+import { selectSubscription, setSubscription } from "../slices/appSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Avatar } from "@material-ui/core";
 
 function Header() {
   const { ref, isComponentVisible, setIsComponentVisible } =
@@ -16,11 +17,12 @@ function Header() {
   const router = useRouter();
   const [user] = useAuthState(auth);
   const dispatch = useDispatch();
+  const subscription = useSelector(selectSubscription);
 
   return (
     <Fade top>
       <header className="sticky bg-[#040714] top-0 z-[1000] flex items-center px-6 h-[72px]">
-        {user && (
+        {user && subscription?.status === "active" && (
           <>
             <Image
               src="/images/logo.png"
@@ -44,12 +46,13 @@ function Header() {
           </button>
         ) : (
           <div className="ml-auto">
-            <img
-              src="https://yt3.ggpht.com/ytc/AKedOLQVKtLvxTcroPgQLPJvSf7cVYgfThihxxNd_sFfLg=s900-c-k-c0x00ffffff-no-rj"
-              className="rounded-full h-11 w-11 cursor-pointer"
+            <Avatar
               ref={ref}
               onClick={() => setIsComponentVisible(!isComponentVisible)}
-            />
+              className="cursor-pointer !bg-blue-800"
+            >
+              {user?.displayName?.charAt(0).toUpperCase()}
+            </Avatar>
             {isComponentVisible && (
               <motion.div
                 ref={ref}

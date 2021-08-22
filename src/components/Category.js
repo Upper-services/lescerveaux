@@ -14,8 +14,7 @@ function Category({ img, title, id }) {
         })
       }
     >
-      {/* <Image src={img} layout="fill" objectFit="cover" /> */}
-      <h1 className="text-xs m-auto font-semibold">{title}</h1>
+      <Image src={img} layout="fill" objectFit="cover" />
       <video
         autoPlay
         loop

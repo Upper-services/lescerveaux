@@ -139,9 +139,7 @@ function Plans() {
                 !active && "bg-gray-500 cursor-not-allowed hover:bg-gray-500"
               }`}
               type="submit"
-              onClick={() =>
-                !isCurrentPackage && loadCheckout(productData.prices.priceId)
-              }
+              onClick={() => loadCheckout(productData.prices.priceId)}
               disabled={!active}
             >
               Agree & Subscribe

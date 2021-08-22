@@ -3,24 +3,50 @@ import Image from "next/image";
 import Header from "../../components/Header";
 import { PlusIcon, XIcon } from "@heroicons/react/solid";
 import ReactPlayer from "react-player/lazy";
-import { auth } from "../../../firebase";
+import { auth, db } from "../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Collection from "../../components/Collection";
+import { selectSubscription, setSubscription } from "../../slices/appSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function Category({ categoryPageData, title, categoryPageVideo }) {
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  // Testing subscription Active or No
+  const subscription = useSelector(selectSubscription);
+
+  useEffect(() => {
+    if (user) {
+      db.collection("customers")
+        .doc(user?.uid)
+        .collection("subscriptions")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach(async (subscription) => {
+            dispatch(
+              setSubscription({
+                role: subscription.data().role,
+                current_period_end:
+                  subscription.data().current_period_end.seconds,
+                current_period_start:
+                  subscription.data().current_period_start.seconds,
+                status: subscription.data().status,
+              })
+            );
+          });
+        });
+    }
+  }, [user?.uid]);
+
+  // ---------------------------------------------- Test Code Above ---------------------------------------------------------------
 
   if (loading) {
     return <div>{/* <p>Initialising User...</p> */}</div>;
   }
-
-  console.log(categoryPageData);
-  console.log(categoryPageVideo);
-
-  console.log(router.query);
 
   return (
     <div>

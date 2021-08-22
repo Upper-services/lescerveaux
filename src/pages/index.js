@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Header from "../components/Header";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Slider from "../components/Slider";
 import { motion } from "framer-motion";
 import Collection from "../components/Collection";
@@ -10,10 +10,21 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Fade from "react-reveal/Fade";
 import { selectSubscription, setSubscription } from "../slices/appSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Plans from "../components/Plans";
+import router from "next/router";
+import Link from "next/link";
 
 export default function Home({ categoriesData, collectionData }) {
   const [user, loading] = useAuthState(auth);
   const dispatch = useDispatch();
+  const [showPlans, setShowPlans] = useState(false);
+
+  // User redirects to landing page team where they choose to signup or login
+  // useEffect(() => {
+  //   if (!user) {
+  //     router.push("https://lescerveaux.com/");
+  //   }
+  // }, [user]);
 
   // Testing subscription Active or No
   const subscription = useSelector(selectSubscription);
@@ -67,6 +78,8 @@ export default function Home({ categoriesData, collectionData }) {
     return <div>{/* <p>Initialising User...</p> */}</div>;
   }
 
+  console.log(categoriesData);
+
   console.log(subscription);
 
   return (
@@ -79,6 +92,7 @@ export default function Home({ categoriesData, collectionData }) {
           </Head>
 
           <Header />
+
           {user && subscription?.status === "active" && (
             <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1]">
               <Slider />
@@ -122,7 +136,7 @@ export default function Home({ categoriesData, collectionData }) {
 }
 
 export async function getServerSideProps(context) {
-  const categoriesData = await fetch("https://jsonkeeper.com/b/3AAM").then(
+  const categoriesData = await fetch("https://jsonkeeper.com/b/SAHD").then(
     (res) => res.json()
   );
 
