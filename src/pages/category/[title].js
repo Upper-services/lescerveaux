@@ -48,6 +48,8 @@ function Category({ categoryPageData, title, categoryPageVideo }) {
     return <div>{/* <p>Initialising User...</p> */}</div>;
   }
 
+  console.log(categoryPageData);
+
   return (
     <div>
       <Head>
@@ -58,14 +60,16 @@ function Category({ categoryPageData, title, categoryPageVideo }) {
       <Header />
       {user && (
         <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1]">
-          {categoryPageData.map(({ categoryId, categoryTitle, results }) => (
-            <Collection
-              categoryId={categoryId}
-              categoryTitle={categoryTitle}
-              key={categoryId}
-              results={results}
-            />
-          ))}
+          <div className="pt-44 lg:pt-[400px] xl:pt-[460px]">
+            {categoryPageData.map(({ categoryId, categoryTitle, results }) => (
+              <Collection
+                categoryId={categoryId}
+                categoryTitle={categoryTitle}
+                key={categoryId}
+                results={results}
+              />
+            ))}
+          </div>
         </main>
       )}
     </div>
@@ -77,7 +81,7 @@ export default Category;
 export async function getServerSideProps(context) {
   const { title } = context.query;
 
-  const categoryData = await fetch("https://jsonkeeper.com/b/3AAM").then(
+  const categoryData = await fetch("https://jsonkeeper.com/b/MVON").then(
     (res) => res.json()
   );
 

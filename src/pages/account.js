@@ -104,6 +104,13 @@ function Account() {
               Account Details
             </div>
             <div className="px-4 py-3 flex justify-between items-center border-b border-[#31343e] cursor-pointer active:bg-[#222531]">
+              <h4>{user?.displayName || "Add a username"}</h4>
+              <div className="bg-[#f9f9f9] w-6 h-6 flex items-center justify-center text-black rounded-full hover:scale-105 transition ease-out">
+                <PencilIcon className="h-5" />
+              </div>
+            </div>
+
+            <div className="px-4 py-3 flex justify-between items-center border-b border-[#31343e] cursor-pointer active:bg-[#222531]">
               <h4>{user?.email}</h4>
               <div className="bg-[#f9f9f9] w-6 h-6 flex items-center justify-center text-black rounded-full hover:scale-105 transition ease-out">
                 <PencilIcon className="h-5" />
@@ -134,12 +141,20 @@ function Account() {
               Subscription
             </div>
 
-            <div className="px-4 py-3 flex items-center justify-between">
-              <div className="cursor-default space-y-1">
+            <div className="px-4 py-3 flex flex-col gap-y-4 sm:flex-row sm:items-center justify-between">
+              <div className="cursor-default space-y-1.5">
                 <h4>Lescerveaux</h4>
-                <p className="text-xs text-[#cacaca]">{subscription?.status}</p>
+                <p
+                  className={`text-xs capitalize ${
+                    subscription?.status === "active"
+                      ? "text-[#50e3c2]"
+                      : "text-[red]"
+                  }`}
+                >
+                  {subscription?.status || "Not Active"}
+                </p>
                 {subscription?.status === "active" ? (
-                  <p>
+                  <p className="text-xs">
                     {subscription?.cancel_at
                       ? `Expires at ${moment(subscription?.cancel_at).format(
                           "lll"
@@ -149,13 +164,17 @@ function Account() {
                         ).format("lll")}`}
                   </p>
                 ) : (
-                  <p>
-                    Cancelled at {moment(subscription?.ended_at).format("lll")}
+                  <p className="text-xs">
+                    {subscription?.status === "canceled"
+                      ? `Canceled at ${moment(subscription?.ended_at).format(
+                          "lll"
+                        )}`
+                      : "Please complete your subscription"}
                   </p>
                 )}
               </div>
               <button
-                className="font-medium text-[#67bdff] hover:text-[#94d0ff]"
+                className="font-medium self-start sm:self-auto text-[#67bdff] hover:text-[#94d0ff]"
                 onClick={goToBillingPortal}
               >
                 Manage on Stripe

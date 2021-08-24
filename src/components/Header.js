@@ -10,25 +10,48 @@ import Link from "next/link";
 import { selectSubscription, setSubscription } from "../slices/appSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar } from "@material-ui/core";
+import { useEffect, useState } from "react";
 
-function Header() {
+function Header({ transparent }) {
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible(false);
   const router = useRouter();
   const [user] = useAuthState(auth);
   const dispatch = useDispatch();
   const subscription = useSelector(selectSubscription);
+  const [bgTransparent, setBgTransparent] = useState(false);
+
+  const changeBackground = () => {
+    if (window.scrollY >= 66) {
+      setBgTransparent(true);
+    } else {
+      setBgTransparent(false);
+    }
+  };
+
+  useEffect(() => {
+    changeBackground();
+    window.addEventListener("scroll", changeBackground);
+  });
 
   return (
     <Fade top>
-      <header className="sticky bg-[#040714] top-0 z-[1000] flex items-center px-6 h-[72px]">
+      <header
+        className={`sticky top-0 z-[1000] flex items-center px-6 h-[72px] ${
+          transparent
+            ? bgTransparent
+              ? "bg-[#040714]"
+              : "bg-transparent"
+            : "bg-[#040714]"
+        }`}
+      >
         {user && subscription?.status === "active" && (
           <>
             <Image
               src="/images/logo.png"
               alt=""
               width={80}
-              height={55}
+              height={50}
               objectFit="contain"
               className="cursor-pointer"
               onClick={() => router.push("/")}
@@ -45,7 +68,7 @@ function Header() {
             Log In
           </button>
         ) : (
-          <div className="ml-auto">
+          <div className="ml-auto z-50">
             <Avatar
               ref={ref}
               onClick={() => setIsComponentVisible(!isComponentVisible)}

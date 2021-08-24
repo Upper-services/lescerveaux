@@ -1,12 +1,9 @@
 [
   {
-    "id": 0,
+    "id": 1,
     "option": "Episodes"
   },
-  {
-    "id": 1,
-    "option": "Suggested"
-  },
+
   {
     "id": 2,
     "option": "Extras"
@@ -14,5 +11,9 @@
   {
     "id": 3,
     "option": "Details"
+  },
+  {
+    "id": 4,
+    "option": "Comments"
   }
 ]

@@ -78,8 +78,6 @@ export default function Home({ categoriesData, collectionData }) {
     return <div>{/* <p>Initialising User...</p> */}</div>;
   }
 
-  console.log(categoriesData);
-
   console.log(subscription);
 
   return (
@@ -104,29 +102,13 @@ export default function Home({ categoriesData, collectionData }) {
                 </section>
               </Fade>
 
-              {collectionData.map((item) => (
+              {/* {collectionData.map((item) => (
                 <Collection
                   title={item.title}
                   key={item.id}
                   images={item.images}
                 />
-              ))}
-              {/* SHOW MORE BTN */}
-
-              {/* TMDB API BTN SWITCHER */}
-              {/* <div>
-                <Collection title="100LivresEn1Jour" />
-                <Collection title="100VisuelsEn1Jour" />
-                <Collection title="100VidéosEn1Jour" />
-                <Collection title="100FansEn1Jour" />
-                <Collection title="100ClicsEn1Jour" />
-                <Collection title="100PaiementsEn1Jour" />
-                <Collection title="100PompesEn1Jour" />
-                <Collection title="100RemèdesEn1Jour" />
-                <Collection title="100NumérosEn1Jour" />
-                <Collection title="SansImpôtsEn1Jour" />
-              </div> */}
-              {/* SHOW LESS BTN */}
+              ))} */}
             </main>
           )}
         </div>
@@ -136,7 +118,7 @@ export default function Home({ categoriesData, collectionData }) {
 }
 
 export async function getServerSideProps(context) {
-  const categoriesData = await fetch("https://jsonkeeper.com/b/SAHD").then(
+  const categoriesData = await fetch("https://jsonkeeper.com/b/MVON").then(
     (res) => res.json()
   );
 

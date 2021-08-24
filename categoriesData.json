@@ -13,7 +13,19 @@
           {
             "resultId": "1",
             "resultTitle": "",
-            "thumbnailImg": ""
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/conquetes/",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       }
@@ -28,23 +40,47 @@
     "categoryPageData": [
       {
         "categoryId": "1",
-        "categoryTitle": "Reserve a Lucas",
+        "categoryTitle": "Percer sur TikTok",
         "results": [
           {
             "resultId": "1",
-            "resultTitle": "",
-            "thumbnailImg": "https://assets.frame.io/video-thumbnail/e5240eb2-ace0-4900-8b4f-c0576e04452b/thumb.jpg?x-amz-meta-resource_id=e5240eb2-ace0-4900-8b4f-c0576e04452b&x-amz-meta-resource_type=asset&x-amz-meta-request_id=Fpx_qlclipefxxcHe_6G&x-amz-meta-project_id=f729b883-cce1-48f0-9090-cc2537c7802c&Expires=1629403934&Signature=QjYCOVgKct9tYucHrBe2ysKuT4zCk4YXlGC98WYz9ri62tBeBfuPxfybAKj0Qv2mMCsSaKYMWL2YyUdbItcbNxDbKDMZLmumG-quIQXAOp8GLJhYJ8X2zeWyiNew5PiFL1fJEwFU58yBz5kWhuYvtDRUF4yiaLhzdgKVs~2zDJQE~EGrTbebBRmlvlq5kd6EVROao-g7z1oB--o5pkIhpCz7ilW1ZzKw1JQ~hJ2T2Eh3SSzRDt9TDJGesOzHXWwfH9I~R5CEWGV6-yezId4~zLbiSoF1mi1BGIXDKI6fNMft~IzocaTyXmXqBMd9HXJlNV5aVKqY9Mkzn1Yfrom1Gg__&Key-Pair-Id=K1XW5DOJMY1ET9"
+            "resultTitle": "Communauté Lucas",
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/communaute/Communauté Lucas.mp4",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       },
       {
         "categoryId": "2",
-        "categoryTitle": "Reserve a Thomas",
+        "categoryTitle": "Percer sur Instagram",
         "results": [
           {
             "resultId": "1",
-            "resultTitle": "",
-            "thumbnailImg": "https://assets.frame.io/video-thumbnail/e9fc1f05-7c6a-4014-9c54-f4f2217b65bf/thumb.jpg?x-amz-meta-resource_id=e9fc1f05-7c6a-4014-9c54-f4f2217b65bf&x-amz-meta-resource_type=asset&x-amz-meta-request_id=Fpx_qlclipefxxcHe_6G&x-amz-meta-project_id=f729b883-cce1-48f0-9090-cc2537c7802c&Expires=1629403935&Signature=RdYGTJnU--0XATz3dOVd-2Xt6efITf0HOuIqBuCyUvhI5ytDP1DI6VVnN-Ar6eDAQSb0ary40~w~mvJ2srhi~aVdzJTicA-d2bDoggtUKdhMd3olXjEjWTn2Kje32a9a9h93k0GzkwqrzK7zMdnrSuZcbeKRJGMj31OsvkzcPjvZFcj7h2zUhHIme3YIVc8z5WsVkbKZVzHn6Vk91z8vXYjSM79rLnJiF-M5NkN-F3KHQ~wtqJYlK1whkqeNgwCvseX5eR89ok6FcFcfekB26nIxr0uClhy6rn8OknW42dt2eOFQNoQXymLyLTKRp0tlAXNsMx3D6bbzcHn9fTtSgQ__&Key-Pair-Id=K1XW5DOJMY1ET9"
+            "resultTitle": "Communauté Thomas",
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/communaute/Communauté Thomas.mp4",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       }
@@ -64,7 +100,19 @@
           {
             "resultId": "1",
             "resultTitle": "",
-            "thumbnailImg": ""
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       }
@@ -79,23 +127,47 @@
     "categoryPageData": [
       {
         "categoryId": "1",
-        "categoryTitle": "Reserve a Benoit",
+        "categoryTitle": "Les Potions de Benoît",
         "results": [
           {
             "resultId": "1",
-            "resultTitle": "",
-            "thumbnailImg": ""
+            "resultTitle": "Nutrition Benoît",
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/nutrition/Nutrition Benoît.mp4",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       },
       {
         "categoryId": "2",
-        "categoryTitle": "Reserve a Dr San",
+        "categoryTitle": "Les Travaux du Docteur Morgan Aldo",
         "results": [
           {
             "resultId": "1",
-            "resultTitle": "",
-            "thumbnailImg": ""
+            "resultTitle": "Vidéo Instructeur Morgan Nutrition n°1 V1",
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/nutrition/Vidéo Instructeur Morgan Nutrition n°1 V1.mov",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       }
@@ -115,7 +187,19 @@
           {
             "resultId": "1",
             "resultTitle": "",
-            "thumbnailImg": ""
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/graphisme",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       }
@@ -135,7 +219,19 @@
           {
             "resultId": "1",
             "resultTitle": "",
-            "thumbnailImg": ""
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/livres",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       }
@@ -150,34 +246,24 @@
     "categoryPageData": [
       {
         "categoryId": "1",
-        "categoryTitle": "Reserve a Nadir",
+        "categoryTitle": "",
         "results": [
           {
             "resultId": "1",
             "resultTitle": "",
-            "thumbnailImg": ""
-          }
-        ]
-      },
-      {
-        "categoryId": "2",
-        "categoryTitle": "Reserve a Clement",
-        "results": [
-          {
-            "resultId": "1",
-            "resultTitle": "",
-            "thumbnailImg": ""
-          }
-        ]
-      },
-      {
-        "categoryId": "3",
-        "categoryTitle": "Reserve a Tony",
-        "results": [
-          {
-            "resultId": "1",
-            "resultTitle": "",
-            "thumbnailImg": ""
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/vente",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       }
@@ -197,7 +283,19 @@
           {
             "resultId": "1",
             "resultTitle": "",
-            "thumbnailImg": ""
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/musculation",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       }
@@ -217,7 +315,19 @@
           {
             "resultId": "1",
             "resultTitle": "",
-            "thumbnailImg": ""
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/siteweb",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       }
@@ -236,8 +346,20 @@
         "results": [
           {
             "resultId": "1",
-            "resultTitle": "",
-            "thumbnailImg": ""
+            "resultTitle": "Vidéo Instructeur Marin Montage n°1",
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/montage/Vidéo Instructeur Marin Montage n°1.mov",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       },
@@ -247,8 +369,20 @@
         "results": [
           {
             "resultId": "1",
-            "resultTitle": "",
-            "thumbnailImg": ""
+            "resultTitle": "Vidéo Instructeur Antoine Montage n°1",
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/montage/Vidéo Instructeur Antoine Montage n°1.mov",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       }
@@ -268,7 +402,19 @@
           {
             "resultId": "1",
             "resultTitle": "",
-            "thumbnailImg": ""
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       }
@@ -283,12 +429,24 @@
     "categoryPageData": [
       {
         "categoryId": "1",
-        "categoryTitle": "",
+        "categoryTitle": "Coupe Neuve tous les jours",
         "results": [
           {
             "resultId": "1",
             "resultTitle": "",
-            "thumbnailImg": ""
+            "thumbnailImg": "",
+            "resultPageImage": "",
+            "resultDescription": "",
+            "videos": [
+              {
+                "videoId": "1",
+                "videoThumbnail": "",
+                "videoLength": "",
+                "videoSrc": "/videos/coiffure",
+                "videoTitle": "",
+                "videoDescription": ""
+              }
+            ]
           }
         ]
       }

@@ -368,6 +368,7 @@ function Signup({ providers }) {
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              required
               className="bg-[#30343E] rounded px-4 pl-2.5 py-3 border border-transparent focus:border-white/30 outline-none mb-4 placeholder-[#A2A3A6]"
             />
 
@@ -419,6 +420,7 @@ function Signup({ providers }) {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
               className="bg-[#30343E] rounded px-4 pl-2.5 py-3 border border-transparent focus:border-white/30 outline-none mb-4 placeholder-[#A2A3A6]"
             />
 
@@ -470,6 +472,7 @@ function Signup({ providers }) {
               type="password"
               placeholder="Password"
               value={password}
+              required
               onChange={(e) => setPassword(e.target.value)}
               className="bg-[#30343E] rounded px-4 pl-2.5 py-3 border border-transparent focus:border-white/30 outline-none mb-4 placeholder-[#A2A3A6]"
             />
