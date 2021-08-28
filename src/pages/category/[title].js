@@ -10,11 +10,14 @@ import { useEffect, useState } from "react";
 import Collection from "../../components/Collection";
 import { selectSubscription, setSubscription } from "../../slices/appSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useDocumentOnce } from "react-firebase-hooks/firestore";
 
-function Category({ categoryPageData, title, categoryPageVideo }) {
+function Category() {
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
   const dispatch = useDispatch();
+  const { title } = router.query;
+  const [categoryPageData, setCategoryPageData] = useState([]);
 
   // Testing subscription Active or No
   const subscription = useSelector(selectSubscription);
@@ -44,11 +47,22 @@ function Category({ categoryPageData, title, categoryPageVideo }) {
 
   // ---------------------------------------------- Test Code Above ---------------------------------------------------------------
 
+  useEffect(async () => {
+    const snapshot = await db
+      .collection("categories")
+      .doc(title)
+      .collection("categoryPageData")
+      .get();
+    return setCategoryPageData(snapshot.docs.map((doc) => doc.data()));
+  }, []);
+
+  const [categoryPageVideo] = useDocumentOnce(
+    db.collection("categories").doc(title)
+  );
+
   if (loading) {
     return <div>{/* <p>Initialising User...</p> */}</div>;
   }
-
-  console.log(categoryPageData);
 
   return (
     <div>
@@ -61,12 +75,11 @@ function Category({ categoryPageData, title, categoryPageVideo }) {
       {user && (
         <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1]">
           <div className="pt-44 lg:pt-[400px] xl:pt-[460px]">
-            {categoryPageData.map(({ categoryId, categoryTitle, results }) => (
+            {categoryPageData.map(({ categoryId, categoryTitle }) => (
               <Collection
                 categoryId={categoryId}
                 categoryTitle={categoryTitle}
                 key={categoryId}
-                results={results}
               />
             ))}
           </div>
@@ -77,21 +90,3 @@ function Category({ categoryPageData, title, categoryPageVideo }) {
 }
 
 export default Category;
-
-export async function getServerSideProps(context) {
-  const { title } = context.query;
-
-  const categoryData = await fetch("https://jsonkeeper.com/b/MVON").then(
-    (res) => res.json()
-  );
-
-  return {
-    props: {
-      categoryPageVideo: categoryData.filter((item) => item.title === title)[0]
-        .video,
-      categoryPageData: categoryData.filter((item) => item.title === title)[0]
-        .categoryPageData,
-      title,
-    },
-  };
-}

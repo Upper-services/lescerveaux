@@ -92,8 +92,6 @@ function Plans() {
     });
   };
 
-  console.log(subscription);
-
   return (
     <div>
       <h2 className="text-xl font-semibold mb-6">Start learning today</h2>

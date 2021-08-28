@@ -5,26 +5,38 @@ import { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import { CheckIcon, PlusIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addToWatchlist,
-  selectSubscription,
-  setSubscription,
-} from "../slices/appSlice";
+import { selectSubscription, setSubscription } from "../slices/appSlice";
 import data from "../../data.json";
-import { auth, db } from "../../firebase";
+import { auth, db, storage } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Video from "../components/Video";
 import firebase from "firebase";
 import Message from "../components/Message";
+import {
+  useCollection,
+  useDocument,
+  useDocumentOnce,
+} from "react-firebase-hooks/firestore";
 
-function Course({ courseData }) {
+function Course({ videos }) {
   const router = useRouter();
   const dispatch = useDispatch();
   const [addedToWatchList, setAddedToWatchlist] = useState(false);
   const [value, setValue] = useState(1);
   const [user, loading] = useAuthState(auth);
+
   const inputRef = useRef(null);
   const [messages, setMessages] = useState([]);
+
+  const [videoThumbnail, setVideoThumbnail] = useState("");
+  const [videoFile, setVideoFile] = useState("");
+  const [videoTitle, setVideoTitle] = useState("");
+
+  const { title } = router.query;
+  const { resultId } = router.query;
+  const { categoryId } = router.query;
+
+  const [showModal, setShowModal] = useState(false);
 
   // Testing subscription Active or No
   const subscription = useSelector(selectSubscription);
@@ -54,19 +66,82 @@ function Course({ courseData }) {
 
   // ---------------------------------------------- Test Code Above ---------------------------------------------------------------
 
-  useEffect(() => {
-    db.collection("messages")
-      .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) => {
-        const data = snapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
+  const [courseData] = useDocumentOnce(
+    db
+      .collection("categories")
+      .doc(title)
+      .collection("categoryPageData")
+      .doc(categoryId)
+      .collection("results")
+      .doc(resultId)
+  );
 
-        setMessages(data);
-      });
-  }, []);
+  const [realtimeVideos] = useCollection(
+    db
+      .collection("categories")
+      .doc(title)
+      .collection("categoryPageData")
+      .doc(categoryId)
+      .collection("results")
+      .doc(resultId)
+      .collection("videos")
+      .orderBy("timestamp", "asc")
+  );
 
+  const [watchListSnapshot] = useCollection(
+    db.collection("customers").doc(user?.uid).collection("watchlist")
+  );
+
+  const watchlistDocId = watchListSnapshot?.docs.filter(
+    (item) => item.data()?.courseId === courseData?.data()?.resultId
+  )[0]?.id;
+
+  const addVideoData = (e) => {
+    e.preventDefault();
+
+    if (videoTitle !== "") {
+      db.collection("categories")
+        .doc(title)
+        .collection("categoryPageData")
+        .doc(categoryId)
+        .collection("results")
+        .doc(resultId)
+        .collection("videos")
+        .add({
+          videoThumbnail: videoThumbnail,
+          videoTitle: videoTitle,
+          videoSrc: videoFile,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+    }
+    setVideoThumbnail("");
+    setVideoFile("");
+    setVideoTitle("");
+  };
+
+  // Watchlist
+  const addToWatchList = (e) => {
+    e.preventDefault();
+
+    db.collection("customers").doc(user?.uid).collection("watchlist").add({
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      courseId: courseData?.data()?.resultId,
+      courseTitle: courseData?.data()?.resultTitle,
+      thumbnailImg: courseData?.data()?.thumbnailImg,
+    });
+  };
+
+  const removeFromWatchList = (e) => {
+    e.preventDefault();
+
+    db.collection("customers")
+      .doc(user?.uid)
+      .collection("watchlist")
+      .doc(watchlistDocId)
+      .delete();
+  };
+
+  // Comment Section
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -84,8 +159,6 @@ function Course({ courseData }) {
     inputRef.current.value = null;
   };
 
-  console.log(messages);
-
   return (
     <div>
       <div className="relative">
@@ -99,7 +172,7 @@ function Course({ courseData }) {
           <div>{/* <Image/> */}</div>
           <div className="pl-8 md:pl-16 py-14 pt-28 relative">
             <h1 className="text-3xl md:text-5xl font-semibold mb-8 pl-2">
-              {courseData.resultTitle}
+              {courseData?.data()?.resultTitle}
             </h1>
             <div className="flex items-center space-x-6 mb-4 pl-2">
               <button className="bg-white uppercase text-xs md:text-[15px] text-black flex items-center justify-center gap-x-2 px-4 py-2 md:px-5 md:py-2.5 font-bold rounded hover:opacity-80 transition duration-200 tracking-wide">
@@ -108,16 +181,9 @@ function Course({ courseData }) {
               </button>
               <button
                 className="border-2 border-white rounded-full w-9 h-9 md:w-11 md:h-11 flex items-center justify-center hover:text-black hover:bg-white transition duration-200"
-                // onClick={() => {
-                //   dispatch(
-                //     addToWatchlist({
-                //       courseData,
-                //     })
-                //   );
-                // }}
-                onClick={() => setAddedToWatchlist(!addedToWatchList)}
+                onClick={watchlistDocId ? removeFromWatchList : addToWatchList}
               >
-                {addedToWatchList ? (
+                {watchlistDocId ? (
                   <CheckIcon className="h-5 md:h-6 text-blue-700" />
                 ) : (
                   <PlusIcon className="h-5 md:h-6" />
@@ -177,25 +243,39 @@ function Course({ courseData }) {
             {/* Many thumbnails container */}
             {value === 1 && (
               <div className="flex p-2 space-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide mt-4 md:mt-10">
-                {courseData.videos.map(
-                  ({ videoId, videoTitle, videoDescription, videoSrc }) => (
+                {realtimeVideos?.docs.map((doc) => {
+                  const videoId = doc.id;
+                  const { videoTitle, videoSrc } = doc.data();
+
+                  return (
                     <Video
                       key={videoId}
                       id={videoId}
                       videoSrc={videoSrc}
-                      courseTitle={courseData.resultTitle}
+                      courseTitle={courseData?.data().resultTitle}
                       videoTitle={videoTitle}
-                      videoDescription={videoDescription}
                     />
-                  )
-                )}
-                <Video />
-                <Video />
-                <Video />
-                <Video />
-                <Video />
-                <Video />
-                <Video />
+                  );
+                })}
+
+                <form>
+                  <input
+                    type="text"
+                    placeholder="Video Title"
+                    className="text-black"
+                    value={videoTitle}
+                    onChange={(e) => setVideoTitle(e.target.value)}
+                  />
+                  <input
+                    name="video"
+                    id="videoFile"
+                    placeholder="Enter the video link"
+                    className="text-black"
+                    value={videoFile}
+                    onChange={(e) => setVideoFile(e.target.value)}
+                  />
+                  <button onClick={addVideoData}>Submit</button>
+                </form>
               </div>
             )}
             {value === 4 && (
@@ -242,23 +322,29 @@ function Course({ courseData }) {
 
 export default Course;
 
-export async function getServerSideProps(context) {
-  const { title } = context.query;
-  const { resultTitle } = context.query;
-  const { categoryTitle } = context.query;
+// export async function getServerSideProps(context) {
+//   const { title } = context.query;
+//   const { resultId } = context.query;
+//   const { categoryId } = context.query;
 
-  const categoryData = await fetch("https://jsonkeeper.com/b/MVON").then(
-    (res) => res.json()
-  );
+//   const videos = await db
+//     .collection("categories")
+//     .doc(title)
+//     .collection("categoryPageData")
+//     .doc(categoryId)
+//     .collection("results")
+//     .doc(resultId)
+//     .collection("videos")
+//     .orderBy("timestamp", "desc")
+//     .get();
 
-  return {
-    props: {
-      courseData: categoryData
-        .filter((item) => item.title === title)[0]
-        .categoryPageData.filter(
-          (item) => item.categoryTitle === categoryTitle
-        )[0]
-        .results.filter((item) => item.resultTitle === resultTitle)[0],
-    },
-  };
-}
+//   const docs = videos.docs.map((video) => ({
+//     id: video.id,
+//     ...video.data(),
+//     timestamp: null,
+//   }));
+
+//   return {
+//     props: { videos: docs },
+//   };
+// }

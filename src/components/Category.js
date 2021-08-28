@@ -10,7 +10,7 @@ function Category({ img, title, id }) {
       className="brand group"
       onClick={() =>
         router.push({
-          pathname: `/category/${title}`,
+          pathname: `/category/${id}`,
         })
       }
     >

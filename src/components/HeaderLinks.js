@@ -15,10 +15,12 @@ function HeaderLinks() {
         <SearchIcon className="h-5" />
         <span className="span">Search</span>
       </a>
-      <a className="header-link group">
-        <CollectionIcon className="h-5" />
-        <span className="span">Watchlist</span>
-      </a>
+      <Link href="/watchlist">
+        <a className="header-link group">
+          <CollectionIcon className="h-5" />
+          <span className="span">Watchlist</span>
+        </a>
+      </Link>
     </div>
   );
 }

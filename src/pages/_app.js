@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { store } from "../app/store";
 import Router from "next/router";
 import ProgressBar from "@badrap/bar-of-progress";
+import Head from "next/head";
 
 const progress = new ProgressBar({
   size: 4,
@@ -21,11 +22,11 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   return (
-    <AuthProvider session={pageProps.session}>
+    <>
       <Provider store={store}>
         <Component {...pageProps} />
       </Provider>
-    </AuthProvider>
+    </>
   );
 }
 

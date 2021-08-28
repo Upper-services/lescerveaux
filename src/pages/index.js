@@ -18,6 +18,7 @@ export default function Home({ categoriesData, collectionData }) {
   const [user, loading] = useAuthState(auth);
   const dispatch = useDispatch();
   const [showPlans, setShowPlans] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   // User redirects to landing page team where they choose to signup or login
   // useEffect(() => {
@@ -54,6 +55,11 @@ export default function Home({ categoriesData, collectionData }) {
 
   // ---------------------------------------------- Test Code Above ---------------------------------------------------------------
 
+  useEffect(async () => {
+    const snapshot = await db.collection("categories").get();
+    return setCategories(snapshot.docs.map((doc) => doc.data()));
+  }, []);
+
   const container = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
@@ -78,8 +84,6 @@ export default function Home({ categoriesData, collectionData }) {
     return <div>{/* <p>Initialising User...</p> */}</div>;
   }
 
-  console.log(subscription);
-
   return (
     <>
       <motion.div variants={container} initial="hidden" animate="visible">
@@ -96,7 +100,7 @@ export default function Home({ categoriesData, collectionData }) {
               <Slider />
               <Fade bottom>
                 <section className="grid grid-cols-3 items-center justify-center md:grid-cols-6 mt-10 gap-6 px-8 max-w-[1400px] mx-auto">
-                  {categoriesData.map(({ title, img, id }) => (
+                  {categories.map(({ title, img, id, video }) => (
                     <Category title={title} img={img} key={id} id={id} />
                   ))}
                 </section>
@@ -115,21 +119,4 @@ export default function Home({ categoriesData, collectionData }) {
       </motion.div>
     </>
   );
-}
-
-export async function getServerSideProps(context) {
-  const categoriesData = await fetch("https://jsonkeeper.com/b/MVON").then(
-    (res) => res.json()
-  );
-
-  const collectionData = await fetch("https://jsonkeeper.com/b/UPWR").then(
-    (res) => res.json()
-  );
-
-  return {
-    props: {
-      categoriesData,
-      collectionData,
-    },
-  };
 }

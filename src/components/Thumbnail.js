@@ -1,11 +1,9 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-function Thumbnail({ resultId, resultTitle, categoryTitle, thumbnailImg }) {
+function Thumbnail({ resultId, resultTitle, categoryId, thumbnailImg }) {
   const router = useRouter();
   const { title } = router.query;
-
-  console.log(title);
 
   return (
     <div
@@ -13,7 +11,7 @@ function Thumbnail({ resultId, resultTitle, categoryTitle, thumbnailImg }) {
       onClick={() =>
         router.push({
           pathname: `/${title}`,
-          query: { categoryTitle, resultTitle },
+          query: { categoryId, resultId },
         })
       }
     >
