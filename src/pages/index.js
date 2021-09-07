@@ -13,12 +13,23 @@ import { useDispatch, useSelector } from "react-redux";
 import Plans from "../components/Plans";
 import router from "next/router";
 import Link from "next/link";
+import { useCollection } from "react-firebase-hooks/firestore";
+import Loader from "../components/Loader";
+import PlayAnimation from "../components/PlayAnimation";
+import ContinueWatching from "../components/ContWatchThumbnail";
+import Thumbnail from "../components/Thumbnail";
+import ContWatchThumbnail from "../components/ContWatchThumbnail";
 
-export default function Home({ categoriesData, collectionData }) {
-  const [user, loading] = useAuthState(auth);
+export default function Home({
+  collectionData,
+  categoriesSSR,
+  lesTresorsDeGuerre,
+}) {
+  console.log(lesTresorsDeGuerre);
+  const [user] = useAuthState(auth);
   const dispatch = useDispatch();
   const [showPlans, setShowPlans] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // User redirects to landing page team where they choose to signup or login
   // useEffect(() => {
@@ -26,6 +37,13 @@ export default function Home({ categoriesData, collectionData }) {
   //     router.push("https://lescerveaux.com/");
   //   }
   // }, [user]);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  }, []);
 
   // Testing subscription Active or No
   const subscription = useSelector(selectSubscription);
@@ -55,10 +73,13 @@ export default function Home({ categoriesData, collectionData }) {
 
   // ---------------------------------------------- Test Code Above ---------------------------------------------------------------
 
-  useEffect(async () => {
-    const snapshot = await db.collection("categories").get();
-    return setCategories(snapshot.docs.map((doc) => doc.data()));
-  }, []);
+  const [categoriesSnapshot] = useCollection(
+    db.collection("categories").orderBy("timestamp", "asc")
+  );
+
+  const [bookmarksSnapshot] = useCollection(
+    db.collection("customers").doc(user?.uid).collection("continuewatching")
+  );
 
   const container = {
     hidden: { opacity: 1, scale: 0 },
@@ -80,43 +101,109 @@ export default function Home({ categoriesData, collectionData }) {
     },
   };
 
-  if (loading) {
-    return <div>{/* <p>Initialising User...</p> */}</div>;
-  }
+  // if (loading) {
+  //   return <Loader />;
+  // }
 
   return (
     <>
       <motion.div variants={container} initial="hidden" animate="visible">
         <div className="item">
           <Head>
-            <title>lescerveaux</title>
+            <title>Les Cerveaux</title>
             <link rel="icon" href="/favicon.ico" />
           </Head>
 
           <Header />
 
-          {user && subscription?.status === "active" && (
-            <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1]">
+          {user && (subscription?.status === "active" || "trialing") && (
+            <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1] top-[72px]">
               <Slider />
               <Fade bottom>
                 <section className="grid grid-cols-3 items-center justify-center md:grid-cols-6 mt-10 gap-6 px-8 max-w-[1400px] mx-auto">
-                  {categories.map(({ title, img, id, video }) => (
-                    <Category title={title} img={img} key={id} id={id} />
-                  ))}
+                  {categoriesSSR.map((doc) => {
+                    const { title, img, id } = doc;
+                    return (
+                      <Category title={title} img={img} key={id} id={id} />
+                    );
+                  })}
                 </section>
               </Fade>
 
-              {/* {collectionData.map((item) => (
-                <Collection
-                  title={item.title}
-                  key={item.id}
-                  images={item.images}
-                />
-              ))} */}
+              <div className="relative flex flex-col mt-24 mb-4 pl-5 md:pl-10 lg:pl-24">
+                {/* {collectionData.map((item) => (
+                  <h2
+                    className="font-semibold my-8 text-lg p-2 pb-0"
+                    key={item.title}
+                  >
+                    {item.title}
+                  </h2>
+                ))} */}
+                <h2 className="font-semibold text-base sm:text-lg lg:text-xl p-2 pb-0">
+                  Les trésors de guerre
+                </h2>
+                <div className="flex p-2 gap-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide">
+                  {lesTresorsDeGuerre.map(
+                    ({
+                      resultId,
+                      resultDescription,
+                      resultPageImage,
+                      resultTitle,
+                      thumbnailImg,
+                    }) => (
+                      <Thumbnail
+                        key={resultId}
+                        categoryTitle="livres"
+                        resultId={resultId}
+                        categoryId="lestrésorsdeguerre"
+                        thumbnailImg={thumbnailImg}
+                        resultTitle={resultTitle}
+                      />
+                    )
+                  )}
+                </div>
+              </div>
             </main>
           )}
         </div>
       </motion.div>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const collectionData = await fetch("https://jsonkeeper.com/b/RV7Y").then(
+    (res) => res.json()
+  );
+
+  const categoriesSnapshot = await db
+    .collection("categories")
+    .orderBy("timestamp", "asc")
+    .get();
+
+  const docs = categoriesSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  const lesTresorsDeGuerre = await db
+    .collection("categories")
+    .doc("livres")
+    .collection("categoryPageData")
+    .doc("lestrésorsdeguerre")
+    .collection("results")
+    .get();
+
+  const lesTresorsDeGuerreDocs = lesTresorsDeGuerre.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  return {
+    props: {
+      categoriesSSR: docs,
+      lesTresorsDeGuerre: lesTresorsDeGuerreDocs,
+      collectionData,
+    },
+  };
 }

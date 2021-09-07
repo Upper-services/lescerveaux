@@ -1,4 +1,10 @@
-import { HomeIcon, SearchIcon, CollectionIcon } from "@heroicons/react/solid";
+import {
+  HomeIcon,
+  SearchIcon,
+  CollectionIcon,
+  PencilAltIcon,
+  QuestionMarkCircleIcon,
+} from "@heroicons/react/solid";
 import Link from "next/link";
 
 function HeaderLinks() {
@@ -19,6 +25,19 @@ function HeaderLinks() {
         <a className="header-link group">
           <CollectionIcon className="h-5" />
           <span className="span">Watchlist</span>
+        </a>
+      </Link>
+      <Link href="/quotes">
+        <a className="header-link group">
+          <PencilAltIcon className="h-5" />
+          <span className="span">Quotes</span>
+        </a>
+      </Link>
+
+      <Link href="/quotes">
+        <a className="header-link group">
+          <QuestionMarkCircleIcon className="h-5" />
+          <span className="span">FAQ</span>
         </a>
       </Link>
     </div>

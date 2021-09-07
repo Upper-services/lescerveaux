@@ -21,37 +21,33 @@ function Header({ transparent }) {
   const subscription = useSelector(selectSubscription);
   const [bgTransparent, setBgTransparent] = useState(false);
 
-  const changeBackground = () => {
-    if (window.scrollY >= 66) {
-      setBgTransparent(true);
-    } else {
-      setBgTransparent(false);
-    }
-  };
+  // const changeBackground = () => {
+  //   if (window.scrollY >= 66) {
+  //     setBgTransparent(true);
+  //   } else {
+  //     setBgTransparent(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    changeBackground();
-    window.addEventListener("scroll", changeBackground);
-  });
+  // useEffect(() => {
+  //   changeBackground();
+  //   window.addEventListener("scroll", changeBackground);
+  // });
 
   return (
     <Fade top>
       <header
-        className={`sticky top-0 z-[1000] flex items-center px-6 h-[72px] ${
-          transparent
-            ? bgTransparent
-              ? "bg-[#040714]"
-              : "bg-transparent"
-            : "bg-[#040714]"
+        className={`fixed top-0 z-50 w-full flex items-center px-6 h-[72px] ${
+          transparent ? "bg-transparent" : "bg-[#040714]"
         }`}
       >
-        {user && subscription?.status === "active" && (
+        {user && (subscription?.status === "active" || "trialing") && (
           <>
             <Image
               src="/images/logo.png"
               alt=""
-              width={80}
-              height={50}
+              width={120}
+              height={70}
               objectFit="contain"
               className="cursor-pointer"
               onClick={() => router.push("/")}

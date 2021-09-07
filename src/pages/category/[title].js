@@ -10,14 +10,18 @@ import { useEffect, useState } from "react";
 import Collection from "../../components/Collection";
 import { selectSubscription, setSubscription } from "../../slices/appSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useDocumentOnce } from "react-firebase-hooks/firestore";
+import {
+  useDocumentOnce,
+  useCollection,
+  useDocument,
+} from "react-firebase-hooks/firestore";
 
-function Category() {
-  const [user, loading] = useAuthState(auth);
+function Category({ snapshotSSR, categoryPageDataSSR }) {
+  console.log(snapshotSSR);
+  const [user] = useAuthState(auth);
   const router = useRouter();
   const dispatch = useDispatch();
   const { title } = router.query;
-  const [categoryPageData, setCategoryPageData] = useState([]);
 
   // Testing subscription Active or No
   const subscription = useSelector(selectSubscription);
@@ -47,16 +51,15 @@ function Category() {
 
   // ---------------------------------------------- Test Code Above ---------------------------------------------------------------
 
-  useEffect(async () => {
-    const snapshot = await db
+  const [snapshot, loading] = useCollection(
+    db
       .collection("categories")
       .doc(title)
       .collection("categoryPageData")
-      .get();
-    return setCategoryPageData(snapshot.docs.map((doc) => doc.data()));
-  }, []);
+      .orderBy("timestamp", "asc")
+  );
 
-  const [categoryPageVideo] = useDocumentOnce(
+  const [categoryPageData] = useDocument(
     db.collection("categories").doc(title)
   );
 
@@ -70,18 +73,27 @@ function Category() {
         <title>Category </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <img
+        src={categoryPageDataSSR.categoryPageImage}
+        alt=""
+        className="min-h-screen absolute inset-0 z-[-1] object-cover opacity-60"
+        loading="lazy"
+      />
 
-      <Header />
+      <Header transparent />
       {user && (
-        <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1]">
-          <div className="pt-44 lg:pt-[400px] xl:pt-[460px]">
-            {categoryPageData.map(({ categoryId, categoryTitle }) => (
-              <Collection
-                categoryId={categoryId}
-                categoryTitle={categoryTitle}
-                key={categoryId}
-              />
-            ))}
+        <main className="">
+          <div className="pt-44 lg:pt-[400px] xl:pt-[500px]">
+            {snapshotSSR.map((doc) => {
+              const { categoryId, categoryTitle } = doc;
+              return (
+                <Collection
+                  key={categoryId}
+                  categoryId={categoryId}
+                  categoryTitle={categoryTitle}
+                />
+              );
+            })}
           </div>
         </main>
       )}
@@ -90,3 +102,30 @@ function Category() {
 }
 
 export default Category;
+
+export async function getServerSideProps(context) {
+  const { title } = context.query;
+
+  const categoryPageData = await db.collection("categories").doc(title).get();
+
+  const doc = {
+    id: categoryPageData.id,
+    ...categoryPageData.data(),
+  };
+
+  const snapshot = await db
+    .collection("categories")
+    .doc(title)
+    .collection("categoryPageData")
+    .orderBy("timestamp", "asc")
+    .get();
+
+  const docs = snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  return {
+    props: { snapshotSSR: docs, categoryPageDataSSR: doc },
+  };
+}

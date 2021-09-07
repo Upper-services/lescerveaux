@@ -1,5 +1,8 @@
 import "tailwindcss/tailwind.css";
 import "../styles/globals.css";
+import "../styles/loader.css";
+import "../styles/playAnimation.css";
+
 import { Provider as AuthProvider } from "next-auth/client";
 import { useRouter } from "next/router";
 import { Provider } from "react-redux";

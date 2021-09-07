@@ -1,9 +1,15 @@
 import moment from "moment";
 import { auth, db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { useRouter } from "next/router";
 
 function Message({ id, message, displayName, email, timestamp }) {
   const [user] = useAuthState(auth);
+  const router = useRouter();
+  const { title } = router.query;
+  const { resultId } = router.query;
+  const { categoryId } = router.query;
 
   return (
     <div className="flex justify-between items-center max-w-4xl group">
@@ -19,7 +25,17 @@ function Message({ id, message, displayName, email, timestamp }) {
       {user?.email === email && (
         <button
           className="bg-[red] font-semibold text-xs px-2.5 py-2 uppercase border border-transparent rounded bg-opacity-80 hover:bg-opacity-100 hover:border-[red] ] transition duration-200 tracking-wider"
-          onClick={() => db.collection("messages").doc(id).delete()}
+          onClick={() => {
+            db.collection("categories")
+              .doc(title)
+              .collection("categoryPageData")
+              .doc(categoryId)
+              .collection("results")
+              .doc(resultId)
+              .collection("comments")
+              .doc(id)
+              .delete();
+          }}
         >
           Delete
         </button>

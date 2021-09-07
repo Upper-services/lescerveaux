@@ -2,6 +2,7 @@
 @tailwind components;
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 
 @layer base {
   body {
@@ -20,5 +21,35 @@
 
   .brand {
     @apply flex  mx-auto flex-shrink-0 relative w-[100px] h-16 sm:w-48 sm:h-28 md:w-28 md:h-[72px] lg:w-44 lg:h-24 xl:w-52 xl:h-28 2xl:w-52 border-[3px] border-[#f9f9f9]  border-opacity-10 cursor-pointer shadow-xl overflow-hidden  hover:border-opacity-80 hover:shadow-2xl transform hover:scale-105 transition duration-300 rounded-3xl;
+  }
+
+  /* Carousel styles */
+  .carousel > button {
+    @apply opacity-0 h-full w-[5vw] z-10 hover:opacity-100 transition duration-200 ease-[ease];
+  }
+
+  .carousel ul li button {
+    @apply before:text-[10px] before:text-[#969eab];
+  }
+
+  .carousel li.slick-active button:before {
+    @apply text-white;
+  }
+
+  .carousel .slick-list {
+    overflow: initial;
+  }
+
+  .carousel .slick-prev {
+    @apply left-[-75px];
+  }
+
+  .carousel .slick-next {
+    @apply right-[-75px];
+  }
+
+  /* React player */
+  video {
+    @apply object-cover min-h-screen;
   }
 }
