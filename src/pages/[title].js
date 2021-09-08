@@ -12,17 +12,12 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Video from "../components/Video";
 import firebase from "firebase";
 import Message from "../components/Message";
-import {
-  useCollection,
-  useDocument,
-  useDocumentOnce,
-} from "react-firebase-hooks/firestore";
+import { useCollection, useDocumentOnce } from "react-firebase-hooks/firestore";
 import Notes from "../components/Notes";
-import ContWatchButton from "../components/ContWatchButton";
 import Thumbnail from "../components/Thumbnail";
+import FlipMove from "react-flip-move";
 
 function Course({ resultSSR, resultsSSR }) {
-  console.log(resultsSSR);
   const router = useRouter();
   const dispatch = useDispatch();
   const [value, setValue] = useState(1);
@@ -208,7 +203,7 @@ function Course({ resultSSR, resultsSSR }) {
     <div>
       <div className={`relative`}>
         <Head>
-          <title></title>
+          <title>{resultSSR.resultTitle}</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <img
@@ -247,7 +242,7 @@ function Course({ resultSSR, resultsSSR }) {
                           setShowPlayer={setShowPlayer}
                           key={videoId}
                           id={videoId}
-                          videoSrc="https://res.cloudinary.com/dflvqmwim/video/upload/v1630969051/ABUS_Pourquoi_NE_PAS_ACHETER_de_FORMATIONS_Comment_Gagner_Se_Faire_de_largent_en_LIGNE_INTERNET_kznyf7.mp4"
+                          videoSrc={videoSrc}
                           courseTitle={courseData?.data().resultTitle}
                           videoTitle={videoTitle}
                           thumbnailImg={courseData?.data().thumbnailImg}
@@ -259,6 +254,7 @@ function Course({ resultSSR, resultsSSR }) {
 
                         {showNotes && (
                           <Notes
+                            id={videoId}
                             courseTitle={courseData?.data().resultTitle}
                             videoTitle={videoTitle}
                             showNotes={showNotes}
@@ -335,7 +331,7 @@ function Course({ resultSSR, resultsSSR }) {
 
             {/* Many thumbnails container */}
             {value === 1 && (
-              <div className="flex p-2 gap-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide mt-4 md:mt-10">
+              <FlipMove className="flex p-2 gap-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide mt-4 md:mt-10">
                 {resultsSSR
                   .filter((doc) => doc.id !== resultId)
                   .map((filteredDoc) => {
@@ -355,7 +351,7 @@ function Course({ resultSSR, resultsSSR }) {
                       />
                     );
                   })}
-              </div>
+              </FlipMove>
             )}
 
             {value === 4 && (

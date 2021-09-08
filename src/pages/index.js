@@ -12,18 +12,18 @@ import { selectSubscription, setSubscription } from "../slices/appSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Plans from "../components/Plans";
 import router from "next/router";
-import Link from "next/link";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Loader from "../components/Loader";
-import PlayAnimation from "../components/PlayAnimation";
-import ContinueWatching from "../components/ContWatchThumbnail";
 import Thumbnail from "../components/Thumbnail";
-import ContWatchThumbnail from "../components/ContWatchThumbnail";
+import FlipMove from "react-flip-move";
 
 export default function Home({
   collectionData,
   categoriesSSR,
   lesTresorsDeGuerre,
+  lesleçonsvidéosprivéesdufondateur,
+  seventyOnelivresenunevidéo,
+  lesguidespratiquesdenadir,
 }) {
   console.log(lesTresorsDeGuerre);
   const [user] = useAuthState(auth);
@@ -131,18 +131,89 @@ export default function Home({
               </Fade>
 
               <div className="relative flex flex-col mt-24 mb-4 pl-5 md:pl-10 lg:pl-24">
-                {/* {collectionData.map((item) => (
-                  <h2
-                    className="font-semibold my-8 text-lg p-2 pb-0"
-                    key={item.title}
-                  >
-                    {item.title}
-                  </h2>
-                ))} */}
+                <h2 className="font-semibold text-base sm:text-lg lg:text-xl p-2 pb-0">
+                  Les plus gros succès sur Les CERVEAUX
+                </h2>
+                <FlipMove className="flex p-2 gap-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide">
+                  {lesleçonsvidéosprivéesdufondateur.map(
+                    ({
+                      resultId,
+                      resultDescription,
+                      resultPageImage,
+                      resultTitle,
+                      thumbnailImg,
+                    }) => (
+                      <Thumbnail
+                        key={resultId}
+                        categoryTitle="livres"
+                        resultId={resultId}
+                        categoryId="lesleçonsvidéosprivéesdufondateur"
+                        thumbnailImg={thumbnailImg}
+                        resultTitle={resultTitle}
+                      />
+                    )
+                  )}
+                </FlipMove>
+                <br />
+                <br />
+
+                <h2 className="font-semibold text-base sm:text-lg lg:text-xl p-2 pb-0">
+                  Nouveautés
+                </h2>
+                <FlipMove className="flex p-2 gap-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide">
+                  {seventyOnelivresenunevidéo.map(
+                    ({
+                      resultId,
+                      resultDescription,
+                      resultPageImage,
+                      resultTitle,
+                      thumbnailImg,
+                    }) => (
+                      <Thumbnail
+                        key={resultId}
+                        categoryTitle="livres"
+                        resultId={resultId}
+                        categoryId="lestrésorsdeguerre"
+                        thumbnailImg={thumbnailImg}
+                        resultTitle={resultTitle}
+                      />
+                    )
+                  )}
+                </FlipMove>
+                <br />
+                <br />
+
+                <h2 className="font-semibold text-base sm:text-lg lg:text-xl p-2 pb-0">
+                  La boîte à outils de la communauté
+                </h2>
+                <FlipMove className="flex p-2 gap-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide">
+                  {lesguidespratiquesdenadir.map(
+                    ({
+                      resultId,
+                      resultDescription,
+                      resultPageImage,
+                      resultTitle,
+                      thumbnailImg,
+                    }) => (
+                      <Thumbnail
+                        key={resultId}
+                        categoryTitle="livres"
+                        resultId={resultId}
+                        categoryId="lesguidespratiquesdenadir"
+                        thumbnailImg={thumbnailImg}
+                        resultTitle={resultTitle}
+                      />
+                    )
+                  )}
+                </FlipMove>
+
+                <br />
+                <br />
+
                 <h2 className="font-semibold text-base sm:text-lg lg:text-xl p-2 pb-0">
                   Les trésors de guerre
                 </h2>
-                <div className="flex p-2 gap-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide">
+                <FlipMove className="flex p-2 gap-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide">
                   {lesTresorsDeGuerre.map(
                     ({
                       resultId,
@@ -161,7 +232,16 @@ export default function Home({
                       />
                     )
                   )}
-                </div>
+                </FlipMove>
+
+                {collectionData.map((item) => (
+                  <h2
+                    className="font-semibold my-8 text-lg p-2 pb-0"
+                    key={item.title}
+                  >
+                    {item.title}
+                  </h2>
+                ))}
               </div>
             </main>
           )}
@@ -199,10 +279,71 @@ export async function getServerSideProps(context) {
     ...doc.data(),
   }));
 
+  const lesleçonsvidéosprivéesdufondateur = await db
+    .collection("categories")
+    .doc("livres")
+    .collection("categoryPageData")
+    .doc("lesleçonsvidéosprivéesdufondateur")
+    .collection("results")
+    .get();
+
+  const lesleçonsvidéosprivéesdufondateurDocs =
+    lesleçonsvidéosprivéesdufondateur.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+  const seventyOnelivresenunevidéo = await db
+    .collection("categories")
+    .doc("livres")
+    .collection("categoryPageData")
+    .doc("71livresenunevidéo")
+    .collection("results")
+    .get();
+
+  const seventyOnelivresenunevidéoDocs = seventyOnelivresenunevidéo.docs.map(
+    (doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })
+  );
+
+  // Les coups de coeur de 100LivresEn1Jour - MONTAGE => GRAPHISME => COMMUNAUTE
+
+  // Tendances actuelles - SITEWEB => VENTE
+
+  // Notre sélection pour vous - CONQUETES => COIFFURE
+
+  // Top 10 sur l'application aujourd'hui - NUTRITION
+
+  // Parce que vous avez aimé
+
+  // À rattraper maintenant - MUSCULATION
+
+  const lesguidespratiquesdenadir = await db
+    .collection("categories")
+    .doc("livres")
+    .collection("categoryPageData")
+    .doc("lesguidespratiquesdenadir")
+    .collection("results")
+    .get();
+
+  const lesguidespratiquesdenadirDocs = lesguidespratiquesdenadir.docs.map(
+    (doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })
+  );
+
+  // Les trésors de guerre
+
   return {
     props: {
       categoriesSSR: docs,
       lesTresorsDeGuerre: lesTresorsDeGuerreDocs,
+      lesleçonsvidéosprivéesdufondateur: lesleçonsvidéosprivéesdufondateurDocs,
+      seventyOnelivresenunevidéo: seventyOnelivresenunevidéoDocs,
+      lesguidespratiquesdenadir: lesguidespratiquesdenadirDocs,
       collectionData,
     },
   };

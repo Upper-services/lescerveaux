@@ -350,6 +350,8 @@ function Video({
 
   const totalDuration = format(duration);
 
+  console.log(videoSrc);
+
   return (
     <>
       {loadingAnimation ? (
@@ -384,13 +386,13 @@ function Video({
                 volume={volume}
                 muted={muted}
                 onProgress={handleProgress}
-                // config={{
-                //   file: {
-                //     attributes: {
-                //       crossOrigin: "anonymous",
-                //     },
-                //   },
-                // }}
+                config={{
+                  file: {
+                    attributes: {
+                      crossOrigin: "anonymous",
+                    },
+                  },
+                }}
               />
 
               <Controls

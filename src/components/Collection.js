@@ -1,11 +1,8 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import {
-  useCollection,
-  useCollectionOnce,
-} from "react-firebase-hooks/firestore";
+import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import { db } from "../../firebase";
 import Thumbnail from "./Thumbnail";
+import FlipMove from "react-flip-move";
 
 function Collection({ categoryId, categoryTitle }) {
   const router = useRouter();
@@ -25,7 +22,7 @@ function Collection({ categoryId, categoryTitle }) {
       <h2 className="font-semibold text-base sm:text-lg lg:text-xl p-2 pb-0">
         {categoryTitle}
       </h2>
-      <div className="p-2 flex items-center space-x-4 md:space-x-5 overflow-x-scroll scrollbar-hide overflow-y-hidden">
+      <FlipMove className="p-2 flex space-x-4 md:space-x-5 overflow-x-scroll scrollbar-hide overflow-y-hidden">
         {resultsSnapshot?.docs.map((doc) => {
           const id = doc.id;
           const {
@@ -47,7 +44,7 @@ function Collection({ categoryId, categoryTitle }) {
             />
           );
         })}
-      </div>
+      </FlipMove>
     </div>
   );
 }
