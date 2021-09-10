@@ -28,7 +28,7 @@ const Thumbnail = forwardRef(
           alt={resultTitle}
         />
         <h4 className="font-semibold capitalize text-xs sm:text-sm lg:text-base">
-          {resultTitle.toLowerCase()}
+          {resultTitle?.toLowerCase()}
         </h4>
       </div>
     );

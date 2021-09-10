@@ -74,6 +74,7 @@ function Plans() {
 
     docRef.onSnapshot(async (snap) => {
       const { error, sessionId } = snap.data();
+      console.log(snap.data());
 
       if (error) {
         // Show an error to your customer and

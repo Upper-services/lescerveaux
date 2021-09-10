@@ -16,16 +16,19 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import Loader from "../components/Loader";
 import Thumbnail from "../components/Thumbnail";
 import FlipMove from "react-flip-move";
+import HomeCollection from "../components/HomeCollection";
 
 export default function Home({
-  collectionData,
   categoriesSSR,
+  lesplusgrossuccèssurlescerveaux,
+  laboîteàoutilsdelacommunauté,
+  lescoupsdecoeurde100livresen1jour,
+  tendancesactuelles,
+  notresélectionpourvous,
+  top10surlapplicationaujourdhui,
+  arattrapermaintenant,
   lesTresorsDeGuerre,
-  lesleçonsvidéosprivéesdufondateur,
-  seventyOnelivresenunevidéo,
-  lesguidespratiquesdenadir,
 }) {
-  console.log(lesTresorsDeGuerre);
   const [user] = useAuthState(auth);
   const dispatch = useDispatch();
   const [showPlans, setShowPlans] = useState(false);
@@ -130,118 +133,36 @@ export default function Home({
                 </section>
               </Fade>
 
-              <div className="relative flex flex-col mt-24 mb-4 pl-5 md:pl-10 lg:pl-24">
-                <h2 className="font-semibold text-base sm:text-lg lg:text-xl p-2 pb-0">
-                  Les plus gros succès sur Les CERVEAUX
-                </h2>
-                <FlipMove className="flex p-2 gap-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide">
-                  {lesleçonsvidéosprivéesdufondateur.map(
-                    ({
-                      resultId,
-                      resultDescription,
-                      resultPageImage,
-                      resultTitle,
-                      thumbnailImg,
-                    }) => (
-                      <Thumbnail
-                        key={resultId}
-                        categoryTitle="livres"
-                        resultId={resultId}
-                        categoryId="lesleçonsvidéosprivéesdufondateur"
-                        thumbnailImg={thumbnailImg}
-                        resultTitle={resultTitle}
-                      />
-                    )
-                  )}
-                </FlipMove>
-                <br />
-                <br />
+              <div className="relative flex flex-col mt-24 mb-4 pl-5 md:pl-10 lg:pl-24 space-y-4">
+                <HomeCollection
+                  results={lesplusgrossuccèssurlescerveaux}
+                  title="Les plus gros succès sur Les CERVEAUX"
+                />
+                <HomeCollection
+                  results={lescoupsdecoeurde100livresen1jour}
+                  title="Les coups de coeur de 100LivresEn1Jour"
+                />
+                <HomeCollection
+                  results={tendancesactuelles}
+                  title="Tendances actuelles"
+                />
+                <HomeCollection
+                  results={notresélectionpourvous}
+                  title="Notre sélection pour vous"
+                />
+                {/* <HomeCollection
+                  results={top10surlapplicationaujourdhui}
+                  title="Top 10 sur l'application aujourd'hui"
+                />5 */}
+                <HomeCollection
+                  results={laboîteàoutilsdelacommunauté}
+                  title="La boîte à outils de la communauté"
+                />
 
-                <h2 className="font-semibold text-base sm:text-lg lg:text-xl p-2 pb-0">
-                  Nouveautés
-                </h2>
-                <FlipMove className="flex p-2 gap-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide">
-                  {seventyOnelivresenunevidéo.map(
-                    ({
-                      resultId,
-                      resultDescription,
-                      resultPageImage,
-                      resultTitle,
-                      thumbnailImg,
-                    }) => (
-                      <Thumbnail
-                        key={resultId}
-                        categoryTitle="livres"
-                        resultId={resultId}
-                        categoryId="lestrésorsdeguerre"
-                        thumbnailImg={thumbnailImg}
-                        resultTitle={resultTitle}
-                      />
-                    )
-                  )}
-                </FlipMove>
-                <br />
-                <br />
-
-                <h2 className="font-semibold text-base sm:text-lg lg:text-xl p-2 pb-0">
-                  La boîte à outils de la communauté
-                </h2>
-                <FlipMove className="flex p-2 gap-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide">
-                  {lesguidespratiquesdenadir.map(
-                    ({
-                      resultId,
-                      resultDescription,
-                      resultPageImage,
-                      resultTitle,
-                      thumbnailImg,
-                    }) => (
-                      <Thumbnail
-                        key={resultId}
-                        categoryTitle="livres"
-                        resultId={resultId}
-                        categoryId="lesguidespratiquesdenadir"
-                        thumbnailImg={thumbnailImg}
-                        resultTitle={resultTitle}
-                      />
-                    )
-                  )}
-                </FlipMove>
-
-                <br />
-                <br />
-
-                <h2 className="font-semibold text-base sm:text-lg lg:text-xl p-2 pb-0">
-                  Les trésors de guerre
-                </h2>
-                <FlipMove className="flex p-2 gap-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide">
-                  {lesTresorsDeGuerre.map(
-                    ({
-                      resultId,
-                      resultDescription,
-                      resultPageImage,
-                      resultTitle,
-                      thumbnailImg,
-                    }) => (
-                      <Thumbnail
-                        key={resultId}
-                        categoryTitle="livres"
-                        resultId={resultId}
-                        categoryId="lestrésorsdeguerre"
-                        thumbnailImg={thumbnailImg}
-                        resultTitle={resultTitle}
-                      />
-                    )
-                  )}
-                </FlipMove>
-
-                {collectionData.map((item) => (
-                  <h2
-                    className="font-semibold my-8 text-lg p-2 pb-0"
-                    key={item.title}
-                  >
-                    {item.title}
-                  </h2>
-                ))}
+                <HomeCollection
+                  results={lesTresorsDeGuerre}
+                  title="Les trésors de guerre"
+                />
               </div>
             </main>
           )}
@@ -252,10 +173,6 @@ export default function Home({
 }
 
 export async function getServerSideProps(context) {
-  const collectionData = await fetch("https://jsonkeeper.com/b/RV7Y").then(
-    (res) => res.json()
-  );
-
   const categoriesSnapshot = await db
     .collection("categories")
     .orderBy("timestamp", "asc")
@@ -266,19 +183,7 @@ export async function getServerSideProps(context) {
     ...doc.data(),
   }));
 
-  const lesTresorsDeGuerre = await db
-    .collection("categories")
-    .doc("livres")
-    .collection("categoryPageData")
-    .doc("lestrésorsdeguerre")
-    .collection("results")
-    .get();
-
-  const lesTresorsDeGuerreDocs = lesTresorsDeGuerre.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
-
+  // Les plus gros succès sur Les CERVEAUX - LIVRES => lesleçonsvidéosprivéesdufondateur
   const lesleçonsvidéosprivéesdufondateur = await db
     .collection("categories")
     .doc("livres")
@@ -293,33 +198,147 @@ export async function getServerSideProps(context) {
       ...doc.data(),
     }));
 
+  // Nouveautés - LIVRES => 71livresenunevidéo
   const seventyOnelivresenunevidéo = await db
     .collection("categories")
     .doc("livres")
     .collection("categoryPageData")
     .doc("71livresenunevidéo")
     .collection("results")
+    .doc("suivipersonnaliséaveclefondateur")
     .get();
 
-  const seventyOnelivresenunevidéoDocs = seventyOnelivresenunevidéo.docs.map(
-    (doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })
-  );
+  const nouveautés = [seventyOnelivresenunevidéo.data()];
 
   // Les coups de coeur de 100LivresEn1Jour - MONTAGE => GRAPHISME => COMMUNAUTE
+  const lesprestationsrécentesdAntoine = await db
+    .collection("categories")
+    .doc("montage")
+    .collection("categoryPageData")
+    .doc("lesprestationsrécentesd'Antoine")
+    .collection("results")
+    .doc("suivipersonnaliséaveclefondateur")
+    .get();
+
+  const lesprestationsrécentesdemarin = await db
+    .collection("categories")
+    .doc("montage")
+    .collection("categoryPageData")
+    .doc("lesprestationsrécentesdemarin")
+    .collection("results")
+    .doc("suivipersonnaliséaveclefondateur")
+    .get();
+
+  const lescoupsdecoeurde100livresen1jour = [
+    lesprestationsrécentesdAntoine.data(),
+    lesprestationsrécentesdemarin.data(),
+  ];
 
   // Tendances actuelles - SITEWEB => VENTE
+  const lesprestationsrécentesdemickaël = await db
+    .collection("categories")
+    .doc("siteweb")
+    .collection("categoryPageData")
+    .doc("lesprestationsrécentesdemickaël")
+    .collection("results")
+    .doc("suivipersonnaliséaveclefondateur")
+    .get();
+
+  const suivipersonnaliséaveclefondateur = await db
+    .collection("categories")
+    .doc("vente")
+    .collection("categoryPageData")
+    .doc("lesprestationsrécentesdeyounèsettony")
+    .collection("results")
+    .doc("suivipersonnaliséaveclefondateur")
+    .get();
+
+  const suivipersonnaliséaveclefondateur2 = await db
+    .collection("categories")
+    .doc("vente")
+    .collection("categoryPageData")
+    .doc("lesprestationsrécentesdeyounèsettony")
+    .collection("results")
+    .doc("suivipersonnaliséaveclefondateur2")
+    .get();
+
+  const tendancesactuelles = [
+    lesprestationsrécentesdemickaël.data(),
+    suivipersonnaliséaveclefondateur.data(),
+    suivipersonnaliséaveclefondateur2.data(),
+  ];
 
   // Notre sélection pour vous - CONQUETES => COIFFURE
+  const lesprestationsrécentesdegeoffrey = await db
+    .collection("categories")
+    .doc("conquetes")
+    .collection("categoryPageData")
+    .doc("lesprestationsrécentesdegeoffrey")
+    .collection("results")
+    .doc("suivipersonnaliséaveclefondateur")
+    .get();
+
+  const lesprestationsrécentesdeslimane = await db
+    .collection("categories")
+    .doc("coiffure")
+    .collection("categoryPageData")
+    .doc("lesprestationsrécentesdeslimane")
+    .collection("results")
+    .doc("suivipersonnaliséaveclefondateur")
+    .get();
+
+  const notresélectionpourvous = [
+    lesprestationsrécentesdegeoffrey.data(),
+    lesprestationsrécentesdeslimane.data(),
+  ];
 
   // Top 10 sur l'application aujourd'hui - NUTRITION
+  const lesprestationsrécentesdemorganaldo = await db
+    .collection("categories")
+    .doc("nutrition")
+    .collection("categoryPageData")
+    .doc("lesprestationsrécentesdemorganaldo")
+    .collection("results")
+    .get();
+
+  const lesprestationsrécentesdemorganaldoDocs =
+    lesprestationsrécentesdemorganaldo.docs.map((doc) => ({
+      ...doc.data(),
+    }));
+
+  const lesprestationsrécentesdebenoît = await db
+    .collection("categories")
+    .doc("nutrition")
+    .collection("categoryPageData")
+    .doc("lesprestationsrécentesdebenoît")
+    .collection("results")
+    .get();
+
+  const lesprestationsrécentesdebenoîtDocs =
+    lesprestationsrécentesdebenoît.docs.map((doc) => ({
+      ...doc.data(),
+    }));
+
+  const top10surlapplicationaujourdhui = [
+    lesprestationsrécentesdemorganaldoDocs,
+    lesprestationsrécentesdebenoîtDocs,
+  ];
 
   // Parce que vous avez aimé
 
   // À rattraper maintenant - MUSCULATION
+  const lesprestationsrécentesdangel = await db
+    .collection("categories")
+    .doc("musculation")
+    .collection("categoryPageData")
+    .doc("lesprestationsrécentesdangel")
+    .collection("results")
+    .doc("suivipersonnaliséaveclefondateur")
+    .get();
 
+  const arattrapermaintenant = [lesprestationsrécentesdangel.data()];
+
+  // La boîte à outils de la communauté - LIVRES
   const lesguidespratiquesdenadir = await db
     .collection("categories")
     .doc("livres")
@@ -336,15 +355,31 @@ export async function getServerSideProps(context) {
   );
 
   // Les trésors de guerre
+  const lesTresorsDeGuerre = await db
+    .collection("categories")
+    .doc("livres")
+    .collection("categoryPageData")
+    .doc("lestrésorsdeguerre")
+    .collection("results")
+    .get();
+
+  const lesTresorsDeGuerreDocs = lesTresorsDeGuerre.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
 
   return {
     props: {
       categoriesSSR: docs,
+      lesplusgrossuccèssurlescerveaux: lesleçonsvidéosprivéesdufondateurDocs,
+      // nouveautés,
+      laboîteàoutilsdelacommunauté: lesguidespratiquesdenadirDocs,
+      lescoupsdecoeurde100livresen1jour,
+      tendancesactuelles,
+      notresélectionpourvous,
+      top10surlapplicationaujourdhui,
+      // arattrapermaintenant,
       lesTresorsDeGuerre: lesTresorsDeGuerreDocs,
-      lesleçonsvidéosprivéesdufondateur: lesleçonsvidéosprivéesdufondateurDocs,
-      seventyOnelivresenunevidéo: seventyOnelivresenunevidéoDocs,
-      lesguidespratiquesdenadir: lesguidespratiquesdenadirDocs,
-      collectionData,
     },
   };
 }

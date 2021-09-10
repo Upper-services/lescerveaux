@@ -17,7 +17,6 @@ import {
 } from "react-firebase-hooks/firestore";
 
 function Category({ snapshotSSR, categoryPageDataSSR }) {
-  console.log(snapshotSSR);
   const [user] = useAuthState(auth);
   const router = useRouter();
   const dispatch = useDispatch();
