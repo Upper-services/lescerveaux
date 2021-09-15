@@ -205,7 +205,7 @@ export async function getServerSideProps(context) {
     .collection("categoryPageData")
     .doc("71livresenunevidéo")
     .collection("results")
-    .doc("suivipersonnaliséaveclefondateur")
+    .doc("74livresenuneseulevidéo")
     .get();
 
   const nouveautés = [seventyOnelivresenunevidéo.data()];
