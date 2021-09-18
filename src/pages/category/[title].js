@@ -18,9 +18,20 @@ import {
 
 function Category({ snapshotSSR, categoryPageDataSSR }) {
   const [user] = useAuthState(auth);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const { title } = router.query;
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (!authUser) {
+        router.push("/");
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   // Testing subscription Active or No
   const subscription = useSelector(selectSubscription);
@@ -50,7 +61,7 @@ function Category({ snapshotSSR, categoryPageDataSSR }) {
 
   // ---------------------------------------------- Test Code Above ---------------------------------------------------------------
 
-  const [snapshot, loading] = useCollection(
+  const [snapshot] = useCollection(
     db
       .collection("categories")
       .doc(title)
@@ -62,40 +73,38 @@ function Category({ snapshotSSR, categoryPageDataSSR }) {
     db.collection("categories").doc(title)
   );
 
-  if (loading) {
-    return <div>{/* <p>Initialising User...</p> */}</div>;
-  }
-
   return (
     <div>
       <Head>
         <title> {categoryPageDataSSR.title}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <img
-        // src={categoryPageDataSSR.categoryPageImage}
-        src="/images/testing.jpeg"
-        alt=""
-        className="min-h-screen absolute inset-0 z-[-1] object-cover opacity-60"
-        loading="lazy"
-      />
-
-      <Header transparent />
       {user && (
-        <main className="">
-          <div className="pt-44 lg:pt-[400px] xl:pt-[500px]">
-            {snapshotSSR.map((doc) => {
-              const { categoryId, categoryTitle } = doc;
-              return (
-                <Collection
-                  key={categoryId}
-                  categoryId={categoryId}
-                  categoryTitle={categoryTitle}
-                />
-              );
-            })}
-          </div>
-        </main>
+        <>
+          <img
+            src={categoryPageDataSSR.categoryPageImage}
+            // src="/images/testing.jpeg"
+            alt=""
+            className="min-h-screen absolute inset-0 z-[-1] object-cover opacity-60"
+            loading="lazy"
+          />
+
+          <Header transparent />
+          <main className="">
+            <div className="pt-44 lg:pt-[400px] xl:pt-[500px]">
+              {snapshotSSR.map((doc) => {
+                const { categoryId, categoryTitle } = doc;
+                return (
+                  <Collection
+                    key={categoryId}
+                    categoryId={categoryId}
+                    categoryTitle={categoryTitle}
+                  />
+                );
+              })}
+            </div>
+          </main>
+        </>
       )}
     </div>
   );

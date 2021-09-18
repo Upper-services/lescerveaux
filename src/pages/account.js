@@ -12,9 +12,19 @@ import { useEffect } from "react";
 import moment from "moment";
 
 function Account() {
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const router = useRouter();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (!authUser) {
+        router.push("/");
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   // Testing subscription Active or No
   const subscription = useSelector(selectSubscription);
@@ -70,10 +80,6 @@ function Account() {
     },
   };
 
-  if (loading) {
-    return <div>{/* <p>Initialising User...</p> */}</div>;
-  }
-
   const goToBillingPortal = async () => {
     const app = firebase.app();
     const functionRef = app
@@ -93,95 +99,96 @@ function Account() {
         <title>Account Settings | Lescerveaux</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <Header />
-
       {user && (
-        <section className="max-w-2xl mx-auto pt-20 px-9">
-          <h1 className="text-[32px] font-semibold mb-3">Account</h1>
-          <div className="border border-[#31343e] rounded text-[15px] font-medium mb-8">
-            <div className="bg-[#31343e] py-1.5 px-4 text-[#a8a9ad] rounded-tl rounded-tr cursor-default">
-              Account Details
-            </div>
-            <div className="px-4 py-3 flex justify-between items-center border-b border-[#31343e] cursor-pointer active:bg-[#222531]">
-              <h4>{user?.displayName || "Add a username"}</h4>
-              <div className="bg-[#f9f9f9] w-6 h-6 flex items-center justify-center text-black rounded-full hover:scale-105 transition ease-out">
-                <PencilIcon className="h-5" />
+        <>
+          <Header />
+
+          <section className="max-w-2xl mx-auto pt-20 px-9">
+            <h1 className="text-[32px] font-semibold mb-3">Account</h1>
+            <div className="border border-[#31343e] rounded text-[15px] font-medium mb-8">
+              <div className="bg-[#31343e] py-1.5 px-4 text-[#a8a9ad] rounded-tl rounded-tr cursor-default">
+                Account Details
               </div>
-            </div>
-
-            <div className="px-4 py-3 flex justify-between items-center border-b border-[#31343e] cursor-pointer active:bg-[#222531]">
-              <h4>{user?.email}</h4>
-              <div className="bg-[#f9f9f9] w-6 h-6 flex items-center justify-center text-black rounded-full hover:scale-105 transition ease-out">
-                <PencilIcon className="h-5" />
+              <div className="px-4 py-3 flex justify-between items-center border-b border-[#31343e] cursor-pointer active:bg-[#222531]">
+                <h4>{user?.displayName || "Add a username"}</h4>
+                <div className="bg-[#f9f9f9] w-6 h-6 flex items-center justify-center text-black rounded-full hover:scale-105 transition ease-out">
+                  <PencilIcon className="h-5" />
+                </div>
               </div>
-            </div>
 
-            <div className="px-4 py-3 flex justify-between items-center border-b border-[#31343e] cursor-pointer active:bg-[#222531]">
-              <h4>Password: *******</h4>
-              <div className="bg-[#f9f9f9] w-6 h-6 flex items-center justify-center text-black rounded-full hover:scale-105 transition ease-out">
-                <PencilIcon className="h-5" />
+              <div className="px-4 py-3 flex justify-between items-center border-b border-[#31343e] cursor-pointer active:bg-[#222531]">
+                <h4>{user?.email}</h4>
+                <div className="bg-[#f9f9f9] w-6 h-6 flex items-center justify-center text-black rounded-full hover:scale-105 transition ease-out">
+                  <PencilIcon className="h-5" />
+                </div>
               </div>
-            </div>
 
-            <button
-              className="px-4 py-4 w-full font-medium text-[#67bdff] hover:text-[#94d0ff]"
-              onClick={() => {
-                auth.signOut();
-                dispatch(setSubscription(null));
-                router.push("/");
-              }}
-            >
-              Log out
-            </button>
-          </div>
-
-          <div className="border border-[#31343e] rounded text-[15px] font-medium">
-            <div className="bg-[#31343e] py-1.5 px-4 text-[#a8a9ad] rounded-tl rounded-tr cursor-default">
-              Subscription
-            </div>
-
-            <div className="px-4 py-3 flex flex-col gap-y-4 sm:flex-row sm:items-center justify-between">
-              <div className="cursor-default space-y-1.5">
-                <h4>Lescerveaux</h4>
-                <p
-                  className={`text-xs capitalize ${
-                    subscription?.status === "active"
-                      ? "text-[#50e3c2]"
-                      : "text-[red]"
-                  }`}
-                >
-                  {subscription?.status || "Not Active"}
-                </p>
-                {subscription?.status === "active" ? (
-                  <p className="text-xs">
-                    {subscription?.cancel_at
-                      ? `Expires at ${moment(subscription?.cancel_at).format(
-                          "lll"
-                        )}`
-                      : `Renews at ${moment(
-                          subscription?.current_period_end
-                        ).format("lll")}`}
-                  </p>
-                ) : (
-                  <p className="text-xs">
-                    {subscription?.status === "canceled"
-                      ? `Canceled at ${moment(subscription?.ended_at).format(
-                          "lll"
-                        )}`
-                      : "Please complete your subscription"}
-                  </p>
-                )}
+              <div className="px-4 py-3 flex justify-between items-center border-b border-[#31343e] cursor-pointer active:bg-[#222531]">
+                <h4>Password: *******</h4>
+                <div className="bg-[#f9f9f9] w-6 h-6 flex items-center justify-center text-black rounded-full hover:scale-105 transition ease-out">
+                  <PencilIcon className="h-5" />
+                </div>
               </div>
+
               <button
-                className="font-medium self-start sm:self-auto text-[#67bdff] hover:text-[#94d0ff]"
-                onClick={goToBillingPortal}
+                className="px-4 py-4 w-full font-medium text-[#67bdff] hover:text-[#94d0ff]"
+                onClick={() => {
+                  auth.signOut();
+                  dispatch(setSubscription(null));
+                  router.push("/");
+                }}
               >
-                Manage on Stripe
+                Log out
               </button>
             </div>
-          </div>
-        </section>
+
+            <div className="border border-[#31343e] rounded text-[15px] font-medium">
+              <div className="bg-[#31343e] py-1.5 px-4 text-[#a8a9ad] rounded-tl rounded-tr cursor-default">
+                Subscription
+              </div>
+
+              <div className="px-4 py-3 flex flex-col gap-y-4 sm:flex-row sm:items-center justify-between">
+                <div className="cursor-default space-y-1.5">
+                  <h4>Lescerveaux</h4>
+                  <p
+                    className={`text-xs capitalize ${
+                      subscription?.status === "active"
+                        ? "text-[#50e3c2]"
+                        : "text-[red]"
+                    }`}
+                  >
+                    {subscription?.status || "Not Active"}
+                  </p>
+                  {subscription?.status === "active" ? (
+                    <p className="text-xs">
+                      {subscription?.cancel_at
+                        ? `Expires at ${moment(subscription?.cancel_at).format(
+                            "lll"
+                          )}`
+                        : `Renews at ${moment(
+                            subscription?.current_period_end
+                          ).format("lll")}`}
+                    </p>
+                  ) : (
+                    <p className="text-xs">
+                      {subscription?.status === "canceled"
+                        ? `Canceled at ${moment(subscription?.ended_at).format(
+                            "lll"
+                          )}`
+                        : "Please complete your subscription"}
+                    </p>
+                  )}
+                </div>
+                <button
+                  className="font-medium self-start sm:self-auto text-[#67bdff] hover:text-[#94d0ff]"
+                  onClick={goToBillingPortal}
+                >
+                  Manage on Stripe
+                </button>
+              </div>
+            </div>
+          </section>
+        </>
       )}
     </motion.div>
   );

@@ -139,7 +139,7 @@ function Plans() {
               }`}
               type="submit"
               onClick={() => loadCheckout(productData.prices.priceId)}
-              disabled={!active}
+              // disabled={!active}
             >
               Agree & Subscribe
             </button>

@@ -35,7 +35,8 @@
     "screenfull": "^5.1.0",
     "slick-carousel": "^1.8.1",
     "stripe": "^8.169.0",
-    "tailwind-scrollbar-hide": "^1.0.3"
+    "tailwind-scrollbar-hide": "^1.0.3",
+    "validator": "^13.6.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.3.1",

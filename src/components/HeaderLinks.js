@@ -21,20 +21,20 @@ function HeaderLinks() {
         <SearchIcon className="h-5" />
         <span className="span">Search</span>
       </a>
-      <Link href="/watchlist">
+      <Link href="/">
         <a className="header-link group">
           <CollectionIcon className="h-5" />
           <span className="span">Watchlist</span>
         </a>
       </Link>
-      <Link href="/quotes">
+      <Link href="/">
         <a className="header-link group">
           <PencilAltIcon className="h-5" />
           <span className="span">Quotes</span>
         </a>
       </Link>
 
-      <Link href="/quotes">
+      <Link href="/">
         <a className="header-link group">
           <QuestionMarkCircleIcon className="h-5" />
           <span className="span">FAQ</span>

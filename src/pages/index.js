@@ -33,6 +33,7 @@ export default function Home({
   const dispatch = useDispatch();
   const [showPlans, setShowPlans] = useState(false);
   const [loading, setLoading] = useState(false);
+  const subscription = useSelector(selectSubscription);
 
   // User redirects to landing page team where they choose to signup or login
   // useEffect(() => {
@@ -42,14 +43,31 @@ export default function Home({
   // }, [user]);
 
   useEffect(() => {
-    setLoading(true);
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      // if (authUser) {
+      //   if (!subscription) {
+      //     router.push("/complete-purchase");
+      //   }
+      // } else {
+      //   router.push("/");
+      // }
+    });
+
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      setLoading(true);
+    }
+
     setTimeout(() => {
       setLoading(false);
     }, 3000);
   }, []);
 
   // Testing subscription Active or No
-  const subscription = useSelector(selectSubscription);
+  // const subscription = useSelector(selectSubscription);
 
   useEffect(() => {
     if (user) {
@@ -104,9 +122,9 @@ export default function Home({
     },
   };
 
-  // if (loading) {
-  //   return <Loader />;
-  // }
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <>
@@ -119,7 +137,7 @@ export default function Home({
 
           <Header />
 
-          {user && (subscription?.status === "active" || "trialing") && (
+          {user && (
             <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1] top-[72px]">
               <Slider />
               <Fade bottom>
@@ -153,16 +171,15 @@ export default function Home({
                 {/* <HomeCollection
                   results={top10surlapplicationaujourdhui}
                   title="Top 10 sur l'application aujourd'hui"
-                />5 */}
+                /> */}
                 <HomeCollection
                   results={laboîteàoutilsdelacommunauté}
                   title="La boîte à outils de la communauté"
                 />
-
                 <HomeCollection
                   results={lesTresorsDeGuerre}
                   title="Les trésors de guerre"
-                />
+                />{" "}
               </div>
             </main>
           )}
