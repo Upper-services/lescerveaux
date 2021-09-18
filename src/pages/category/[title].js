@@ -79,16 +79,16 @@ function Category({ snapshotSSR, categoryPageDataSSR }) {
         <title> {categoryPageDataSSR.title}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <img
-        src={categoryPageDataSSR.categoryPageImage}
-        alt=""
-        className="min-h-screen absolute inset-0 z-[-1] object-cover opacity-60"
-        loading="lazy"
-      />
-
-      <Header transparent />
       {user && (
         <>
+          <img
+            src={categoryPageDataSSR.categoryPageImage}
+            alt=""
+            className="min-h-screen absolute inset-0 z-[-1] object-cover opacity-60"
+            loading="lazy"
+          />
+
+          <Header transparent />
           <img
             src={categoryPageDataSSR.categoryPageImage}
             // src="/images/testing.jpeg"
