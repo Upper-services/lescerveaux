@@ -1,4 +1,3 @@
-import { getProviders } from "next-auth/client";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -171,10 +170,3 @@ function Login({ providers }) {
 }
 
 export default Login;
-
-export async function getServerSideProps(context) {
-  const providers = await getProviders();
-  return {
-    props: { providers },
-  };
-}

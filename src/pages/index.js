@@ -92,9 +92,9 @@ export default function Home({
     db.collection("categories").orderBy("timestamp", "asc")
   );
 
-  const [bookmarksSnapshot] = useCollection(
-    db.collection("customers").doc(user?.uid).collection("continuewatching")
-  );
+  // const [bookmarksSnapshot] = useCollection(
+  //   db.collection("customers").doc(user?.uid).collection("continuewatching")
+  // );
 
   const container = {
     hidden: { opacity: 1, scale: 0 },
