@@ -36,10 +36,6 @@ export default function Home({
   const [loading, setLoading] = useState(false);
   const subscription = useSelector(selectSubscription);
 
-  const [categoriesSnapshot] = useCollection(
-    db.collection("categories").orderBy("timestamp", "asc")
-  );
-
   // const [bookmarksSnapshot] = useCollection(
   //   db.collection("customers").doc(user?.uid).collection("continuewatching")
   // );
