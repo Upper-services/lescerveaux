@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectSubscription, setSubscription } from "../slices/appSlice";
 import { useEffect } from "react";
 import moment from "moment";
+import DOMPurify from "dompurify";
 
 function Account() {
   const [user] = useAuthState(auth);

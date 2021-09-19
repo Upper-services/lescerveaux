@@ -9,6 +9,7 @@ import { auth } from "../../firebase";
 import Plans from "../components/Plans";
 import validator from "validator";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid";
+import DOMPurify from "dompurify";
 
 function Signup({ providers }) {
   const [step, setStep] = useState(1);
@@ -32,18 +33,26 @@ function Signup({ providers }) {
   const Continue = (e) => {
     e.preventDefault();
     if (step === 1) {
-      if (validator.isEmpty(username, { ignore_whitespace: true })) {
-        alert("Please enter a username!");
+      const dirty = username;
+      const clean = DOMPurify.sanitize(username);
+      setUsername(clean);
+      if (
+        validator.isEmpty(username, { ignore_whitespace: true }) ||
+        dirty !== clean
+      ) {
+        alert("Please enter a valid username!");
         return;
       }
     }
     if (step === 2) {
-      if (!validator.isEmail(email)) {
+      const dirty = email;
+      const clean = DOMPurify.sanitize(email);
+      setEmail(clean);
+      if (!validator.isEmail(email) || dirty !== clean) {
         alert("Please enter a valid email!");
         return;
       }
     }
-
     setStep(step + 1);
   };
 
@@ -63,14 +72,16 @@ function Signup({ providers }) {
       }
     }
 
-    auth.createUserWithEmailAndPassword(email, password).then((authUser) => {
-      authUser.user.updateProfile({
-        // Access the first name of the user
-        displayName: username.split(" ")[0],
-      });
-      // setStep(step + 1);
-      router.push("/");
-    });
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((authUser) => {
+        authUser.user.updateProfile({
+          displayName: username,
+        });
+        // setStep(step + 1);
+        router.push("/");
+      })
+      .catch((err) => alert(err.message));
   };
 
   if (user) {

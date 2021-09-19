@@ -17,6 +17,7 @@ import Loader from "../components/Loader";
 import Thumbnail from "../components/Thumbnail";
 import FlipMove from "react-flip-move";
 import HomeCollection from "../components/HomeCollection";
+import DOMPurify from "dompurify";
 
 export default function Home({
   categoriesSSR,
@@ -35,26 +36,19 @@ export default function Home({
   const [loading, setLoading] = useState(false);
   const subscription = useSelector(selectSubscription);
 
-  // User redirects to landing page team where they choose to signup or login
   // useEffect(() => {
-  //   if (!user) {
-  //     router.push("https://lescerveaux.com/");
-  //   }
-  // }, [user]);
+  //   const unsubscribe = auth.onAuthStateChanged((authUser) => {
+  //     if (authUser) {
+  //       if (!subscription) {
+  //         router.push("/complete-purchase");
+  //       }
+  //     } else {
+  //       router.push("https://www.lescerveaux.com/");
+  //     }
+  //   });
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      // if (authUser) {
-      //   if (!subscription) {
-      //     router.push("/complete-purchase");
-      //   }
-      // } else {
-      //   router.push("/");
-      // }
-    });
-
-    return unsubscribe;
-  }, []);
+  //   return unsubscribe;
+  // }, []);
 
   useEffect(() => {
     if (user) {
@@ -69,28 +63,28 @@ export default function Home({
   // Testing subscription Active or No
   // const subscription = useSelector(selectSubscription);
 
-  useEffect(() => {
-    if (user) {
-      db.collection("customers")
-        .doc(user?.uid)
-        .collection("subscriptions")
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach(async (subscription) => {
-            dispatch(
-              setSubscription({
-                role: subscription.data().role,
-                current_period_end:
-                  subscription.data().current_period_end.seconds,
-                current_period_start:
-                  subscription.data().current_period_start.seconds,
-                status: subscription.data().status,
-              })
-            );
-          });
-        });
-    }
-  }, [user?.uid]);
+  // useEffect(() => {
+  //   if (user) {
+  //     db.collection("customers")
+  //       .doc(user?.uid)
+  //       .collection("subscriptions")
+  //       .get()
+  //       .then((querySnapshot) => {
+  //         querySnapshot.forEach(async (subscription) => {
+  //           dispatch(
+  //             setSubscription({
+  //               role: subscription.data().role,
+  //               current_period_end:
+  //                 subscription.data().current_period_end.seconds,
+  //               current_period_start:
+  //                 subscription.data().current_period_start.seconds,
+  //               status: subscription.data().status,
+  //             })
+  //           );
+  //         });
+  //       });
+  //   }
+  // }, [user?.uid]);
 
   // ---------------------------------------------- Test Code Above ---------------------------------------------------------------
 
