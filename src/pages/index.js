@@ -36,6 +36,14 @@ export default function Home({
   const [loading, setLoading] = useState(false);
   const subscription = useSelector(selectSubscription);
 
+  const [categoriesSnapshot] = useCollection(
+    db.collection("categories").orderBy("timestamp", "asc")
+  );
+
+  // const [bookmarksSnapshot] = useCollection(
+  //   db.collection("customers").doc(user?.uid).collection("continuewatching")
+  // );
+
   // useEffect(() => {
   //   const unsubscribe = auth.onAuthStateChanged((authUser) => {
   //     if (authUser) {
@@ -87,14 +95,6 @@ export default function Home({
   // }, [user?.uid]);
 
   // ---------------------------------------------- Test Code Above ---------------------------------------------------------------
-
-  const [categoriesSnapshot] = useCollection(
-    db.collection("categories").orderBy("timestamp", "asc")
-  );
-
-  // const [bookmarksSnapshot] = useCollection(
-  //   db.collection("customers").doc(user?.uid).collection("continuewatching")
-  // );
 
   const container = {
     hidden: { opacity: 1, scale: 0 },
