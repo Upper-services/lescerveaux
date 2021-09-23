@@ -221,7 +221,7 @@ function Course({ resultSSR, resultsSSR }) {
             <img
               src={resultSSR.resultPageImage}
               alt=""
-              className="min-h-screen bg-center bg-cover bg-no-repeat bg-fixed absolute inset-0 z-[-1] object-cover opacity-60"
+              className="min-h-screen bg-center bg-cover bg-no-repeat bg-fixed absolute inset-0 z-[-1] object-cover opacity-50"
               loading="lazy"
             />
 

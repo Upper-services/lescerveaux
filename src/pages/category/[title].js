@@ -84,22 +84,21 @@ function Category({ snapshotSSR, categoryPageDataSSR }) {
           <img
             src={categoryPageDataSSR.categoryPageImage}
             alt=""
-            className="min-h-screen absolute inset-0 z-[-1] object-cover opacity-60"
+            className="fixed min-h-screen inset-0 z-[-1] object-cover opacity-80"
             loading="lazy"
           />
-
-          <Header transparent />
-          <img
-            src={categoryPageDataSSR.categoryPageImage}
-            // src="/images/testing.jpeg"
-            alt=""
-            className="min-h-screen absolute inset-0 z-[-1] object-cover opacity-60"
-            loading="lazy"
-          />
+          <div className="absolute top-32 lg:top-56 w-full h-[100px] flex items-center justify-center">
+            <img
+              src={categoryPageDataSSR.categoryPageTitleImg}
+              alt=""
+              className="w-[850px] object-cover"
+              loading="lazy"
+            />
+          </div>
 
           <Header transparent />
           <main className="">
-            <div className="pt-44 lg:pt-[400px] xl:pt-[500px]">
+            <div className="pt-64 lg:pt-[400px] xl:pt-[500px]">
               {snapshotSSR.map((doc) => {
                 const { categoryId, categoryTitle } = doc;
                 return (
