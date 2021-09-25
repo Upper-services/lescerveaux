@@ -386,10 +386,11 @@ function Video({
                 volume={volume}
                 muted={muted}
                 onProgress={handleProgress}
+                onContextMenu={(e) => e.preventDefault()}
                 config={{
                   file: {
                     attributes: {
-                      crossOrigin: "anonymous",
+                      controlsList: "nodownload",
                     },
                   },
                 }}

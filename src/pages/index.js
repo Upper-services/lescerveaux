@@ -18,6 +18,8 @@ import Thumbnail from "../components/Thumbnail";
 import FlipMove from "react-flip-move";
 import HomeCollection from "../components/HomeCollection";
 import DOMPurify from "dompurify";
+import { CloudinaryContext, Transformation } from "cloudinary-react";
+import { Video, Image } from "cloudinary-react";
 
 export default function Home({
   categoriesSSR,

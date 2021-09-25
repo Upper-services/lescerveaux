@@ -16,6 +16,7 @@ import { useCollection, useDocumentOnce } from "react-firebase-hooks/firestore";
 import Notes from "../components/Notes";
 import Thumbnail from "../components/Thumbnail";
 import FlipMove from "react-flip-move";
+import ReactPlayer from "react-player";
 
 function Course({ resultSSR, resultsSSR }) {
   const router = useRouter();
