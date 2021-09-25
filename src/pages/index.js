@@ -112,9 +112,9 @@ export default function Home({
     },
   };
 
-  if (loading) {
-    return <Loader />;
-  }
+  // if (loading) {
+  //   return <Loader />;
+  // }
 
   return (
     <>
@@ -128,10 +128,10 @@ export default function Home({
           <Header />
 
           {user && (
-            <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1] top-[72px]">
+            <main className="relative min-h-screen after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1] top-[72px]">
               <Slider />
               <Fade bottom>
-                <section className="grid grid-cols-3 items-center justify-center md:grid-cols-6 mt-10 gap-6 px-8 max-w-[1400px] mx-auto">
+                <section className="grid grid-cols-3 items-center justify-center md:grid-cols-5 mt-10 gap-6 gap-y-7 px-8 max-w-[1400px] mx-auto">
                   {categoriesSSR.map((doc) => {
                     const { title, img, id } = doc;
                     return (
@@ -142,34 +142,35 @@ export default function Home({
               </Fade>
 
               <div className="relative flex flex-col mt-24 mb-4 pl-5 md:pl-10 lg:pl-24 space-y-4">
-                <HomeCollection
+                {/* <HomeCollection
                   results={lesplusgrossuccèssurlescerveaux}
-                  title="Les plus gros succès sur Les CERVEAUX"
+                  title="Les Plus Gros Succès sur Les CERVEAUX"
                 />
+                <HomeCollection title="Nouveautés" results={nouveautés} />
                 <HomeCollection
                   results={lescoupsdecoeurde100livresen1jour}
-                  title="Les coups de coeur de 100LivresEn1Jour"
+                  title="Les Coups De Coeur de 100LivresEn1Jour"
                 />
                 <HomeCollection
                   results={tendancesactuelles}
-                  title="Tendances actuelles"
+                  title="Tendances Actuelles"
                 />
                 <HomeCollection
                   results={notresélectionpourvous}
-                  title="Notre sélection pour vous"
+                  title="Notre Sélection pour Vous"
                 />
-                {/* <HomeCollection
+                <HomeCollection
                   results={top10surlapplicationaujourdhui}
-                  title="Top 10 sur l'application aujourd'hui"
-                /> */}
+                  title="Top 10 sur l'Application Aujourd'hui"
+                />
                 <HomeCollection
                   results={laboîteàoutilsdelacommunauté}
-                  title="La boîte à outils de la communauté"
+                  title="La Boîte À Outils de La Communauté"
                 />
                 <HomeCollection
                   results={lesTresorsDeGuerre}
-                  title="Les trésors de guerre"
-                />{" "}
+                  title="Les Trésors De Guerre"
+                />{" "} */}
               </div>
             </main>
           )}
@@ -378,15 +379,15 @@ export async function getServerSideProps(context) {
   return {
     props: {
       categoriesSSR: docs,
-      lesplusgrossuccèssurlescerveaux: lesleçonsvidéosprivéesdufondateurDocs,
+      // lesplusgrossuccèssurlescerveaux: lesleçonsvidéosprivéesdufondateurDocs,
       // nouveautés,
-      laboîteàoutilsdelacommunauté: lesguidespratiquesdenadirDocs,
-      lescoupsdecoeurde100livresen1jour,
-      tendancesactuelles,
-      notresélectionpourvous,
-      top10surlapplicationaujourdhui,
+      // laboîteàoutilsdelacommunauté: lesguidespratiquesdenadirDocs,
+      // lescoupsdecoeurde100livresen1jour,
+      // tendancesactuelles,
+      // notresélectionpourvous,
+      // top10surlapplicationaujourdhui,
       // arattrapermaintenant,
-      lesTresorsDeGuerre: lesTresorsDeGuerreDocs,
+      // lesTresorsDeGuerre: lesTresorsDeGuerreDocs,
     },
   };
 }

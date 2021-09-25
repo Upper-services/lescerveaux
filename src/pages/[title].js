@@ -229,7 +229,7 @@ function Course({ resultSSR, resultsSSR }) {
 
             <section>
               <div className="pl-8 md:pl-16 py-14 pt-52 relative">
-                <h1 className="text-3xl md:text-5xl font-semibold mb-8 pl-2">
+                <h1 className="text-3xl md:text-5xl font-bold mb-8 pl-2">
                   {resultSSR.resultTitle}
                 </h1>
 
@@ -314,12 +314,12 @@ function Course({ resultSSR, resultsSSR }) {
                   </div>
 
                   {/* Progress */}
-                  <div className="hidden md:inline-flex absolute top-10 left-0 w-full max-w-[1360px] h-[3px] bg-[#474953] ml-2"></div>
+                  <div className="hidden md:inline-flex absolute top-10 left-0 w-full max-w-[1360px] h-[3px] bg-[#474953] ml-2" />
                   <div
                     style={{
                       transform: `${
                         value === 2
-                          ? "translateX(163px)"
+                          ? "translateX(155px)"
                           : value === 3
                           ? "translateX(280px)"
                           : value === 4
@@ -329,14 +329,14 @@ function Course({ resultSSR, resultsSSR }) {
                     }}
                     className={`hidden md:inline-flex absolute rounded-tr-[5px] rounded-tl-[5px] top-10 left-0 h-[3px] bg-white ml-2 ${
                       value === 2
-                        ? "w-[90px]"
+                        ? "w-[120px]"
                         : value === 3
                         ? "w-[100px]"
                         : value === 4
                         ? "w-[125px]"
-                        : "w-[130px]"
+                        : "w-[122px]"
                     }`}
-                  ></div>
+                  />
                 </div>
 
                 {showPlayer && (
@@ -368,7 +368,7 @@ function Course({ resultSSR, resultsSSR }) {
                   </FlipMove>
                 )}
 
-                {value === 4 && (
+                {value === 2 && (
                   <div className="mt-4 md:mt-8 p-2 space-y-8 pr-8">
                     <form
                       onSubmit={addComment}
