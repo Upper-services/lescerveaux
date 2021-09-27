@@ -49,6 +49,6 @@
 
   /* React player */
   video {
-    @apply object-cover min-h-screen;
+    @apply object-cover;
   }
 }

@@ -3,13 +3,25 @@ import { useRouter } from "next/router";
 import { forwardRef } from "react";
 
 const Thumbnail = forwardRef(
-  ({ resultId, resultTitle, categoryId, thumbnailImg, categoryTitle }, ref) => {
+  (
+    {
+      resultId,
+      resultTitle,
+      categoryId,
+      thumbnailImg,
+      categoryTitle,
+      resultPage,
+    },
+    ref
+  ) => {
     const router = useRouter();
     const { title } = router.query;
 
     return (
       <div
-        className="group cursor-pointer transition duration-200 ease-in transform sm:hover:scale-105 min-w-[150px] md:min-w-[320px] 2xl:min-w-[290px] space-y-2 max-w-xs"
+        className={`group cursor-pointer transition duration-200 ease-in transform sm:hover:scale-105 space-y-2 ${
+          !resultPage && "min-w-[150px] md:min-w-[320px] 2xl:min-w-[290px]"
+        } max-w-xs`}
         onClick={() =>
           router.push({
             pathname: `/${title || categoryTitle}`,
@@ -27,7 +39,7 @@ const Thumbnail = forwardRef(
           className="rounded-lg"
           alt={resultTitle}
         />
-        <h4 className="font-semibold capitalize text-xs sm:text-sm lg:text-base">
+        <h4 className="font-semibold capitalize ">
           {resultTitle?.toLowerCase()}
         </h4>
       </div>

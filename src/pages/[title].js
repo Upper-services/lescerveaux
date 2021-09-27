@@ -3,21 +3,24 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
-import { CheckIcon, PlusIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { selectSubscription, setSubscription } from "../slices/appSlice";
-import data from "../../data.json";
 import { auth, db, storage } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Video from "../components/Video";
 import firebase from "firebase";
-import Message from "../components/Message";
 import { useCollection, useDocumentOnce } from "react-firebase-hooks/firestore";
 import Notes from "../components/Notes";
 import Thumbnail from "../components/Thumbnail";
 import FlipMove from "react-flip-move";
-import ReactPlayer from "react-player";
-import TrustBox from "../components/TrustBox";
+import StarOutlineRoundedIcon from "@material-ui/icons/StarOutlineRounded";
+import {
+  ThumbUpIcon as ThumbUpIconOutline,
+  ShareIcon,
+} from "@heroicons/react/outline";
+import { ThumbUpIcon } from "@heroicons/react/solid";
+import WatchLaterOutlinedIcon from "@material-ui/icons/WatchLaterOutlined";
+import MoreHorizRoundedIcon from "@material-ui/icons/MoreHorizRounded";
 
 function Course({ resultSSR, resultsSSR }) {
   const router = useRouter();
@@ -203,14 +206,6 @@ function Course({ resultSSR, resultsSSR }) {
       .collection("results")
   );
 
-  const handleShowPlayer = () => {
-    setLoadingAnimation(true);
-    setTimeout(() => {
-      setLoadingAnimation(false);
-    }, 3000);
-    setShowPlayer(true);
-  };
-
   return (
     <div>
       <div className={`relative`}>
@@ -220,134 +215,78 @@ function Course({ resultSSR, resultsSSR }) {
         </Head>
         {user && (
           <>
-            <img
-              src={resultSSR.resultPageImage}
-              alt=""
-              className="min-h-screen bg-center bg-cover bg-no-repeat bg-fixed absolute inset-0 z-[-1] object-cover opacity-50"
-              loading="lazy"
-            />
-
             <Header transparent />
 
             <section>
-              <div className="pl-8 md:pl-16 py-14 pt-52 relative">
-                <h1 className="text-3xl md:text-5xl font-bold mb-8 pl-2">
-                  {resultSSR.resultTitle}
-                </h1>
+              <div className="px-8 md:px-10 py-14 pt-24 relative flex flex-col md:flex-row justify-between">
+                <div className="space-y-4">
+                  {realtimeVideos?.docs.map((doc) => {
+                    const videoId = doc.id;
+                    const { videoTitle, videoSrc } = doc.data();
 
-                <div className="flex items-center space-x-6 mb-4 pl-2">
-                  <button
-                    className="bg-white uppercase text-xs md:text-[15px] text-black flex items-center justify-center gap-x-2 px-4 py-2 md:px-5 md:py-2.5 font-bold rounded hover:opacity-80 transition duration-200 tracking-wide"
-                    onClick={handleShowPlayer}
-                  >
-                    <img src="/images/play-icon.svg" className="h-6 md:h-7" />
-                    Play
-                  </button>
-                  {showPlayer && (
-                    <div>
-                      {realtimeVideos?.docs.map((doc) => {
-                        const videoId = doc.id;
-                        const { videoTitle, videoSrc } = doc.data();
+                    return (
+                      <div className="">
+                        <Video
+                          key={videoId}
+                          id={videoId}
+                          videoSrc={videoSrc}
+                          courseTitle={courseData?.data().resultTitle}
+                          videoTitle={videoTitle}
+                          thumbnailImg={courseData?.data().thumbnailImg}
+                          showNotes={showNotes}
+                          setShowNotes={setShowNotes}
+                        />
 
-                        return (
-                          <div>
-                            <Video
-                              showPlayer={showPlayer}
-                              setShowPlayer={setShowPlayer}
-                              key={videoId}
-                              id={videoId}
-                              videoSrc={videoSrc}
-                              courseTitle={courseData?.data().resultTitle}
-                              videoTitle={videoTitle}
-                              thumbnailImg={courseData?.data().thumbnailImg}
-                              showNotes={showNotes}
-                              setShowNotes={setShowNotes}
-                              loadingAnimation={loadingAnimation}
-                              setLoadingAnimation={setLoadingAnimation}
-                            />
-
-                            {showNotes && (
-                              <Notes
-                                id={videoId}
-                                courseTitle={courseData?.data().resultTitle}
-                                videoTitle={videoTitle}
-                                showNotes={showNotes}
-                                setShowNotes={setShowNotes}
-                              />
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                  <button
-                    className="border-2 border-white rounded-full w-9 h-9 md:w-11 md:h-11 flex items-center justify-center hover:text-black hover:bg-white transition duration-200"
-                    // onClick={
-                    //   watchlistDocId ? removeFromWatchList : addToWatchList
-                    // }
-                  >
-                    {watchlistDocId ? (
-                      <CheckIcon className="h-5 md:h-6 text-blue-700" />
-                    ) : (
-                      <PlusIcon className="h-5 md:h-6" />
-                    )}
-                  </button>
-                </div>
-                <p className="mb-8 max-w-5xl text-lg font-medium pl-2">
-                  {resultSSR.resultDescription}
-                </p>
-
-                <div className="relative pl-2 flex">
-                  <div className="flex overflow-x-scroll scrollbar-hide">
-                    {data.map(({ id, option }) => (
-                      <button
-                        key={id}
-                        onClick={() => setValue(id)}
-                        className={`uppercase tracking-widest text-lg mr-9 transition ease-out duration-200 hover:text-white ${
-                          id === value
-                            ? "text-white font-semibold"
-                            : "text-white/80 font-medium"
-                        }`}
-                      >
-                        {option}
+                        {/* {showNotes && (
+                          <Notes
+                            id={videoId}
+                            courseTitle={courseData?.data().resultTitle}
+                            videoTitle={videoTitle}
+                            showNotes={showNotes}
+                            setShowNotes={setShowNotes}
+                          />
+                        )} */}
+                      </div>
+                    );
+                  })}
+                  <div className="flex justify-between items-center">
+                    <h1 className="font-semibold capitalize">
+                      {resultSSR.resultTitle.toLowerCase()}
+                    </h1>
+                    <div className="flex space-x-4 items-center">
+                      <button className="flex space-x-1.5">
+                        <ThumbUpIconOutline className="h-6" />
+                        {/* <ThumbUpIcon className="h-6" /> */}
+                        <span className="font-medium">24</span>
                       </button>
-                    ))}
+                      <button className="flex items-center space-x-1.5">
+                        <WatchLaterOutlinedIcon />
+                        <span className="font-medium uppercase text-sm">
+                          Watchlist
+                        </span>
+                      </button>
+                      <button className="flex items-center space-x-1.5">
+                        <ShareIcon className="h-5" />
+                        <span className="font-medium uppercase text-sm">
+                          Share
+                        </span>
+                      </button>
+
+                      <button>
+                        <MoreHorizRoundedIcon />
+                      </button>
+                    </div>
                   </div>
 
-                  {/* Progress */}
-                  <div className="hidden md:inline-flex absolute top-10 left-0 w-full max-w-[1360px] h-[3px] bg-[#474953] ml-2" />
-                  <div
-                    style={{
-                      transform: `${
-                        value === 2
-                          ? "translateX(155px)"
-                          : value === 3
-                          ? "translateX(280px)"
-                          : value === 4
-                          ? "translateX(410px)"
-                          : ""
-                      }`,
-                    }}
-                    className={`hidden md:inline-flex absolute rounded-tr-[5px] rounded-tl-[5px] top-10 left-0 h-[3px] bg-white ml-2 ${
-                      value === 2
-                        ? "w-[120px]"
-                        : value === 3
-                        ? "w-[100px]"
-                        : value === 4
-                        ? "w-[125px]"
-                        : "w-[122px]"
-                    }`}
-                  />
+                  {/* <Notes /> */}
                 </div>
 
-                {showPlayer && (
-                  <div className="absolute inset-0 bg-black opacity-50 h-full w-full z-50" />
-                )}
-
                 {/* Many thumbnails container */}
-                {value === 1 && (
-                  <FlipMove className="flex p-2 gap-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide mt-4 md:mt-10">
+                <div className="flex flex-col items-center space-y-4 -my-2">
+                  <h4 className="uppercase font-semibold tracking-widest">
+                    Suggested
+                  </h4>
+                  <FlipMove className="p-2 space-y-5 overflow-x-hidden overflow-y-scroll h-screen scrollbar-hide">
                     {resultsSSR
                       .filter((doc) => doc.id !== resultId)
                       .map((filteredDoc) => {
@@ -359,6 +298,7 @@ function Course({ resultSSR, resultsSSR }) {
                         } = filteredDoc;
                         return (
                           <Thumbnail
+                            resultPage
                             key={resultId}
                             resultId={resultId}
                             categoryId={categoryId}
@@ -368,31 +308,27 @@ function Course({ resultSSR, resultsSSR }) {
                         );
                       })}
                   </FlipMove>
-                )}
+                </div>
 
-                {value === 2 && (
-                  <div className="mt-4 md:mt-8 p-2 space-y-8 pr-8">
-                    <TrustBox />
-
-                    <div className="space-y-8 px-16">
-                      {commentsSnapshot?.docs.map((doc) => {
-                        const id = doc.id;
-                        const { comment, email, displayName, timestamp } =
-                          doc.data();
-                        return (
-                          <Message
-                            key={id}
-                            id={id}
-                            message={comment}
-                            displayName={displayName}
-                            email={email}
-                            timestamp={timestamp}
-                          />
-                        );
-                      })}
-                    </div>
+                {/* <div className="mt-4 md:mt-8 p-2 space-y-8 pr-8">
+                  <div className="space-y-8 px-16">
+                    {commentsSnapshot?.docs.map((doc) => {
+                      const id = doc.id;
+                      const { comment, email, displayName, timestamp } =
+                        doc.data();
+                      return (
+                        <Message
+                          key={id}
+                          id={id}
+                          message={comment}
+                          displayName={displayName}
+                          email={email}
+                          timestamp={timestamp}
+                        />
+                      );
+                    })}
                   </div>
-                )}
+                </div> */}
               </div>
             </section>
           </>

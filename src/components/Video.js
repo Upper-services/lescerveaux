@@ -30,9 +30,10 @@ import firebase from "firebase";
 
 const useStyles = makeStyles((theme) => ({
   playerWrapper: {
-    width: "100%",
-    height: "100%",
+    maxWidth: "1050px",
     position: "relative",
+    borderRadius: "8px",
+    overflow: "hidden",
 
     // "&:hover": {
     //   "& $controlsWrapper": {
@@ -105,45 +106,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PrettoSlider = withStyles({
-  root: {
-    height: 8,
-  },
-  thumb: {
-    height: 24,
-    width: 24,
-    backgroundColor: "#fff",
-    border: "2px solid currentColor",
-    marginTop: -8,
-    marginLeft: -12,
-    "&:focus, &:hover, &$active": {
-      boxShadow: "inherit",
-    },
-  },
-  active: {},
-  valueLabel: {
-    left: "calc(-50% + 4px)",
-  },
-  track: {
-    height: 8,
-    borderRadius: 4,
-  },
-  rail: {
-    height: 8,
-    borderRadius: 4,
-  },
-})(Slider);
-
-function ValueLabelComponent(props) {
-  const { children, open, value } = props;
-
-  return (
-    <Tooltip open={open} enterTouchDelay={0} placement="top" title={value}>
-      {children}
-    </Tooltip>
-  );
-}
-
 const format = (seconds) => {
   if (isNaN(seconds)) {
     return `00:00`;
@@ -166,12 +128,9 @@ function Video({
   courseTitle,
   videoTitle,
   videoDescription,
-  showPlayer,
-  setShowPlayer,
   thumbnailImg,
   showNotes,
   setShowNotes,
-  loadingAnimation,
 }) {
   const router = useRouter();
   const [user] = useAuthState(auth);
@@ -187,7 +146,7 @@ function Video({
     controls: false,
     light: false,
 
-    muted: true,
+    muted: false,
     played: 0,
     duration: 0,
     playbackRate: 1.0,
@@ -354,78 +313,69 @@ function Video({
 
   return (
     <>
-      {loadingAnimation ? (
-        <PlayAnimation />
-      ) : (
-        <>
+      <>
+        <div>
+          {/* <Container> */}
           <div
-            className={`absolute inset-y-0 left-0 ${
-              showNotes ? "right-96" : "right-0"
-            } rounded overflow-hidden transition duration-1000 ${
-              showPlayer ? "opacity-100 z-[1000]" : "opacity-0 z-[-1]"
-            }`}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={hanldeMouseLeave}
+            ref={playerContainerRef}
+            className={classes.playerWrapper}
           >
-            {/* <Container> */}
-            <div
-              onMouseMove={handleMouseMove}
-              onMouseLeave={hanldeMouseLeave}
-              ref={playerContainerRef}
-              className={classes.playerWrapper}
-            >
-              <ReactPlayer
-                ref={playerRef}
-                width="100%"
-                height="100%"
-                url={videoSrc}
-                pip={true}
-                playing={playing}
-                controls={false}
-                light={light}
-                loop={loop}
-                playbackRate={playbackRate}
-                volume={volume}
-                muted={muted}
-                onProgress={handleProgress}
-                onContextMenu={(e) => e.preventDefault()}
-                config={{
-                  file: {
-                    attributes: {
-                      controlsList: "nodownload",
-                    },
+            <ReactPlayer
+              ref={playerRef}
+              width="100%"
+              height="100%"
+              url={videoSrc}
+              pip={true}
+              playing={playing}
+              controls={false}
+              light={light}
+              loop={loop}
+              playbackRate={playbackRate}
+              volume={volume}
+              muted={muted}
+              onProgress={handleProgress}
+              onContextMenu={(e) => e.preventDefault()}
+              config={{
+                file: {
+                  attributes: {
+                    controlsList: "nodownload",
                   },
-                }}
-              />
+                },
+              }}
+            />
 
-              <Controls
-                ref={controlsRef}
-                onSeek={handleSeekChange}
-                onSeekMouseDown={handleSeekMouseDown}
-                onSeekMouseUp={handleSeekMouseUp}
-                onDuration={handleDuration}
-                onRewind={handleRewind}
-                onPlayPause={handlePlayPause}
-                onFastForward={handleFastForward}
-                playing={playing}
-                played={played}
-                elapsedTime={elapsedTime}
-                totalDuration={totalDuration}
-                onMute={handleMute}
-                muted={muted}
-                onVolumeChange={handleVolumeChange}
-                onVolumeSeekDown={handleVolumeSeekDown}
-                onChangeDispayFormat={handleDisplayFormat}
-                playbackRate={playbackRate}
-                onPlaybackRateChange={handlePlaybackRate}
-                onToggleFullScreen={toggleFullScreen}
-                volume={volume}
-                onBookmark={addBookmark}
-                setShowNotes={setShowNotes}
-                videoTitle={videoTitle}
-              />
-            </div>
+            <Controls
+              ref={controlsRef}
+              onSeek={handleSeekChange}
+              onSeekMouseDown={handleSeekMouseDown}
+              onSeekMouseUp={handleSeekMouseUp}
+              onDuration={handleDuration}
+              onRewind={handleRewind}
+              onPlayPause={handlePlayPause}
+              onFastForward={handleFastForward}
+              playing={playing}
+              played={played}
+              elapsedTime={elapsedTime}
+              totalDuration={totalDuration}
+              onMute={handleMute}
+              muted={muted}
+              onVolumeChange={handleVolumeChange}
+              onVolumeSeekDown={handleVolumeSeekDown}
+              onChangeDispayFormat={handleDisplayFormat}
+              playbackRate={playbackRate}
+              onPlaybackRateChange={handlePlaybackRate}
+              onToggleFullScreen={toggleFullScreen}
+              volume={volume}
+              onBookmark={addBookmark}
+              setShowNotes={setShowNotes}
+              videoTitle={videoTitle}
+            />
+          </div>
 
-            <Grid container style={{ marginTop: 20 }} spacing={3}>
-              {/* {bookmarks.map((bookmark, index) => (
+          <Grid container style={{ marginTop: 20 }} spacing={3}>
+            {/* {bookmarks.map((bookmark, index) => (
                 <Grid key={index} item>
                   <Paper
                     onClick={() => {
@@ -445,12 +395,11 @@ function Video({
                   </Paper>
                 </Grid>
               ))} */}
-            </Grid>
-            <canvas ref={canvasRef} />
-            {/* </Container> */}
-          </div>
-        </>
-      )}
+          </Grid>
+          {/* <canvas ref={canvasRef} /> */}
+          {/* </Container> */}
+        </div>
+      </>
       {/* </div> */}
     </>
   );
