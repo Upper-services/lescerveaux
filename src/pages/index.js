@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Header from "../components/Header";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Slider from "../components/Slider";
 import { motion } from "framer-motion";
 import Collection from "../components/Collection";
@@ -18,8 +18,8 @@ import Thumbnail from "../components/Thumbnail";
 import FlipMove from "react-flip-move";
 import HomeCollection from "../components/HomeCollection";
 import DOMPurify from "dompurify";
-import { CloudinaryContext, Transformation } from "cloudinary-react";
-import { Video, Image } from "cloudinary-react";
+import { Video, CloudinaryContext } from "cloudinary-react";
+import tawkTo from "tawkto-react";
 
 export default function Home({
   categoriesSSR,
@@ -55,6 +55,14 @@ export default function Home({
 
   //   return unsubscribe;
   // }, []);
+
+  // Tawk.to live support
+  const tawkToPropertyId = "6150888025797d7a8900e45b";
+  const tawkToKey = "1fgh9ae11";
+
+  useEffect(() => {
+    tawkTo(tawkToPropertyId, tawkToKey);
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -147,8 +155,8 @@ export default function Home({
                 {/* <HomeCollection
                   results={lesplusgrossuccèssurlescerveaux}
                   title="Les Plus Gros Succès sur Les CERVEAUX"
-                />
-                <HomeCollection title="Nouveautés" results={nouveautés} />
+                /> */}
+                {/* <HomeCollection title="Nouveautés" results={nouveautés} />
                 <HomeCollection
                   results={lescoupsdecoeurde100livresen1jour}
                   title="Les Coups De Coeur de 100LivresEn1Jour"

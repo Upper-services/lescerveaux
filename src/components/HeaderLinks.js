@@ -17,16 +17,20 @@ function HeaderLinks() {
         </a>
       </Link>
 
-      <a className="header-link group">
-        <SearchIcon className="h-5" />
-        <span className="span">Search</span>
-      </a>
-      <Link href="/">
+      <Link href="/search">
+        <a className="header-link group">
+          <SearchIcon className="h-5" />
+          <span className="span">Search</span>
+        </a>
+      </Link>
+
+      <Link href="/watchlist">
         <a className="header-link group">
           <CollectionIcon className="h-5" />
           <span className="span">Watchlist</span>
         </a>
       </Link>
+
       <Link href="/">
         <a className="header-link group">
           <PencilAltIcon className="h-5" />

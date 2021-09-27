@@ -17,6 +17,7 @@ import Notes from "../components/Notes";
 import Thumbnail from "../components/Thumbnail";
 import FlipMove from "react-flip-move";
 import ReactPlayer from "react-player";
+import TrustBox from "../components/TrustBox";
 
 function Course({ resultSSR, resultsSSR }) {
   const router = useRouter();
@@ -371,39 +372,8 @@ function Course({ resultSSR, resultsSSR }) {
 
                 {value === 2 && (
                   <div className="mt-4 md:mt-8 p-2 space-y-8 pr-8">
-                    <form
-                      onSubmit={addComment}
-                      className="flex items-center space-x-8"
-                    >
-                      <div className="py-8 px-16 rounded-lg space-y-4">
-                        <h4 className="font-semibold capitalize">
-                          Clique ici pour ajouter 5 étoiles à ce cours
-                        </h4>
-                        <div className="flex items-center space-x-4 justify-center">
-                          <span className="text-2xl cursor-pointer">⭐</span>
-                          <span className="text-2xl cursor-pointer">⭐</span>
-                          <span className="text-2xl cursor-pointer">⭐</span>
-                          <span className="text-2xl cursor-pointer">⭐</span>
-                          <span className="text-2xl cursor-pointer">⭐</span>
-                        </div>
-                      </div>
-                      <div className="flex flex-col sm:flex-row md:items-center gap-4 max-w-4xl flex-grow">
-                        <input
-                          type="text"
-                          placeholder="Leave a comment... 🚀"
-                          required
-                          ref={inputRef}
-                          className="bg-[#30343E] sm:w-9/12 rounded px-4 pl-2.5 py-3 border border-transparent focus:border-white/30 outline-none placeholder-[#A2A3A6]"
-                        />
-                        <button
-                          disabled={true}
-                          type="submit"
-                          className="bg-blue-600 sm:w-3/12 uppercase text-sm font-semibold tracking-wider py-3 px-6 rounded hover:bg-[#0485ee]"
-                        >
-                          Comment
-                        </button>
-                      </div>
-                    </form>
+                    <TrustBox />
+
                     <div className="space-y-8 px-16">
                       {commentsSnapshot?.docs.map((doc) => {
                         const id = doc.id;
