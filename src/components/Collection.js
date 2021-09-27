@@ -18,7 +18,7 @@ function Collection({ categoryId, categoryTitle }) {
   );
 
   return (
-    <div className="relative flex flex-col mb-4 pl-5 md:pl-10 lg:pl-20">
+    <div className="relative flex flex-col pl-5 md:pl-10 lg:pl-20">
       <h2 className="font-semibold text-base sm:text-lg lg:text-xl p-2 pb-0">
         {categoryTitle}
       </h2>

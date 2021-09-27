@@ -9,6 +9,7 @@ import firebase from "firebase";
 import { useState } from "react";
 import TextEditor from "./TextEditor";
 import { useRouter } from "next/router";
+import { PencilAltIcon } from "@heroicons/react/solid";
 
 function Notes({ courseTitle, videoTitle, setShowNotes }) {
   const [user] = useAuthState(auth);
@@ -53,14 +54,17 @@ function Notes({ courseTitle, videoTitle, setShowNotes }) {
   };
 
   return (
-    <div className="absolute z-[1000] right-0 top-0">
+    <div className="">
       {showEditor ? (
         <>
           <TextEditor videoTitle={videoTitle} setShowEditor={setShowEditor} />
         </>
       ) : (
         <>
-          <button onClick={createDocument}>Create a new note</button>
+          <button className="flex space-x-2">
+            <h4 className="font-medium">Create a new note</h4>{" "}
+            <PencilAltIcon className="h-6" />
+          </button>
           {docsSnapshot?.docs.map((doc) => {
             const id = doc.id;
             const { courseTitle, videoTitle } = doc.data();

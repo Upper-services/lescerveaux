@@ -24,13 +24,10 @@ import tawkTo from "tawkto-react";
 export default function Home({
   categoriesSSR,
   lesplusgrossuccèssurlescerveaux,
-  laboîteàoutilsdelacommunauté,
-  lescoupsdecoeurde100livresen1jour,
+  nouveautés,
+  mes47trésorsdeguerreDocs,
   tendancesactuelles,
   notresélectionpourvous,
-  top10surlapplicationaujourdhui,
-  arattrapermaintenant,
-  lesTresorsDeGuerre,
 }) {
   const [user] = useAuthState(auth);
   const dispatch = useDispatch();
@@ -151,14 +148,14 @@ export default function Home({
                 </section>
               </Fade>
 
-              <div className="relative flex flex-col mt-24 mb-4 pl-5 md:pl-10 lg:pl-24 space-y-4">
-                {/* <HomeCollection
+              <div className="relative flex flex-col mt-10 mb-4 pl-5 md:pl-10 lg:pl-24">
+                <HomeCollection
                   results={lesplusgrossuccèssurlescerveaux}
                   title="Les Plus Gros Succès sur Les CERVEAUX"
-                /> */}
-                {/* <HomeCollection title="Nouveautés" results={nouveautés} />
+                />
+                <HomeCollection title="Nouveautés" results={nouveautés} />
                 <HomeCollection
-                  results={lescoupsdecoeurde100livresen1jour}
+                  results={mes47trésorsdeguerreDocs}
                   title="Les Coups De Coeur de 100LivresEn1Jour"
                 />
                 <HomeCollection
@@ -169,7 +166,7 @@ export default function Home({
                   results={notresélectionpourvous}
                   title="Notre Sélection pour Vous"
                 />
-                <HomeCollection
+                {/* <HomeCollection
                   results={top10surlapplicationaujourdhui}
                   title="Top 10 sur l'Application Aujourd'hui"
                 />
@@ -201,12 +198,12 @@ export async function getServerSideProps(context) {
     ...doc.data(),
   }));
 
-  // Les plus gros succès sur Les CERVEAUX - LIVRES => lesleçonsvidéosprivéesdufondateur
+  // Les plus gros succès sur Les CERVEAUX
   const lesleçonsvidéosprivéesdufondateur = await db
     .collection("categories")
     .doc("livres")
     .collection("categoryPageData")
-    .doc("lesleçonsvidéosprivéesdufondateur")
+    .doc("lessecretsde375livres")
     .collection("results")
     .get();
 
@@ -216,98 +213,150 @@ export async function getServerSideProps(context) {
       ...doc.data(),
     }));
 
-  // Nouveautés - LIVRES => 71livresenunevidéo
-  const seventyOnelivresenunevidéo = await db
+  // Nouveautés
+  const percersurtiktok = await db
+    .collection("categories")
+    .doc("communaute")
+    .collection("categoryPageData")
+    .doc("mesméthodespourdépasserlemilliond'abonnés")
+    .collection("results")
+    .doc("percersurtiktok")
+    .get();
+
+  const linfluencedesréseauxsociauxenmusculation = await db
+    .collection("categories")
+    .doc("musculation")
+    .collection("categoryPageData")
+    .doc("lesnon-ditsdelamusculation")
+    .collection("results")
+    .doc("l'influencedesréseauxsociauxenmusculation")
+    .get();
+
+  const décryptagedelapprochedanslaruedufondateur = await db
+    .collection("categories")
+    .doc("seduction")
+    .collection("categoryPageData")
+    .doc("nosmeilleursmomentsenlive")
+    .collection("results")
+    .doc("décryptagedel'approchedanslaruedufondateur")
+    .get();
+
+  const nouveautés = [
+    percersurtiktok.data(),
+    linfluencedesréseauxsociauxenmusculation.data(),
+    décryptagedelapprochedanslaruedufondateur.data(),
+  ];
+
+  // Les coups de coeur de 100LivresEn1Jour
+  const mes47trésorsdeguerre = await db
     .collection("categories")
     .doc("livres")
     .collection("categoryPageData")
-    .doc("71livresenunevidéo")
+    .doc("mes47trésorsdeguerre")
     .collection("results")
-    .doc("74livresenuneseulevidéo")
     .get();
 
-  const nouveautés = [seventyOnelivresenunevidéo.data()];
+  const mes47trésorsdeguerreDocs = mes47trésorsdeguerre.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
 
-  // Les coups de coeur de 100LivresEn1Jour - MONTAGE => GRAPHISME => COMMUNAUTE
-  const lesprestationsrécentesdAntoine = await db
+  // Tendances actuelles
+  const commentlindustrieagroalimentairenousempoisonne = await db
     .collection("categories")
-    .doc("montage")
+    .doc("sante")
     .collection("categoryPageData")
-    .doc("lesprestationsrécentesd'Antoine")
+    .doc("mescomplémentsalimentairespréférés")
     .collection("results")
-    .doc("suivipersonnaliséaveclefondateur")
+    .doc("commentl’industrieagroalimentairenousempoisonne")
     .get();
 
-  const lesprestationsrécentesdemarin = await db
+  const lesbasesdusommeil = await db
     .collection("categories")
-    .doc("montage")
+    .doc("sante")
     .collection("categoryPageData")
-    .doc("lesprestationsrécentesdemarin")
+    .doc("àappliquerdèscettenuit")
     .collection("results")
-    .doc("suivipersonnaliséaveclefondateur")
+    .doc("lesbasesdusommeil")
     .get();
 
-  const lescoupsdecoeurde100livresen1jour = [
-    lesprestationsrécentesdAntoine.data(),
-    lesprestationsrécentesdemarin.data(),
-  ];
-
-  // Tendances actuelles - SITEWEB => VENTE
-  const lesprestationsrécentesdemickaël = await db
-    .collection("categories")
-    .doc("siteweb")
-    .collection("categoryPageData")
-    .doc("lesprestationsrécentesdemickaël")
-    .collection("results")
-    .doc("suivipersonnaliséaveclefondateur")
-    .get();
-
-  const suivipersonnaliséaveclefondateur = await db
+  const les5mythesducopywriting = await db
     .collection("categories")
     .doc("vente")
     .collection("categoryPageData")
-    .doc("lesprestationsrécentesdeyounèsettony")
+    .doc("lesindispensablesd'untextequiconvertit")
     .collection("results")
-    .doc("suivipersonnaliséaveclefondateur")
+    .doc("les5mythesducopywriting")
     .get();
 
-  const suivipersonnaliséaveclefondateur2 = await db
+  const vidéo0avecnadir = await db
     .collection("categories")
-    .doc("vente")
+    .doc("communaute")
     .collection("categoryPageData")
-    .doc("lesprestationsrécentesdeyounèsettony")
+    .doc("j'étudievosprofilsdeaàz")
     .collection("results")
-    .doc("suivipersonnaliséaveclefondateur2")
+    .doc("vidéo0avecnadir")
     .get();
 
   const tendancesactuelles = [
-    lesprestationsrécentesdemickaël.data(),
-    suivipersonnaliséaveclefondateur.data(),
-    suivipersonnaliséaveclefondateur2.data(),
+    commentlindustrieagroalimentairenousempoisonne.data(),
+    lesbasesdusommeil.data(),
+    les5mythesducopywriting.data(),
+    vidéo0avecnadir.data(),
   ];
 
-  // Notre sélection pour vous - CONQUETES => COIFFURE
-  const lesprestationsrécentesdegeoffrey = await db
+  // Notre sélection pour vous
+  const comprendrelesbesoinsfémininpourmieuxséduire = await db
     .collection("categories")
-    .doc("conquetes")
+    .doc("seduction")
     .collection("categoryPageData")
-    .doc("lesprestationsrécentesdegeoffrey")
+    .doc("réussirsespremièresapproches")
     .collection("results")
-    .doc("suivipersonnaliséaveclefondateur")
+    .doc("comprendrelesbesoinsfémininpourmieuxséduire")
     .get();
 
-  const lesprestationsrécentesdeslimane = await db
+  const orian = await db
     .collection("categories")
-    .doc("coiffure")
+    .doc("livres")
     .collection("categoryPageData")
-    .doc("lesprestationsrécentesdeslimane")
+    .doc("cequepensentlescerveauxdenadirmessaï")
     .collection("results")
-    .doc("suivipersonnaliséaveclefondateur")
+    .doc("orian")
+    .get();
+
+  const maitriserlesbasesdelimpôt = await db
+    .collection("categories")
+    .doc("fiscalite")
+    .collection("categoryPageData")
+    .doc("lesclichésdel'impôtenfrance")
+    .collection("results")
+    .doc("maitriserlesbasesdel'impôt")
+    .get();
+
+  const lesleviersindispensablesdunepublicitéquifonctionne = await db
+    .collection("categories")
+    .doc("publicite")
+    .collection("categoryPageData")
+    .doc("mesmodèlesgagnants")
+    .collection("results")
+    .doc("lesleviersindispensablesd’unepublicitéquifonctionne")
+    .get();
+
+  const louisaxel = await db
+    .collection("categories")
+    .doc("livres")
+    .collection("categoryPageData")
+    .doc("cequepensentlescerveauxdenadirmessaï")
+    .collection("results")
+    .doc("louis-axel")
     .get();
 
   const notresélectionpourvous = [
-    lesprestationsrécentesdegeoffrey.data(),
-    lesprestationsrécentesdeslimane.data(),
+    comprendrelesbesoinsfémininpourmieuxséduire.data(),
+    orian.data(),
+    maitriserlesbasesdelimpôt.data(),
+    lesleviersindispensablesdunepublicitéquifonctionne.data(),
+    louisaxel.data(),
   ];
 
   // Top 10 sur l'application aujourd'hui - NUTRITION
@@ -389,12 +438,12 @@ export async function getServerSideProps(context) {
   return {
     props: {
       categoriesSSR: docs,
-      // lesplusgrossuccèssurlescerveaux: lesleçonsvidéosprivéesdufondateurDocs,
-      // nouveautés,
-      // laboîteàoutilsdelacommunauté: lesguidespratiquesdenadirDocs,
+      lesplusgrossuccèssurlescerveaux: lesleçonsvidéosprivéesdufondateurDocs,
+      nouveautés,
+      mes47trésorsdeguerreDocs,
       // lescoupsdecoeurde100livresen1jour,
-      // tendancesactuelles,
-      // notresélectionpourvous,
+      tendancesactuelles,
+      notresélectionpourvous,
       // top10surlapplicationaujourdhui,
       // arattrapermaintenant,
       // lesTresorsDeGuerre: lesTresorsDeGuerreDocs,

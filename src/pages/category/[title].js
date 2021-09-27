@@ -76,7 +76,7 @@ function Category({ snapshotSSR, categoryPageDataSSR }) {
   return (
     <div>
       <Head>
-        <title> {categoryPageDataSSR.title}</title>
+        <title>{categoryPageDataSSR.title}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {user && (

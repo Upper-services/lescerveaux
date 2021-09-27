@@ -43,6 +43,7 @@
     "slick-carousel": "^1.8.1",
     "stripe": "^8.169.0",
     "tailwind-scrollbar-hide": "^1.0.3",
+    "tailwindcss-neumorphism": "^0.1.0",
     "tawkto-react": "^2.0.3",
     "validator": "^13.6.0"
   },

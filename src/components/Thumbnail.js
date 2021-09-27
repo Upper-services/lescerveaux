@@ -19,8 +19,8 @@ const Thumbnail = forwardRef(
 
     return (
       <div
-        className={`group cursor-pointer transition duration-200 ease-in transform sm:hover:scale-105 space-y-2 ${
-          !resultPage && "min-w-[150px] md:min-w-[320px] 2xl:min-w-[290px]"
+        className={`group cursor-pointer transition duration-200 ease-in transform min-w-[350px] sm:hover:scale-105 ${
+          !resultPage && "w-[150px] md:w-[320px] 2xl:w-[290px]"
         } max-w-xs`}
         onClick={() =>
           router.push({
@@ -32,7 +32,6 @@ const Thumbnail = forwardRef(
       >
         <Image
           src={thumbnailImg}
-          layout="responsive"
           height={1000}
           width={1920}
           objectFit="cover"

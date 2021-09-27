@@ -31,14 +31,14 @@ function HeaderLinks() {
         </a>
       </Link>
 
-      <Link href="/">
+      <Link href="/quotes">
         <a className="header-link group">
           <PencilAltIcon className="h-5" />
           <span className="span">Quotes</span>
         </a>
       </Link>
 
-      <Link href="/">
+      <Link href="/faqs">
         <a className="header-link group">
           <QuestionMarkCircleIcon className="h-5" />
           <span className="span">FAQ</span>

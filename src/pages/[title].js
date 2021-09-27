@@ -218,7 +218,7 @@ function Course({ resultSSR, resultsSSR }) {
             <Header transparent />
 
             <section>
-              <div className="px-8 md:px-10 py-14 pt-24 relative flex flex-col md:flex-row justify-between">
+              <div className="px-8 md:px-10 pt-24 relative flex flex-col md:flex-row justify-between gap-y-6">
                 <div className="space-y-4">
                   {realtimeVideos?.docs.map((doc) => {
                     const videoId = doc.id;
@@ -249,7 +249,7 @@ function Course({ resultSSR, resultsSSR }) {
                       </div>
                     );
                   })}
-                  <div className="flex justify-between items-center">
+                  <div className="flex flex-col md:flex-row space-y-2 justify-between md:items-center">
                     <h1 className="font-semibold capitalize">
                       {resultSSR.resultTitle.toLowerCase()}
                     </h1>
@@ -278,7 +278,26 @@ function Course({ resultSSR, resultsSSR }) {
                     </div>
                   </div>
 
-                  {/* <Notes /> */}
+                  <hr />
+                  <Notes />
+                  <hr />
+                  <div className="space-y-8 px-16">
+                    {commentsSnapshot?.docs.map((doc) => {
+                      const id = doc.id;
+                      const { comment, email, displayName, timestamp } =
+                        doc.data();
+                      return (
+                        <Message
+                          key={id}
+                          id={id}
+                          message={comment}
+                          displayName={displayName}
+                          email={email}
+                          timestamp={timestamp}
+                        />
+                      );
+                    })}
+                  </div>
                 </div>
 
                 {/* Many thumbnails container */}
@@ -309,26 +328,6 @@ function Course({ resultSSR, resultsSSR }) {
                       })}
                   </FlipMove>
                 </div>
-
-                {/* <div className="mt-4 md:mt-8 p-2 space-y-8 pr-8">
-                  <div className="space-y-8 px-16">
-                    {commentsSnapshot?.docs.map((doc) => {
-                      const id = doc.id;
-                      const { comment, email, displayName, timestamp } =
-                        doc.data();
-                      return (
-                        <Message
-                          key={id}
-                          id={id}
-                          message={comment}
-                          displayName={displayName}
-                          email={email}
-                          timestamp={timestamp}
-                        />
-                      );
-                    })}
-                  </div>
-                </div> */}
               </div>
             </section>
           </>
