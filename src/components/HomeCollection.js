@@ -1,10 +1,10 @@
-import FlipMove from "react-flip-move";
-import Thumbnail from "./Thumbnail";
+import FlipMove from 'react-flip-move'
+import Thumbnail from './Thumbnail'
 
 function HomeCollection({ results, title }) {
   return (
     <div>
-      <h2 className="font-bold text-base sm:text-lg lg:text-xl pb-0">
+      <h2 className="font-bold text-base sm:text-lg lg:text-2xl pb-0 ">
         {title}
       </h2>
       <FlipMove className="flex p-2 gap-x-5 overflow-x-scroll overflow-y-hidden scrollbar-hide">
@@ -30,7 +30,7 @@ function HomeCollection({ results, title }) {
         )}
       </FlipMove>
     </div>
-  );
+  )
 }
 
-export default HomeCollection;
+export default HomeCollection

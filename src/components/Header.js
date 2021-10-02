@@ -1,25 +1,25 @@
-import Image from "next/image";
-import { useRouter } from "next/router";
-import HeaderLinks from "./HeaderLinks";
-import Fade from "react-reveal/Fade";
-import { auth } from "../../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
-import useComponentVisible from "../hooks/useComponentVisible";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { selectSubscription, setSubscription } from "../slices/appSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { Avatar } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import HeaderLinks from './HeaderLinks'
+import Fade from 'react-reveal/Fade'
+import { auth } from '../../firebase'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import useComponentVisible from '../hooks/useComponentVisible'
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { selectSubscription, setSubscription } from '../slices/appSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { Avatar } from '@material-ui/core'
+import { useEffect, useState } from 'react'
 
 function Header({ transparent }) {
   const { ref, isComponentVisible, setIsComponentVisible } =
-    useComponentVisible(false);
-  const router = useRouter();
-  const [user] = useAuthState(auth);
-  const dispatch = useDispatch();
-  const subscription = useSelector(selectSubscription);
-  const [bgTransparent, setBgTransparent] = useState(false);
+    useComponentVisible(false)
+  const router = useRouter()
+  const [user] = useAuthState(auth)
+  const dispatch = useDispatch()
+  const subscription = useSelector(selectSubscription)
+  const [bgTransparent, setBgTransparent] = useState(false)
 
   // const changeBackground = () => {
   //   if (window.scrollY >= 66) {
@@ -38,10 +38,10 @@ function Header({ transparent }) {
     <Fade top>
       <header
         className={`fixed top-0 z-50 w-full flex items-center px-6 h-[72px] ${
-          transparent ? "bg-transparent" : "bg-[#040714]"
+          transparent ? 'bg-transparent' : 'bg-[#040714]'
         }`}
       >
-        {user && (subscription?.status === "active" || "trialing") && (
+        {user && (subscription?.status === 'active' || 'trialing') && (
           <>
             <Image
               src="/images/logo.png"
@@ -50,7 +50,7 @@ function Header({ transparent }) {
               height={70}
               objectFit="contain"
               className="cursor-pointer"
-              onClick={() => router.push("/")}
+              onClick={() => router.push('/')}
             />
             <HeaderLinks />
           </>
@@ -59,7 +59,7 @@ function Header({ transparent }) {
         {!user ? (
           <button
             className="ml-auto uppercase border px-4 py-1.5 rounded font-medium tracking-wide hover:bg-white hover:text-black transition duration-200"
-            onClick={() => router.push("/login")}
+            onClick={() => router.push('/login')}
           >
             Log In
           </button>
@@ -77,17 +77,17 @@ function Header({ transparent }) {
                 ref={ref}
                 className={`${
                   isComponentVisible &&
-                  "pb-3 absolute top-0 right-0 w-56 p-3 px-5 border-2 border-[#404040] text-[#CACACA] rounded-md z-[-1] bg-[#131313]"
+                  'pb-3 absolute top-0 right-0 w-56 p-3 px-5 border-2 border-[#404040] text-[#CACACA] rounded-md z-[-1] bg-[#131313]'
                 }`}
                 initial={{ height: 0 }}
                 animate={
                   isComponentVisible
-                    ? { height: "auto", visibility: "visible" }
-                    : { height: 0, visibility: "hidden" }
+                    ? { height: 'auto', visibility: 'visible' }
+                    : { height: 0, visibility: 'hidden' }
                 }
               >
                 <h4 className="capitalize absolute right-20 top-5 text-white">
-                  {user?.displayName?.split(" ")[0]}
+                  {user?.displayName?.split(' ')[0]}
                 </h4>
                 <hr className="border-[#2A2A2A] mt-14 mb-4" />
                 <div className="space-y-4">
@@ -97,9 +97,9 @@ function Header({ transparent }) {
                   <a
                     className="block cursor-pointer hover:text-white"
                     onClick={() => {
-                      auth.signOut();
-                      dispatch(setSubscription(null));
-                      router.push("/");
+                      auth.signOut()
+                      dispatch(setSubscription(null))
+                      router.push('/')
                     }}
                   >
                     Log Out
@@ -111,7 +111,7 @@ function Header({ transparent }) {
         )}
       </header>
     </Fade>
-  );
+  )
 }
 
-export default Header;
+export default Header

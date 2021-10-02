@@ -1,26 +1,37 @@
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useDispatch, useSelector } from "react-redux";
-import { auth, db } from "../../firebase";
-import Plans from "../components/Plans";
-import { selectSubscription, setSubscription } from "../slices/appSlice";
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { useEffect, useRef, useState } from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { auth, db } from '../../firebase'
+import Plans from '../components/Plans'
+import { selectSubscription, setSubscription } from '../slices/appSlice'
 
 function CompletePurchase() {
-  const [showPlans, setShowPlans] = useState(false);
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const [user] = useAuthState(auth);
+  const [showPlans, setShowPlans] = useState(false)
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const [user] = useAuthState(auth)
+
+  const ref = useRef(null)
+
+  useEffect(() => {
+    // If window.Trustpilot is available it means that we need to load the TrustBox from our ref.
+    // If it's not, it means the script you pasted into <head /> isn't loaded  just yet.
+    // When it is, it will automatically load the TrustBox.
+    if (window.Trustpilot) {
+      window.Trustpilot.loadFromElement(ref.current, true)
+    }
+  }, [])
 
   // Testing subscription Active or No
-  const subscription = useSelector(selectSubscription);
+  const subscription = useSelector(selectSubscription)
 
   useEffect(() => {
     if (user) {
-      db.collection("customers")
+      db.collection('customers')
         .doc(user?.uid)
-        .collection("subscriptions")
+        .collection('subscriptions')
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach(async (subscription) => {
@@ -33,31 +44,31 @@ function CompletePurchase() {
                   subscription.data().current_period_start.seconds,
                 status: subscription.data().status,
               })
-            );
-          });
-        });
+            )
+          })
+        })
     }
-  }, [user?.uid]);
+  }, [user?.uid])
 
   // ---------------------------------------------- Test Code Above ---------------------------------------------------------------
 
   return (
     <>
-      {user && subscription?.status !== "active" && (
+      {user && subscription?.status !== 'active' && (
         <>
           {!showPlans ? (
-            <div className="relative px-10 md:px-20 lg:pl-40 pt-36 flex min-h-screen">
+            <div className="relative px-10 md:px-10 pt-16 flex items-center min-h-screen">
               <button
                 className="absolute right-10 top-10 font-semibold text-sm"
                 onClick={() => {
-                  auth.signOut();
-                  dispatch(setSubscription(null));
-                  router.push("/");
+                  auth.signOut()
+                  dispatch(setSubscription(null))
+                  router.push('/')
                 }}
               >
                 Log out
               </button>
-              <div className="flex flex-col space-y-8 max-w-lg">
+              <div className="flex flex-col space-y-8 max-w-lg mr-8">
                 <Image
                   src="/images/logo.png"
                   alt=""
@@ -66,7 +77,7 @@ function CompletePurchase() {
                   objectFit="contain"
                   className="cursor-pointer"
                   objectPosition="left"
-                  onClick={() => router.push("/")}
+                  onClick={() => router.push('/')}
                 />
                 <h1 className="font-semibold text-3xl">
                   You're only one step away from Lescerveaux 🚀
@@ -82,6 +93,27 @@ function CompletePurchase() {
                   Complete Subscription
                 </button>
               </div>
+              <div
+                className="trustpilot-widget flex-1"
+                ref={ref}
+                data-locale="fr-FR"
+                data-template-id="539adbd6dec7e10e686debee"
+                data-businessunit-id="61367b85c22a8c001df9771e"
+                data-style-height="700px"
+                data-style-width="100%"
+                data-theme="dark"
+                data-stars="5"
+                data-review-languages="fr"
+                data-font-family="Poppins"
+              >
+                <a
+                  href="https://fr.trustpilot.com/review/lescerveaux.com"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Trustpilot
+                </a>
+              </div>
             </div>
           ) : (
             <div className="flex text-left flex-col justify-center max-w-md mx-auto mt-24">
@@ -95,7 +127,7 @@ function CompletePurchase() {
         </>
       )}
     </>
-  );
+  )
 }
 
-export default CompletePurchase;
+export default CompletePurchase

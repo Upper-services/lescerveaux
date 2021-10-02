@@ -1,73 +1,73 @@
-import Head from "next/head";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import Fade from "react-reveal/Fade";
-import { auth } from "../../firebase";
-import Plans from "../components/Plans";
-import validator from "validator";
-import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid";
-import DOMPurify from "dompurify";
+import Head from 'next/head'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { useEffect, useRef, useState } from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import Fade from 'react-reveal/Fade'
+import { auth } from '../../firebase'
+import Plans from '../components/Plans'
+import validator from 'validator'
+import { EyeIcon, EyeOffIcon } from '@heroicons/react/solid'
+import DOMPurify from 'dompurify'
 
 function Signup({ providers }) {
-  const [step, setStep] = useState(1);
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const router = useRouter();
-  const [user] = useAuthState(auth);
-  const [passwordShown, setPasswordShown] = useState(false);
+  const [step, setStep] = useState(1)
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const router = useRouter()
+  const [user] = useAuthState(auth)
+  const [passwordShown, setPasswordShown] = useState(false)
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
-        router.push("/");
+        router.push('/')
       }
-    });
+    })
 
-    return unsubscribe;
-  }, []);
+    return unsubscribe
+  }, [])
 
   const Continue = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (step === 1) {
-      const dirty = username;
-      const clean = DOMPurify.sanitize(username);
-      setUsername(clean);
+      const dirty = username
+      const clean = DOMPurify.sanitize(username)
+      setUsername(clean)
       if (
         validator.isEmpty(username, { ignore_whitespace: true }) ||
         dirty !== clean
       ) {
-        alert("Please enter a valid username!");
-        return;
+        alert('Please enter a valid username!')
+        return
       }
     }
     if (step === 2) {
-      const dirty = email;
-      const clean = DOMPurify.sanitize(email);
-      setEmail(clean);
+      const dirty = email
+      const clean = DOMPurify.sanitize(email)
+      setEmail(clean)
       if (!validator.isEmail(email) || dirty !== clean) {
-        alert("Please enter a valid email!");
-        return;
+        alert('Please enter a valid email!')
+        return
       }
     }
-    setStep(step + 1);
-  };
+    setStep(step + 1)
+  }
 
   const Previous = (e) => {
-    e.preventDefault();
-    setStep(step - 1);
-  };
+    e.preventDefault()
+    setStep(step - 1)
+  }
 
   const register = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (step === 3) {
       if (!validator.isStrongPassword(password)) {
         alert(
-          "The password must be atleast 8 chars long, 1 uppercase, 1 number & 1 symbol!"
-        );
-        return;
+          'The password must be atleast 8 chars long, 1 uppercase, 1 number & 1 symbol!'
+        )
+        return
       }
     }
 
@@ -76,15 +76,15 @@ function Signup({ providers }) {
       .then((authUser) => {
         authUser.user.updateProfile({
           displayName: username,
-        });
+        })
         // setStep(step + 1);
-        router.push("/");
+        router.push('/')
       })
-      .catch((err) => alert(err.message));
-  };
+      .catch((err) => alert(err.message))
+  }
 
   if (user) {
-    return <div>{/* <p>Initialising User...</p> */}</div>;
+    return <div>{/* <p>Initialising User...</p> */}</div>
   }
 
   switch (step) {
@@ -97,7 +97,7 @@ function Signup({ providers }) {
           </Head>
           <button
             className="hidden md:inline-flex absolute right-20 font-semibold"
-            onClick={() => router.push("/login")}
+            onClick={() => router.push('/login')}
           >
             Log In
           </button>
@@ -107,7 +107,7 @@ function Signup({ providers }) {
             height="100"
             className="cursor-pointer"
             objectFit="contain"
-            onClick={() => router.push("/")}
+            onClick={() => router.push('/')}
           />
 
           <form className="flex text-left flex-col justify-center max-w-md mx-auto mt-8">
@@ -135,11 +135,11 @@ function Signup({ providers }) {
             </button>
           </form>
           <h4 className="text-sm text-left max-w-md mx-auto md:hidden">
-            Already a member?{" "}
-            <button onClick={() => router.push("/login")}>Log In</button>
+            Already a member?{' '}
+            <button onClick={() => router.push('/login')}>Log In</button>
           </h4>
         </section>
-      );
+      )
     case 2:
       return (
         <section className="relative text-center pt-20 min-h-screen bg-[#1A1C29] px-6">
@@ -149,7 +149,7 @@ function Signup({ providers }) {
           </Head>
           <button
             className="hidden md:inline-flex absolute right-20 font-semibold"
-            onClick={() => router.push("/login")}
+            onClick={() => router.push('/login')}
           >
             Log In
           </button>
@@ -159,7 +159,7 @@ function Signup({ providers }) {
             height="100"
             className="cursor-pointer"
             objectFit="contain"
-            onClick={() => router.push("/")}
+            onClick={() => router.push('/')}
           />
 
           <form className="flex text-left flex-col justify-center max-w-md mx-auto mt-8">
@@ -196,11 +196,11 @@ function Signup({ providers }) {
             </div>
           </form>
           <h4 className="text-sm text-left max-w-md mx-auto md:hidden">
-            Already a member?{" "}
-            <button onClick={() => router.push("/login")}>Log In</button>
+            Already a member?{' '}
+            <button onClick={() => router.push('/login')}>Log In</button>
           </h4>
         </section>
-      );
+      )
     case 3:
       return (
         <section className="text-center pt-20 min-h-screen bg-[#1A1C29] px-6">
@@ -214,7 +214,7 @@ function Signup({ providers }) {
             height="100"
             className="cursor-pointer"
             objectFit="contain"
-            onClick={() => router.push("/")}
+            onClick={() => router.push('/')}
           />
 
           <form className="flex text-left flex-col justify-center max-w-md mx-auto mt-8">
@@ -226,7 +226,7 @@ function Signup({ providers }) {
             </label>
             <div className="relative bg-[#30343E] rounded border border-transparent focus-within:border-white/30 mb-4 overflow-hidden">
               <input
-                type={passwordShown ? "text" : "password"}
+                type={passwordShown ? 'text' : 'password'}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -274,7 +274,7 @@ function Signup({ providers }) {
             </div>
           </form>
         </section>
-      );
+      )
     // case 4:
     //   return (
     //     <section className="relative text-center pt-20 min-h-screen bg-[#1A1C29] px-6">
@@ -306,4 +306,4 @@ function Signup({ providers }) {
   }
 }
 
-export default Signup;
+export default Signup

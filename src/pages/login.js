@@ -1,60 +1,60 @@
-import Head from "next/head";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import Fade from "react-reveal/Fade";
-import { auth } from "../../firebase";
-import validator from "validator";
-import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid";
+import Head from 'next/head'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import Fade from 'react-reveal/Fade'
+import { auth } from '../../firebase'
+import validator from 'validator'
+import { EyeIcon, EyeOffIcon } from '@heroicons/react/solid'
 
 function Login({ providers }) {
-  const [step, setStep] = useState(1);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const router = useRouter();
-  const [user] = useAuthState(auth);
-  const [passwordShown, setPasswordShown] = useState(false);
+  const [step, setStep] = useState(1)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const router = useRouter()
+  const [user] = useAuthState(auth)
+  const [passwordShown, setPasswordShown] = useState(false)
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
-        router.push("/");
+        router.push('/')
       }
-    });
+    })
 
-    return unsubscribe;
-  }, []);
+    return unsubscribe
+  }, [])
 
   const Continue = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (step === 1) {
       if (!validator.isEmail(email)) {
-        alert("Please enter a valid email!");
-        return;
+        alert('Please enter a valid email!')
+        return
       }
     }
-    setStep(step + 1);
-  };
+    setStep(step + 1)
+  }
 
   const Previous = (e) => {
-    e.preventDefault();
-    setStep(step - 1);
-  };
+    e.preventDefault()
+    setStep(step - 1)
+  }
 
   const login = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     auth
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        router.push("/");
+        router.push('/')
       })
-      .catch((error) => alert(error.message));
-  };
+      .catch((error) => alert(error.message))
+  }
 
   if (user) {
-    return <div>{/* <p>Initialising User...</p> */}</div>;
+    return <div>{/* <p>Initialising User...</p> */}</div>
   }
 
   switch (step) {
@@ -71,7 +71,7 @@ function Login({ providers }) {
             objectFit="contain"
             height="100"
             className="cursor-pointer"
-            onClick={() => router.push("/")}
+            onClick={() => router.push('/')}
           />
 
           <form className="flex text-left flex-col justify-center max-w-md mx-auto mt-8">
@@ -96,11 +96,11 @@ function Login({ providers }) {
             </button>
           </form>
           <h4 className="text-sm text-left max-w-md mx-auto">
-            New to Lescerveaux?{" "}
-            <button onClick={() => router.push("/signup")}>Sign up</button>
+            New to Lescerveaux?{' '}
+            <button onClick={() => router.push('/signup')}>Sign up</button>
           </h4>
         </section>
-      );
+      )
     case 2:
       return (
         <>
@@ -115,7 +115,7 @@ function Login({ providers }) {
               objectFit="contain"
               height="100"
               className="cursor-pointer"
-              onClick={() => router.push("/")}
+              onClick={() => router.push('/')}
             />
 
             <form className="flex text-left flex-col justify-center max-w-md mx-auto mt-8">
@@ -124,7 +124,7 @@ function Login({ providers }) {
               </label>
               <div className="relative bg-[#30343E] rounded border border-transparent focus-within:border-white/30 mb-4 overflow-hidden">
                 <input
-                  type={passwordShown ? "text" : "password"}
+                  type={passwordShown ? 'text' : 'password'}
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -163,10 +163,10 @@ function Login({ providers }) {
             </form>
           </section>
         </>
-      );
+      )
     default:
     // do nothing
   }
 }
 
-export default Login;
+export default Login
