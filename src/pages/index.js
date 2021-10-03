@@ -188,7 +188,7 @@ export default function Home({
                 />
               </div>
 
-              <TrustBox />
+              <TrustBox carousel />
             </main>
           )}
         </div>

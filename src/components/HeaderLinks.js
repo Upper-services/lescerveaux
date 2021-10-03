@@ -7,6 +7,7 @@ import {
 } from '@heroicons/react/solid'
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
+import TrustBox from './TrustBox'
 
 function HeaderLinks() {
   const ref = useRef(null)
@@ -64,31 +65,7 @@ function HeaderLinks() {
         </a>
       </Link>
 
-      <Link href="#">
-        <a className="header-link group">
-          <div
-            className="trustpilot-widget"
-            ref={ref}
-            data-locale="fr-FR"
-            data-template-id="5418052cfbfb950d88702476"
-            data-businessunit-id="61367b85c22a8c001df9771e"
-            data-style-height="25px"
-            data-style-width="100%"
-            data-theme="dark"
-            data-stars="5"
-            data-review-languages="fr"
-            data-font-family="Poppins"
-          >
-            <a
-              href="https://fr.trustpilot.com/review/lescerveaux.com"
-              target="_blank"
-              rel="noopener"
-            >
-              Trustpilot
-            </a>
-          </div>
-        </a>
-      </Link>
+      <TrustBox horizontal />
     </div>
   )
 }

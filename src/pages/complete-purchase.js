@@ -5,24 +5,14 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { auth, db } from '../../firebase'
 import Plans from '../components/Plans'
+import TrustBox from '../components/TrustBox'
 import { selectSubscription, setSubscription } from '../slices/appSlice'
 
-function CompletePurchase() {
+function CompletePurchase({ products }) {
   const [showPlans, setShowPlans] = useState(false)
   const dispatch = useDispatch()
   const router = useRouter()
   const [user] = useAuthState(auth)
-
-  const ref = useRef(null)
-
-  useEffect(() => {
-    // If window.Trustpilot is available it means that we need to load the TrustBox from our ref.
-    // If it's not, it means the script you pasted into <head /> isn't loaded  just yet.
-    // When it is, it will automatically load the TrustBox.
-    if (window.Trustpilot) {
-      window.Trustpilot.loadFromElement(ref.current, true)
-    }
-  }, [])
 
   // Testing subscription Active or No
   const subscription = useSelector(selectSubscription)
@@ -57,7 +47,7 @@ function CompletePurchase() {
       {user && subscription?.status !== 'active' && (
         <>
           {!showPlans ? (
-            <div className="relative px-10 md:px-10 pt-16 flex items-center min-h-screen">
+            <div className="relative px-5 lg:px-10 md:px-10 pt-16 flex flex-col gap-x-8 gap-y-6 lg:flex-row lg:items-center min-h-screen">
               <button
                 className="absolute right-10 top-10 font-semibold text-sm"
                 onClick={() => {
@@ -68,15 +58,14 @@ function CompletePurchase() {
               >
                 Log out
               </button>
-              <div className="flex flex-col space-y-8 max-w-lg mr-8">
+              <div className="flex flex-col space-y-8 text-center lg:text-left max-w-lg self-center">
                 <Image
                   src="/images/logo.png"
                   alt=""
                   width={200}
                   height={100}
                   objectFit="contain"
-                  className="cursor-pointer"
-                  objectPosition="left"
+                  className="cursor-pointer object-center lg:object-left"
                   onClick={() => router.push('/')}
                 />
                 <h1 className="font-semibold text-3xl">
@@ -93,27 +82,7 @@ function CompletePurchase() {
                   Complete Subscription
                 </button>
               </div>
-              <div
-                className="trustpilot-widget flex-1"
-                ref={ref}
-                data-locale="fr-FR"
-                data-template-id="539adbd6dec7e10e686debee"
-                data-businessunit-id="61367b85c22a8c001df9771e"
-                data-style-height="700px"
-                data-style-width="100%"
-                data-theme="dark"
-                data-stars="5"
-                data-review-languages="fr"
-                data-font-family="Poppins"
-              >
-                <a
-                  href="https://fr.trustpilot.com/review/lescerveaux.com"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  Trustpilot
-                </a>
-              </div>
+              <TrustBox grid />
             </div>
           ) : (
             <div className="flex text-left flex-col justify-center max-w-md mx-auto mt-24">
@@ -121,7 +90,7 @@ function CompletePurchase() {
                 Step 1 of 1
               </small>
 
-              <Plans />
+              <Plans products={products} />
             </div>
           )}
         </>
@@ -131,3 +100,18 @@ function CompletePurchase() {
 }
 
 export default CompletePurchase
+
+export async function getServerSideProps(context) {
+  const productsSnapshot = await db.collection('products').get()
+
+  const products = productsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }))
+
+  return {
+    props: {
+      products,
+    },
+  }
+}

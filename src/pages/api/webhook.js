@@ -19,9 +19,9 @@ const fullfillOrder = async (session) => {
 
   return app
     .firestore()
-    .collection('users')
+    .collection('customers')
     .doc(session.metadata.email)
-    .collection('orders')
+    .collection('subscriptions')
     .doc(session.id)
     .set({
       amount: session.amount_total / 100,
