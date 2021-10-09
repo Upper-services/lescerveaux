@@ -15,6 +15,7 @@
     "@next-auth/firebase-adapter": "^0.1.2",
     "@reduxjs/toolkit": "^1.6.1",
     "@stripe/stripe-js": "^1.18.0",
+    "@tailwindcss/line-clamp": "^0.2.2",
     "@widgetbot/crate": "^3.3.0",
     "@widgetbot/react-embed": "^1.4.0",
     "axios": "^0.22.0",

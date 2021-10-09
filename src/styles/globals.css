@@ -1,31 +1,34 @@
 @tailwind base;
 @tailwind components;
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 @layer base {
   body {
-    @apply bg-[#040714] text-[#f9f9f9] font-body scrollbar-hide;
+    @apply bg-[#040714] text-white font-body scrollbar-hide;
   }
 }
 
 @layer components {
   .header-link {
-    @apply flex items-center space-x-3 cursor-pointer;
+    @apply items-center space-x-3 cursor-pointer;
   }
 
   .span {
-    @apply hidden lg:inline-flex relative uppercase text-[13px] font-bold tracking-widest before:bg-[#f9f9f9] before:rounded-bl before:-bottom-1.5 before:h-0.5 before:inset-x-0 before:absolute before:transform before:origin-left before:scale-x-0 before:transition-all before:duration-200 group-hover:before:scale-x-100;
+    @apply relative uppercase text-[13px] font-medium hover:font-semibold tracking-widest before:bg-[#f9f9f9] before:rounded-bl before:-bottom-1.5 before:h-0.5 before:inset-x-0 before:absolute before:transform before:origin-left before:scale-x-0 before:transition-all before:duration-200 group-hover:before:scale-x-100;
   }
 
   .brand {
-    @apply flex  mx-auto flex-shrink-0 relative w-[140px] h-20 sm:w-48 sm:h-28 md:w-28 md:h-[72px] lg:w-44 lg:h-24 xl:w-60 xl:h-32 border-2 border-[#F5325C]  border-opacity-50 cursor-pointer shadow-xl overflow-hidden hover:border-[#F5325C] hover:shadow-2xl transform hover:scale-105 transition duration-300 rounded-2xl;
+    @apply flex mx-auto flex-shrink-0 relative w-[100px] h-16 sm:w-48 sm:h-28 md:w-28 md:h-[72px] lg:w-44 lg:h-24 xl:w-56 xl:h-32 border-[3px] border-[#f9f9f9]  border-opacity-50 cursor-pointer shadow-xl overflow-hidden hover:border-[#F5325C] hover:shadow-2xl transform hover:scale-105 transition duration-300 rounded-xl;
   }
 
   /* Carousel styles */
-
   .carousel > button {
     @apply opacity-0 h-full w-[5vw] z-10 hover:opacity-100 transition duration-200 ease-[ease];
+  }
+
+  .review-carousel > button {
+    @apply w-[45vw] sm:w-[27vw] md:w-[11vw];
   }
 
   .carousel ul li button {
@@ -51,5 +54,9 @@
   /* React player */
   video {
     @apply object-cover;
+  }
+
+  .footer-link {
+    @apply text-gray-400 text-xs md:text-sm whitespace-nowrap;
   }
 }

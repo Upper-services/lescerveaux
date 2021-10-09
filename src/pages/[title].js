@@ -303,7 +303,7 @@ function Course({ resultSSR, resultsSSR }) {
                 {/* Many thumbnails container */}
                 <div className="flex flex-col items-center space-y-4 -my-2">
                   <h4 className="uppercase font-semibold tracking-widest">
-                    Suggested
+                    Notre Sélection pour Vous
                   </h4>
                   <FlipMove className="p-2 space-y-5 overflow-x-hidden overflow-y-scroll h-screen scrollbar-hide">
                     {resultsSSR

@@ -1,10 +1,10 @@
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
-import Carousel from 'react-slick'
-import { useRouter } from 'next/router'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Carousel from "react-slick";
+import { useRouter } from "next/router";
 
 function Slider({ results }) {
-  const router = useRouter()
+  const router = useRouter();
 
   let settings = {
     dots: true,
@@ -13,7 +13,7 @@ function Slider({ results }) {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-  }
+  };
 
   return (
     <section className="relative overflow-hidden block px-[calc(3.5vw+5px)]">
@@ -30,7 +30,7 @@ function Slider({ results }) {
             sliderImg,
           }) => (
             <div
-              className="rounded-2xl cursor-pointer relative"
+              className="rounded cursor-pointer relative"
               key={resultId}
               onClick={() =>
                 router.push({
@@ -39,11 +39,12 @@ function Slider({ results }) {
                 })
               }
             >
-              <a className="rounded-2xl shadow-2xl cursor-pointer block relative p-1.5 hover:p-0 transition-all duration-300">
+              <a className="rounded shadow-2xl cursor-pointer block relative p-1.5 hover:p-0 transition-all duration-300">
                 <img
-                  src={sliderImg}
+                  // src={sliderImg}
+                  src="/images/testing.jpg"
                   alt={resultTitle}
-                  className="w-full h-full rounded-2xl"
+                  className="w-full h-full rounded"
                 />
               </a>
             </div>
@@ -51,7 +52,7 @@ function Slider({ results }) {
         )}
       </Carousel>
     </section>
-  )
+  );
 }
 
-export default Slider
+export default Slider;
